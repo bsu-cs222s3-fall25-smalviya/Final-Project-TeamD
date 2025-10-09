@@ -1,4 +1,5 @@
 package papertrader.player;
+import papertrader.market.PlayerStock;
 
 import java.lang.reflect.Array;
 import java.util.HashMap;
@@ -7,8 +8,10 @@ public class Player {
 
     public final Portfolio portfolio = new Portfolio();
 
-    private HashMap<String, Array> stockList = new HashMap<>();
+    public HashMap<String, PlayerStock> stockList = new HashMap<String, PlayerStock>();
 
+    public void buyStock() {
+    }
 
     public static class Portfolio {
         private  int Money;
