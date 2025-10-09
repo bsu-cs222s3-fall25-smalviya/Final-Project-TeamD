@@ -10,7 +10,8 @@ public class Player {
 
     public HashMap<String, PlayerStock> stockList = new HashMap<String, PlayerStock>();
 
-    public void buyStock() {
+    public void buyStock(String stockName) {
+        stockList.computeIfAbsent(stockName, V -> new PlayerStock(stockName, "BUY"));
     }
 
     public static class Portfolio {
