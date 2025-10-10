@@ -14,6 +14,7 @@ public class Player {
         stockList.computeIfAbsent(stockName, V -> new PlayerStock(stockName, "BUY"));
     }
 
+
     public static class Portfolio {
         private  int Money;
         Portfolio() {
