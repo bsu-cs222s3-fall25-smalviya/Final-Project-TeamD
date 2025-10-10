@@ -13,6 +13,6 @@ public class Trade {
         this.price = price;
     }
 
-    public double getAmount() { return amount; }
-    public double getPrice() { return price; }
+    public double getAmount() { return this.amount; }
+    public double getPrice() { return this.price; }
 }

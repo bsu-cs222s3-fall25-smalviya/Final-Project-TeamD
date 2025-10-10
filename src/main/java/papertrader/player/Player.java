@@ -18,6 +18,9 @@ public class Player {
     public static class Portfolio {
         private  int Money;
         Portfolio() {
+            // Data should eventually load
+            // in this constructor
+
             this.Money = 100000;
         };
 

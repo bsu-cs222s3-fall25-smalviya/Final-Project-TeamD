@@ -2,6 +2,7 @@ package papertrader.engine;
 import papertrader.player.Player;
 import papertrader.player.Player.Portfolio;
 import papertrader.market.PlayerStock;
+import papertrader.engine.MarketSystem;
 
 import java.util.Objects;
 
@@ -14,5 +15,6 @@ public class PaperTrader {
         System.out.println(player.portfolio.getMoney());
         player.buyStock("APPL");
         outputStream.outputStockList(player);
+        MarketSystem marketSystem = new MarketSystem();
     }
 }
