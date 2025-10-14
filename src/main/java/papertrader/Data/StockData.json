@@ -1,6 +1,9 @@
 {
-  "APPL": {
-    "cost" : 5,
-    "volatility" : 0.3
+  "NVDA": {
+    "sector": "TECHNOLOGY",
+    "averageGrowth": 0.15154999999999944,
+    "deviation": 2.5080674527412543,
+    "shareValue": 188.32,
+    "shares": 153482755
   }
 }
