@@ -1,7 +1,11 @@
 package papertrader.player;
 import papertrader.engine.MarketSystem;
 import papertrader.market.PlayerStock;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
+import java.io.PrintWriter;
 import java.util.HashMap;
 
 public class Player {
@@ -10,6 +14,8 @@ public class Player {
 
     public HashMap<String, PlayerStock> stockList = new HashMap<String, PlayerStock>();
 
+
+
     public void buyStock(String stockName, double Amount) {
         if (!MarketSystem.stockList.containsKey(stockName)) {
             System.out.println("Stock Not Found");
@@ -17,7 +23,9 @@ public class Player {
         }
         stockList.computeIfAbsent(stockName, V -> new PlayerStock(stockName, "BUY"));
         stockList.get(stockName).addTrade(Amount, 15);
+        portfolio.removeMoney((int) (MarketSystem.stockList.get(stockName).getPrice() * Amount));
     }
+
 
 
     public static class Portfolio {
@@ -37,6 +45,22 @@ public class Player {
 
         public void removeMoney(int amount) {
             this.Money -= amount;
+        }
+    }
+
+    public void SaveData() {
+        File playerData = new File("src/main/java/papertrader/Data/PlayerData.json");
+        try {
+            PrintWriter writer = new PrintWriter(playerData);
+            writer.write("{" +
+                    "Money: " + portfolio.getMoney() +
+                    " Stocks: " + stockList +
+                    "}"
+
+            );
+            writer.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 }

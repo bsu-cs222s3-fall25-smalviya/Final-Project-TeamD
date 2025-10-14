@@ -17,4 +17,9 @@ public class OutputStream {
             System.out.println("STOCKS OWNED " + stock);
         }
     }
+
+    public void outputMenu() {
+        System.out.println("0) Exit Program");
+        System.out.println("1) View Data");
+    }
 }
