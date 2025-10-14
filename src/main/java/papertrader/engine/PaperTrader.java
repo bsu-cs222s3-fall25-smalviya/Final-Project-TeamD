@@ -13,12 +13,13 @@ public class PaperTrader {
     private static boolean keepGoing = true;
 
     public static void main(String[] args) throws InterruptedException {
-        Player player = new Player();
+        Player player = Player.loadData();
         OutputStream outputStream = new OutputStream();
         System.out.println(player.portfolio.getMoney());
         MarketSystem marketSystem = new MarketSystem();
         System.out.println(MarketSystem.stockList);
         player.buyStock("NVDA", 15);
+        player.buyStock("NVDA", 25);
         outputStream.outputStockList(player);
         System.out.println(player.portfolio.getMoney());
 

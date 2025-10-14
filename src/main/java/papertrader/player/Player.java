@@ -1,11 +1,11 @@
 package papertrader.player;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import papertrader.engine.MarketSystem;
 import papertrader.market.PlayerStock;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
-import java.io.PrintWriter;
+import java.io.*;
+
 import java.util.HashMap;
 
 public class Player {
@@ -50,17 +50,26 @@ public class Player {
 
     public void SaveData() {
         File playerData = new File("src/main/java/papertrader/Data/PlayerData.json");
-        try {
-            PrintWriter writer = new PrintWriter(playerData);
-            writer.write("{" +
-                    "Money: " + portfolio.getMoney() +
-                    " Stocks: " + stockList +
-                    "}"
 
-            );
-            writer.close();
-        } catch (FileNotFoundException e) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        try (FileWriter writer = new FileWriter(playerData)) {
+            gson.toJson(this, writer);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
+    public static Player loadData() {
+        File playerData = new File("src/main/java/papertrader/Data/PlayerData.json");
+        if (!playerData.exists()) return new Player();
+
+        Gson gson = new Gson();
+        try (FileReader reader = new FileReader(playerData)) {
+            return gson.fromJson(reader, Player.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
