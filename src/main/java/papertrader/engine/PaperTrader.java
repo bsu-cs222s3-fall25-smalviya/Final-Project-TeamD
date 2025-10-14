@@ -8,9 +8,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class PaperTrader {
-
-    private static final Scanner scanner = new Scanner(System.in);
-    private static boolean keepGoing = true;
+    private static final boolean GUI_LOADER = false;
 
     public static void main(String[] args) throws InterruptedException {
         Player player = Player.loadData();
@@ -23,18 +21,15 @@ public class PaperTrader {
         outputStream.outputStockList(player);
         System.out.println(player.portfolio.getMoney());
 
-        while (keepGoing) {
-            outputStream.outputMenu();
-            int Choice = scanner.nextInt();
-            switch (Choice) {
-                case 0:
-                    player.SaveData();
-                    System.exit(0);
-                case 1:
-                    System.out.println("Enter Portfolio Name:");
-            }
-            System.out.println("Hi");
+
+        if (!GUI_LOADER) {
+            outputStream.CLI(player);
+        } else {
+            // UI eventually
         }
+
+
+
 
     }
 }
