@@ -5,16 +5,14 @@ import java.util.List;
 
 public class PlayerStock {
     private final String name;
-    private final String position;
     private final List<Trade> trades = new ArrayList<Trade>();
 
     public PlayerStock(String name, String position) {
         this.name = name;
-        this.position = position;
     }
 
-    public void addTrade(double amount, double price) {
-        trades.add(new Trade(amount, price));
+    public void addTrade(double amount, double price, String position) {
+        trades.add(new Trade(amount, price, position));
     }
 
     public double getTotalAmount() {
@@ -34,6 +32,5 @@ public class PlayerStock {
     }
 
     public String getName() { return name; }
-    public String getPosition() { return position; }
 
 }

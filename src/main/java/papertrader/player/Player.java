@@ -22,7 +22,7 @@ public class Player {
             return;
         }
         stockList.computeIfAbsent(stockName, V -> new PlayerStock(stockName, "BUY"));
-        stockList.get(stockName).addTrade(Amount, 15);
+        stockList.get(stockName).addTrade(Amount, 15, "BUY");
         portfolio.removeMoney((int) (MarketSystem.stockList.get(stockName).getPrice() * Amount));
     }
 

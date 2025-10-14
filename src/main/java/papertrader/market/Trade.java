@@ -7,12 +7,15 @@ package papertrader.market;
 public class Trade {
     private final double amount;
     private final double price;
+    private final String position;
 
-    public Trade(double amount, double price) {
+    public Trade(double amount, double price, String position) {
         this.amount = amount;
         this.price = price;
+        this.position = position;
     }
 
     public double getAmount() { return this.amount; }
     public double getPrice() { return this.price; }
+    public String getPosition() { return this.position; }
 }
