@@ -13,8 +13,12 @@ public class PaperTrader {
         Player player = new Player();
         OutputStream outputStream = new OutputStream();
         System.out.println(player.portfolio.getMoney());
-        player.buyStock("APPL");
-        outputStream.outputStockList(player);
         MarketSystem marketSystem = new MarketSystem();
+        System.out.println(marketSystem());
+        player.buyStock("NVDA", 15);
+        player.buyStock("MasonParker", 155);
+        outputStream.outputStockList(player);
+        System.out.println(player.portfolio.getMoney());
+
     }
 }

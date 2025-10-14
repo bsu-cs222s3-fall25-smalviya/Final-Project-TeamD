@@ -1,7 +1,7 @@
 package papertrader.player;
+import papertrader.engine.MarketSystem;
 import papertrader.market.PlayerStock;
 
-import java.lang.reflect.Array;
 import java.util.HashMap;
 
 public class Player {
@@ -10,8 +10,13 @@ public class Player {
 
     public HashMap<String, PlayerStock> stockList = new HashMap<String, PlayerStock>();
 
-    public void buyStock(String stockName) {
+    public void buyStock(String stockName, double Amount) {
+        if (!MarketSystem.stockList.containsKey(stockName)) {
+            System.out.println("Stock Not Found");
+            return;
+        }
         stockList.computeIfAbsent(stockName, V -> new PlayerStock(stockName, "BUY"));
+        stockList.get(stockName).addTrade(Amount, 15);
     }
 
 
