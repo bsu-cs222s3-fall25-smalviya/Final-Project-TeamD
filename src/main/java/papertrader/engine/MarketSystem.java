@@ -60,4 +60,23 @@ public class MarketSystem {
         }
     }
 
+    public enum TradeType {
+        BUY,
+        SELL,
+        SHORT
+    }
+
+    public static class Trade {
+        public String name;
+        public double amount;
+        public TradeType type;
+
+        @Override
+        public String toString() {
+            return "Stock Name: " + name + "\n" +
+                    "Amount: " + amount + "\n" +
+                    "Type: " + type;
+        }
+    }
+
 }

@@ -2,26 +2,45 @@ package papertrader.player;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import papertrader.engine.MarketSystem;
-import papertrader.market.PlayerStock;
 
 import java.io.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Player {
 
-    public final Portfolio portfolio = new Portfolio();
+    private static final Player player = new Player();
 
-    public HashMap<String, PlayerStock> stockList = new HashMap<>();
+    public static Player get() {
+        return player;
+    }
 
-    public void buyStock(String stockName, double Amount) {
+    Player() {
+        Gson gson = new Gson();
+        try (FileReader reader = new FileReader(getSaveFile())) {
+            this.portfolio = gson.fromJson(reader, Portfolio.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public final Portfolio portfolio;
+
+    public void printStockList() {
+        for (MarketSystem.Trade trade : portfolio.trades) {
+            System.out.println("STOCKS OWNED " + trade.toString());
+        }
+    }
+
+    public void buyStock(String stockName, double amount) {
         if (!MarketSystem.get().stockList.containsKey(stockName)) {
             System.out.println("Stock Not Found");
             return;
         }
-        stockList.computeIfAbsent(stockName, V -> new PlayerStock(stockName, "BUY"));
-        stockList.get(stockName).addTrade(Amount, 15, "BUY");
-        portfolio.removeMoney((int) (MarketSystem.get().stockList.get(stockName).shares * Amount));
+
+        portfolio.makeTrade(stockName, amount, MarketSystem.TradeType.BUY);
     }
 
     public static File getSaveFile() {
@@ -35,41 +54,49 @@ public class Player {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         try (FileWriter writer = new FileWriter(playerData)) {
-            gson.toJson(this, writer);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static Player loadData() {
-        File playerData = getSaveFile();
-        if (!playerData.exists()) return new Player();
-
-        Gson gson = new Gson();
-        try (FileReader reader = new FileReader(playerData)) {
-            return gson.fromJson(reader, Player.class);
+            gson.toJson(this.portfolio, writer);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     public static class Portfolio {
-        private  int Money;
-        Portfolio() {
-            // Data should eventually load
-            // in this constructor
+        private double money;
+        private final ArrayList<MarketSystem.Trade> trades = new ArrayList<>();
 
-            this.Money = 100000;
+        Portfolio() {
+            // TODO: load in constructor
+            this.money = 100000;
         };
 
-        public int getMoney() {return this.Money;}
+        public double getMoney() { return this.money; }
 
         public void addMoney(int amount) {
-            this.Money += amount;
-        };
+            this.money += amount;
+        }
+
+        public ArrayList<MarketSystem.Trade> getTrades() {
+            return trades;
+        }
+
+        public void makeTrade(String stockName, double amount, MarketSystem.TradeType tradeType) {
+            if (this.money < amount) {
+                System.out.println("Not enough money!");
+                return;
+            }
+
+            this.money -= amount;
+
+            MarketSystem.Trade trade = new MarketSystem.Trade();
+            trade.name = stockName;
+            trade.amount = amount;
+            trade.type = tradeType;
+
+            trades.add(trade);
+        }
 
         public void removeMoney(int amount) {
-            this.Money -= amount;
+            this.money -= amount;
         }
     }
 }

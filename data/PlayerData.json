@@ -1,98 +1,25 @@
 {
-  "portfolio": {
-    "Money": 908377658
-  },
-  "stockList": {
-    "NVDA": {
+  "money": 99920.0,
+  "trades": [
+    {
       "name": "NVDA",
-      "trades": [
-        {
-          "amount": 15.0,
-          "price": 15.0
-        },
-        {
-          "amount": 25.0,
-          "price": 15.0
-        },
-        {
-          "amount": 15.0,
-          "price": 15.0
-        },
-        {
-          "amount": 25.0,
-          "price": 15.0
-        },
-        {
-          "amount": 15.0,
-          "price": 15.0,
-          "position": "BUY"
-        },
-        {
-          "amount": 25.0,
-          "price": 15.0,
-          "position": "BUY"
-        },
-        {
-          "amount": 15.0,
-          "price": 15.0,
-          "position": "BUY"
-        },
-        {
-          "amount": 25.0,
-          "price": 15.0,
-          "position": "BUY"
-        },
-        {
-          "amount": 15.0,
-          "price": 15.0,
-          "position": "BUY"
-        },
-        {
-          "amount": 25.0,
-          "price": 15.0,
-          "position": "BUY"
-        },
-        {
-          "amount": 15.0,
-          "price": 15.0,
-          "position": "BUY"
-        },
-        {
-          "amount": 25.0,
-          "price": 15.0,
-          "position": "BUY"
-        },
-        {
-          "amount": 15.0,
-          "price": 15.0,
-          "position": "BUY"
-        },
-        {
-          "amount": 25.0,
-          "price": 15.0,
-          "position": "BUY"
-        },
-        {
-          "amount": 15.0,
-          "price": 15.0,
-          "position": "BUY"
-        },
-        {
-          "amount": 25.0,
-          "price": 15.0,
-          "position": "BUY"
-        },
-        {
-          "amount": 15.0,
-          "price": 15.0,
-          "position": "BUY"
-        },
-        {
-          "amount": 25.0,
-          "price": 15.0,
-          "position": "BUY"
-        }
-      ]
+      "amount": 15.0,
+      "type": "BUY"
+    },
+    {
+      "name": "NVDA",
+      "amount": 25.0,
+      "type": "BUY"
+    },
+    {
+      "name": "NVDA",
+      "amount": 15.0,
+      "type": "BUY"
+    },
+    {
+      "name": "NVDA",
+      "amount": 25.0,
+      "type": "BUY"
     }
-  }
+  ]
 }

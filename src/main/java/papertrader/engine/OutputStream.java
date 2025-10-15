@@ -10,15 +10,6 @@ import java.util.Scanner;
 
 public class OutputStream {
 
-    public void ThrowErr(String message) {
-        System.out.println("ERROR : " + message);
-    }
-    public void outputStockList(Player player) {
-        for (String stock : player.stockList.keySet()) {
-            System.out.println("STOCKS OWNED " + stock);
-        }
-    }
-
     public void outputMenu() {
         System.out.println("0) Exit Program");
         System.out.println("1) View Stock");
@@ -50,7 +41,7 @@ public class OutputStream {
         scanner.nextLine();
     }
 
-    public void CLI(Player player) {
+    public void CLI() {
         Scanner scanner = new Scanner(System.in);
         boolean isRunning = true;
         while (isRunning) {
@@ -58,7 +49,7 @@ public class OutputStream {
             int Choice = scanner.nextInt();
             switch (Choice) {
                 case 0:
-                    player.SaveData();
+                    Player.get().SaveData();
                     isRunning = false;
                     break;
                 case 1:
