@@ -5,7 +5,7 @@ import java.util.List;
 
 public class PlayerStock {
     private final String name;
-    private final List<Trade> trades = new ArrayList<Trade>();
+    private final List<Trade> trades = new ArrayList<>();
 
     public PlayerStock(String name, String position) {
         this.name = name;

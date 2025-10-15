@@ -14,8 +14,7 @@ public class PaperTrader {
         Player player = Player.loadData();
         OutputStream outputStream = new OutputStream();
         System.out.println(player.portfolio.getMoney());
-        MarketSystem marketSystem = new MarketSystem();
-        System.out.println(MarketSystem.stockList);
+        System.out.println(MarketSystem.get().stockList);
         player.buyStock("NVDA", 15);
         player.buyStock("NVDA", 25);
         outputStream.outputStockList(player);

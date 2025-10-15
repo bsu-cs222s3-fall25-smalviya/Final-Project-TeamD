@@ -1,38 +1,63 @@
 package papertrader.engine;
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import papertrader.market.StockConfig;
-import papertrader.util.JsonToHashMap;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.Reader;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 
 public class MarketSystem {
 
+    private static final MarketSystem marketSystem = new MarketSystem();
 
-    public static HashMap<String, StockConfig> stockList = new HashMap<>();
+    public HashMap<String, Stock> stockList;
 
+    public static MarketSystem get() {
+        return marketSystem;
+    }
 
     public  MarketSystem() {
-        String jsonStruct = """
-                {
-                  "NVDA": {
-                    "sector": "TECHNOLOGY",
-                    "averageGrowth": 0.15154999999999944,
-                    "deviation": 2.5080674527412543,
-                    "shareValue": 188.32,
-                    "shares": 153482755
-                  }
-                }
-        """;
+        Gson gson = new Gson();
 
-        JsonElement element = JsonParser.parseString(jsonStruct);
-        JsonToHashMap parser = new JsonToHashMap(element);
-        stockList = parser.getHashMap();
+        Type mapType = new TypeToken<HashMap<String, Stock>>(){}.getType();
 
-        stockList.forEach((symbol, config) -> {
-            System.out.println(symbol + " => price: " + config.getPrice() +
-                    ", volatility: " + config.getVolatility());
+        try {
+            Reader reader = new FileReader(getStockData());
+            JsonElement element = JsonParser.parseReader(reader);
+            this.stockList = gson.fromJson(element, mapType);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        this.stockList.forEach((symbol, config) -> {
+            System.out.println(symbol + " => price: " + config.shareValue +
+                    ", #Shares: " + config.shares);
         });
+    }
+
+    private File getStockData() {
+        String workingDirectory = System.getProperty("user.dir");
+        return new File(workingDirectory + "\\data\\StockData.json");
+    }
+
+    public static class Stock {
+        public double averageGrowth;
+        public double deviation;
+        public double shareValue;
+        public double shares;
+
+        @Override
+        public String toString() {
+            return "Average Growth: " + averageGrowth + "\n" +
+                    "Deviation: " + deviation + "\n" +
+                    "Price: " + shareValue + "\n" +
+                    "Volume: " + shares;
+        }
     }
 
 }

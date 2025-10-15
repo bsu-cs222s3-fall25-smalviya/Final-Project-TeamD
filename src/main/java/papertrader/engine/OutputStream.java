@@ -13,8 +13,6 @@ public class OutputStream {
     public void ThrowErr(String message) {
         System.out.println("ERROR : " + message);
     }
-    private static final Scanner scanner = new Scanner(System.in);
-
     public void outputStockList(Player player) {
         for (String stock : player.stockList.keySet()) {
             System.out.println("STOCKS OWNED " + stock);
@@ -23,21 +21,50 @@ public class OutputStream {
 
     public void outputMenu() {
         System.out.println("0) Exit Program");
-        System.out.println("1) View Stock List");
+        System.out.println("1) View Stock");
         System.out.println("2) Buy Stock");
     }
 
+    public void viewStock() {
+        System.out.println();
+        System.out.print("Enter stock ticker: ");
+
+        Scanner scanner = new Scanner(System.in);
+
+        String ticker = scanner.nextLine();
+
+        if (!MarketSystem.get().stockList.containsKey(ticker)) {
+            System.out.println("Stock not found!");
+            return;
+        }
+
+        MarketSystem.Stock stock = MarketSystem.get().stockList.get(ticker);
+
+        String stockData = stock.toString();
+
+        System.out.println();
+        System.out.println(stockData);
+        System.out.println();
+
+        System.out.println("Press ENTER to continue.");
+        scanner.nextLine();
+    }
+
     public void CLI(Player player) {
-        while (true) {
+        Scanner scanner = new Scanner(System.in);
+        boolean isRunning = true;
+        while (isRunning) {
             this.outputMenu();
             int Choice = scanner.nextInt();
             switch (Choice) {
                 case 0:
                     player.SaveData();
-                    System.exit(0);
-                case 1: System.out.println("Enter Portfolio Name:");
+                    isRunning = false;
+                    break;
+                case 1:
+                    viewStock();
+                    break;
             }
-            System.out.println("Hi");
         }
     }
 }
