@@ -13,34 +13,21 @@ public class Player {
 
     private static final Player player = new Player();
 
+    public final Portfolio portfolio;
+
     public static Player get() {
         return player;
     }
 
     Player() {
         Gson gson = new Gson();
+        Portfolio tempPortfolio;
         try (FileReader reader = new FileReader(getSaveFile())) {
-            this.portfolio = gson.fromJson(reader, Portfolio.class);
+            tempPortfolio = gson.fromJson(reader, Portfolio.class);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            tempPortfolio = new Portfolio();
         }
-    }
-
-    public final Portfolio portfolio;
-
-    public void printStockList() {
-        for (MarketSystem.Trade trade : portfolio.trades) {
-            System.out.println("STOCKS OWNED " + trade.toString());
-        }
-    }
-
-    public void buyStock(String stockName, double amount) {
-        if (!MarketSystem.get().stockList.containsKey(stockName)) {
-            System.out.println("Stock Not Found");
-            return;
-        }
-
-        portfolio.makeTrade(stockName, amount, MarketSystem.TradeType.BUY);
+        this.portfolio = tempPortfolio;
     }
 
     public static File getSaveFile() {
@@ -63,6 +50,7 @@ public class Player {
     public static class Portfolio {
         private double money;
         private final ArrayList<MarketSystem.Trade> trades = new ArrayList<>();
+        private final HashMap<String, Double> ownedStocks = new HashMap<>();
 
         Portfolio() {
             // TODO: load in constructor
@@ -79,20 +67,85 @@ public class Player {
             return trades;
         }
 
-        public void makeTrade(String stockName, double amount, MarketSystem.TradeType tradeType) {
-            if (this.money < amount) {
+        public void buyStock(String stockName, double amountOfShares) {
+            if (!MarketSystem.get().stockList.containsKey(stockName)) {
+                System.out.println("Stock " + stockName + " does not exist!");
+                return;
+            }
+
+            MarketSystem.Stock stock = MarketSystem.get().stockList.get(stockName);
+
+            double moneyRequired = amountOfShares * stock.shareValue;
+
+            if (this.money < moneyRequired) {
                 System.out.println("Not enough money!");
                 return;
             }
 
-            this.money -= amount;
+            this.money -= moneyRequired;
 
-            MarketSystem.Trade trade = new MarketSystem.Trade();
-            trade.name = stockName;
-            trade.amount = amount;
-            trade.type = tradeType;
+            // Add to owned stocks
+            {
+                double value = amountOfShares;
 
-            trades.add(trade);
+                if (ownedStocks.containsKey(stockName)) {
+                    value += ownedStocks.get(stockName);
+                }
+
+                ownedStocks.put(stockName, value);
+            }
+
+            // Add trade
+            {
+                MarketSystem.Trade trade = new MarketSystem.Trade();
+                trade.name = stockName;
+                trade.shares = amountOfShares;
+                trade.type = MarketSystem.TradeType.BUY;
+
+                trades.add(trade);
+            }
+        }
+
+        public void sellStock(String stockName, double amountOfShares) {
+            if (!MarketSystem.get().stockList.containsKey(stockName)) {
+                System.out.println("Stock " + stockName + " does not exist!");
+                return;
+            }
+
+            if (!this.ownedStocks.containsKey(stockName)) {
+                System.out.println("You do not own any of " + stockName + "!");
+                return;
+            }
+
+            if (this.ownedStocks.get(stockName) < amountOfShares) {
+                System.out.println("You do not have enough of " + stockName + "!");
+                return;
+            }
+
+            MarketSystem.Stock stock = MarketSystem.get().stockList.get(stockName);
+
+            double moneyGained = amountOfShares * stock.shareValue;
+
+            this.money += moneyGained;
+
+            // Remove from owned stocks
+            {
+                ownedStocks.compute(stockName, (_, amount) -> amount - amountOfShares);
+            }
+
+            // Add trade
+            {
+                MarketSystem.Trade trade = new MarketSystem.Trade();
+                trade.name = stockName;
+                trade.shares = amountOfShares;
+                trade.type = MarketSystem.TradeType.SELL;
+
+                trades.add(trade);
+            }
+        }
+
+        public void shortStock(String stockName, double amountOfShares) {
+
         }
 
         public void removeMoney(int amount) {

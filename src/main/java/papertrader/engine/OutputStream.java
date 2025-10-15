@@ -14,6 +14,7 @@ public class OutputStream {
         System.out.println("0) Exit Program");
         System.out.println("1) View Stock");
         System.out.println("2) Buy Stock");
+        System.out.println("3) Sell Stock");
     }
 
     public void viewStock() {
@@ -41,12 +42,67 @@ public class OutputStream {
         scanner.nextLine();
     }
 
+    public void buyStock() {
+        System.out.println();
+        System.out.print("Enter stock ticker: ");
+
+        Scanner scanner = new Scanner(System.in);
+
+        String ticker = scanner.nextLine();
+
+        if (!MarketSystem.get().stockList.containsKey(ticker)) {
+            System.out.println("Stock not found!");
+            return;
+        }
+
+        System.out.println();
+        System.out.println();
+        System.out.print("Enter number of shares: ");
+
+        double amount = scanner.nextDouble();
+        scanner.nextLine();
+
+        Player.get().portfolio.buyStock(ticker, amount);
+
+        System.out.println();
+        System.out.println("Press ENTER to continue.");
+        scanner.nextLine();
+    }
+
+    public void sellStock() {
+        System.out.println();
+        System.out.print("Enter stock ticker: ");
+
+        Scanner scanner = new Scanner(System.in);
+
+        String ticker = scanner.nextLine();
+
+        if (!MarketSystem.get().stockList.containsKey(ticker)) {
+            System.out.println("Stock not found!");
+            return;
+        }
+
+        System.out.println();
+        System.out.println();
+        System.out.print("Enter number of shares: ");
+
+        double amount = scanner.nextDouble();
+        scanner.nextLine();
+
+        Player.get().portfolio.sellStock(ticker, amount);
+
+        System.out.println();
+        System.out.println("Press ENTER to continue.");
+        scanner.nextLine();
+    }
+
     public void CLI() {
         Scanner scanner = new Scanner(System.in);
         boolean isRunning = true;
         while (isRunning) {
             this.outputMenu();
             int Choice = scanner.nextInt();
+            scanner.nextLine();
             switch (Choice) {
                 case 0:
                     Player.get().SaveData();
@@ -54,6 +110,12 @@ public class OutputStream {
                     break;
                 case 1:
                     viewStock();
+                    break;
+                case 2:
+                    buyStock();
+                    break;
+                case 3:
+                    sellStock();
                     break;
             }
         }

@@ -15,7 +15,7 @@ public class MarketSystem {
 
     private static final MarketSystem marketSystem = new MarketSystem();
 
-    public HashMap<String, Stock> stockList;
+    public final HashMap<String, Stock> stockList;
 
     public static MarketSystem get() {
         return marketSystem;
@@ -30,14 +30,16 @@ public class MarketSystem {
             Reader reader = new FileReader(getStockData());
             JsonElement element = JsonParser.parseReader(reader);
             this.stockList = gson.fromJson(element, mapType);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
 
-        this.stockList.forEach((symbol, config) -> {
-            System.out.println(symbol + " => price: " + config.shareValue +
-                    ", #Shares: " + config.shares);
-        });
+            this.stockList.forEach((symbol, config) -> {
+                System.out.println(symbol + " => price: " + config.shareValue +
+                        ", #Shares: " + config.shares);
+            });
+        } catch (FileNotFoundException e) {
+            // If no data, create an empty stock list
+            System.out.println("No Stock data found!");
+            throw new RuntimeException();
+        }
     }
 
     private File getStockData() {
@@ -68,13 +70,13 @@ public class MarketSystem {
 
     public static class Trade {
         public String name;
-        public double amount;
+        public double shares;
         public TradeType type;
 
         @Override
         public String toString() {
             return "Stock Name: " + name + "\n" +
-                    "Amount: " + amount + "\n" +
+                    "Amount of Shares: " + shares + "\n" +
                     "Type: " + type;
         }
     }
