@@ -1,19 +1,20 @@
 {
-  "money": 45643.00192138399,
+  "money": 179499.0333457172,
   "trades": [
     {
-      "name": "AMD",
-      "shares": 200.0,
+      "name": "NVDA",
+      "shares": 500.0,
+      "shareValue": 182.29,
       "type": "BUY"
     },
     {
-      "name": "TGT",
-      "shares": 100.0,
-      "type": "BUY"
+      "name": "NVDA",
+      "shares": 500.0,
+      "shareValue": 341.28806669143444,
+      "type": "SELL"
     }
   ],
   "ownedStocks": {
-    "TGT": 100.0,
-    "AMD": 200.0
+    "NVDA": 0.0
   }
 }
