@@ -37,6 +37,13 @@ public class Player {
 
     public void SaveData() {
         File playerData = getSaveFile();
+        try {
+            if (playerData.createNewFile()) {
+                System.out.println("Created Player Data File.");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
