@@ -6,27 +6,27 @@ import java.util.function.Consumer;
 
 public class StateMachine {
 
-    private String State = "Stocks";
-    private final List<Consumer<String>> listeners = new ArrayList<>();
+    private UIState currentState = new Stocks();
+    private final List<Consumer<UIState>> listeners = new ArrayList<>();
 
-    public String GetState() {
-        return State;
+    public UIState getState() {
+        return currentState;
     }
 
-    public void ChangeState(String state) {
-        if (!State.equals(state)) {
-            State = state;
+    public void changeState(UIState newState) {
+        if (!currentState.getClass().equals(newState.getClass())) {
+            currentState = newState;
             notifyListeners();
         }
     }
 
-    public void addListener(Consumer<String> listener) {
+    public void addListener(Consumer<UIState> listener) {
         listeners.add(listener);
     }
 
     private void notifyListeners() {
-        for (Consumer<String> listener : listeners) {
-            listener.accept(State);
+        for (Consumer<UIState> listener : listeners) {
+            listener.accept(currentState);
         }
     }
 }

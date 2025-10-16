@@ -5,16 +5,24 @@ import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 
-public class Stocks {
+public class Stocks implements UIState {
+
+    @Override
+    public Pane render() {
+        System.out.println("Building Stocks");
+        VBox pane = new VBox();
+        TextField field = new TextField();
+        field.setPromptText("Enter stock Ticker");
+        pane.getChildren().add(field);
+        pane.getChildren().add(scrollPane);
+        return pane;
+    }
 
     private ScrollPane scrollPane =  buildScrollPane();
     private int scrollTotal = 0;
@@ -31,15 +39,5 @@ public class Stocks {
         });
 
         return  this.scrollPane;
-    }
-
-    public VBox buildStocks() {
-        System.out.println("Building Stocks");
-        VBox pane = new VBox();
-        TextField field = new TextField();
-        field.setPromptText("Enter stock Ticker");
-        pane.getChildren().add(field);
-        pane.getChildren().add(scrollPane);
-        return pane;
     }
 }

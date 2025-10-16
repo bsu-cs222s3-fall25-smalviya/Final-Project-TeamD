@@ -3,8 +3,6 @@ package papertrader.UI;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import papertrader.engine.MarketSystem;
 import papertrader.player.Player;
@@ -21,10 +19,9 @@ public class Window extends Application {
         stateMachine.addListener(this::onStateChanged);
 
         SideButtons buttons = new SideButtons(stateMachine);
-        VBox buttonBox = buttons.loadButtons();
-        root.setLeft(buttonBox);
+        root.setLeft(buttons.loadButtons());
 
-        onStateChanged(stateMachine.GetState());
+        onStateChanged(stateMachine.getState());
 
         stage.setScene(scene);
         stage.setTitle("Stock Market Game");
@@ -37,24 +34,7 @@ public class Window extends Application {
         MarketSystem.get().saveData();
     }
 
-    private void onStateChanged(String newState) {
-        root.setCenter(null);
-
-        switch (newState) {
-            case "Stocks":
-                root.setCenter(new Stocks().buildStocks());
-                break;
-            case "Portfolio":
-                GridPane portfolioPane = new GridPane();
-                root.setCenter(portfolioPane);
-                break;
-            case "History":
-                GridPane historyPane = new GridPane();
-                root.setCenter(historyPane);
-                break;
-            default:
-                root.setCenter(new GridPane());
-                break;
-        }
+    private void onStateChanged(UIState newState) {
+        root.setCenter(newState.render());
     }
 }
