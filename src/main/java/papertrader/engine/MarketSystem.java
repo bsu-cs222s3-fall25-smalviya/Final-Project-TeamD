@@ -30,11 +30,6 @@ public class MarketSystem {
             Reader reader = new FileReader(getStockData());
             JsonElement element = JsonParser.parseReader(reader);
             this.stockList = gson.fromJson(element, mapType);
-
-            this.stockList.forEach((symbol, config) -> {
-                System.out.println(symbol + " => price: " + config.shareValue +
-                        ", #Shares: " + config.shares);
-            });
         } catch (FileNotFoundException e) {
             // If no data, create an empty stock list
             System.out.println("No Stock data found!");
