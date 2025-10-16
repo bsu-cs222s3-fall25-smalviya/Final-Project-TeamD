@@ -6,6 +6,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import papertrader.engine.MarketSystem;
+import papertrader.player.Player;
 
 public class Window extends Application {
 
@@ -27,6 +29,12 @@ public class Window extends Application {
         stage.setScene(scene);
         stage.setTitle("Stock Market Game");
         stage.show();
+    }
+
+    @Override
+    public void stop() {
+        Player.get().saveData();
+        MarketSystem.get().saveData();
     }
 
     private void onStateChanged(String newState) {

@@ -1,20 +1,5 @@
 {
-  "money": 83714.36357167989,
-  "trades": [
-    {
-      "name": "TGT",
-      "shares": 500.0,
-      "shareValue": 88.86,
-      "type": "BUY"
-    },
-    {
-      "name": "TGT",
-      "shares": 500.0,
-      "shareValue": 56.288727143359786,
-      "type": "SELL"
-    }
-  ],
-  "ownedStocks": {
-    "TGT": 0.0
-  }
+  "money": 0.0,
+  "trades": [],
+  "ownedStocks": {}
 }
