@@ -20,7 +20,19 @@ public class PaperTrader {
             Map.entry("1) View Stock", PaperTrader::viewStock),
             Map.entry("2) Buy Stock", PaperTrader::buyStock),
             Map.entry("3) Sell Stock", PaperTrader::sellStock),
-            Map.entry("4) Next Day", PaperTrader::nextDay)
+            Map.entry("4) Next Day", PaperTrader::nextDay),
+            Map.entry("5) Next Day (100)", () -> {
+                for (int i = 0; i < 100; ++i) {
+                    PaperTrader.nextDay();
+                }
+                return 0;
+            }),
+            Map.entry("6) Next Day (1000)", () -> {
+                for (int i = 0; i < 1000; ++i) {
+                    PaperTrader.nextDay();
+                }
+                return 0;
+            })
     );
 
     public static void main(String[] args) {
@@ -166,14 +178,7 @@ public class PaperTrader {
     }
 
     public static int nextDay() {
-
-        Random random = new Random();
-
-        MarketSystem.get().stockList.forEach((string, stock) -> {
-            double value = stock.averageGrowth + random.nextGaussian() * stock.deviation;
-            stock.shareValue += value;
-        });
-
+        MarketSystem.get().incrementStocks();
         return 0;
     }
 }

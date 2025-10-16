@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.Random;
 
 public class MarketSystem {
 
@@ -46,6 +47,11 @@ public class MarketSystem {
             Reader reader = new FileReader(getDefaultStockData());
             JsonElement element = JsonParser.parseReader(reader);
             this.stockList = gson.fromJson(element, mapType);
+
+            this.stockList.forEach((string, stock) -> {
+                stock.averageGrowth += 0.025; // Skew average growth
+            });
+
         } catch (FileNotFoundException e) {
             // If no data, create an empty stock list
             System.out.println("No Stock data found!");
@@ -67,6 +73,22 @@ public class MarketSystem {
             System.out.println("No Stock data found!");
             throw new RuntimeException();
         }
+    }
+
+    public void incrementStocks() {
+        Random random = new Random();
+
+        MarketSystem.get().stockList.forEach((string, stock) -> {
+            double value = stock.averageGrowth + random.nextGaussian() * stock.deviation;
+            stock.shareValue += value;
+
+            if (random.nextFloat() < 0.025) { // Small chance to grow stock
+                stock.averageGrowth += 0.01;
+            }
+            if (random.nextFloat() < 0.025) { // Small chance to shrink stock
+                stock.averageGrowth -= 0.01;
+            }
+        });
     }
 
     private File getStockData() {
@@ -103,12 +125,14 @@ public class MarketSystem {
     public static class Trade {
         public String name;
         public double shares;
+        public double shareValue;
         public TradeType type;
 
         @Override
         public String toString() {
             return "Stock Name: " + name + "\n" +
                     "Amount of Shares: " + shares + "\n" +
+                    "Share Value: " + shareValue + "\n" +
                     "Type: " + type;
         }
     }

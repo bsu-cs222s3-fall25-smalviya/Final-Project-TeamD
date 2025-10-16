@@ -104,6 +104,7 @@ public class Player {
                 MarketSystem.Trade trade = new MarketSystem.Trade();
                 trade.name = stockName;
                 trade.shares = amountOfShares;
+                trade.shareValue = stock.shareValue;
                 trade.type = MarketSystem.TradeType.BUY;
 
                 trades.add(trade);
@@ -142,6 +143,7 @@ public class Player {
                 MarketSystem.Trade trade = new MarketSystem.Trade();
                 trade.name = stockName;
                 trade.shares = amountOfShares;
+                trade.shareValue = stock.shareValue;
                 trade.type = MarketSystem.TradeType.SELL;
 
                 trades.add(trade);

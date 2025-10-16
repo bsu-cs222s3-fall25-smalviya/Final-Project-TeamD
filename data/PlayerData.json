@@ -1,14 +1,16 @@
 {
-  "money": 99597.51225877895,
+  "money": 179499.0333457172,
   "trades": [
     {
       "name": "NVDA",
-      "shares": 100.0,
+      "shares": 500.0,
+      "shareValue": 182.29,
       "type": "BUY"
     },
     {
       "name": "NVDA",
-      "shares": 100.0,
+      "shares": 500.0,
+      "shareValue": 341.28806669143444,
       "type": "SELL"
     }
   ],
