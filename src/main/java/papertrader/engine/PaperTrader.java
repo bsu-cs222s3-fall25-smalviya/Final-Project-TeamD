@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 
 public class PaperTrader {
     private static final List<Map.Entry<String, Supplier<Integer>>> ACTIONS = List.of(
-            Map.entry("0) Exit Program", () -> 1),
+            Map.entry("0) Exit Program", PaperTrader::exit),
             Map.entry("1) View Stock", PaperTrader::viewStock),
             Map.entry("2) Buy Stock", PaperTrader::buyStock),
             Map.entry("3) Sell Stock", PaperTrader::sellStock)
@@ -32,6 +32,11 @@ public class PaperTrader {
                 isRunning = false;
             }
         }
+    }
+
+    public static int exit() {
+        Player.get().saveData();
+        return 1;
     }
 
     public static int viewStock() {

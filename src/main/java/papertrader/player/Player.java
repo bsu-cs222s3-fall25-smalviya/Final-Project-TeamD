@@ -35,7 +35,7 @@ public class Player {
         return new File(workingDirectory + "\\data\\PlayerData.json");
     }
 
-    public void SaveData() {
+    public void saveData() {
         File playerData = getSaveFile();
         try {
             if (playerData.createNewFile()) {
