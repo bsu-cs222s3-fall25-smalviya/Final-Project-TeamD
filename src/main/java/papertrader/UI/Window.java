@@ -2,6 +2,7 @@ package papertrader.UI;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -15,9 +16,15 @@ public class Window extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        VBox root = new VBox();
+
+
+        VBox root = new VBox(10);
+        root.setStyle("-fx-padding: 10;");
 
         Scene scene = new Scene(root, 600, 400);
+        SideButtons buttons = new SideButtons();
+        GridPane buttonPane = buttons.loadButtons();
+        root.getChildren().add(buttonPane);
         stage.setScene(scene);
         stage.setTitle("Stock Market Game");
         stage.show();
