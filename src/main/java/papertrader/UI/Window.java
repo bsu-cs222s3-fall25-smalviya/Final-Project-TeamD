@@ -16,15 +16,12 @@ public class Window extends Application {
     public void start(Stage stage) {
         Scene scene = new Scene(root, 800, 600);
 
-        // Listen for state changes
         stateMachine.addListener(this::onStateChanged);
 
-        // Add persistent sidebar
         SideButtons buttons = new SideButtons(stateMachine);
         VBox buttonBox = buttons.loadButtons();
-        root.setLeft(buttonBox); // ✅ always visible on left
+        root.setLeft(buttonBox);
 
-        // Load default state
         onStateChanged(stateMachine.GetState());
 
         stage.setScene(scene);
@@ -34,6 +31,7 @@ public class Window extends Application {
 
     private void onStateChanged(String newState) {
         root.setCenter(null);
+        root.setLeft(null);
 
         switch (newState) {
             case "Stocks":
