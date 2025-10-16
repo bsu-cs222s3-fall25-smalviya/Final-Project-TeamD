@@ -31,7 +31,6 @@ public class Window extends Application {
 
     private void onStateChanged(String newState) {
         root.setCenter(null);
-        root.setLeft(null);
 
         switch (newState) {
             case "Stocks":

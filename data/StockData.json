@@ -1,524 +1,524 @@
 {
   "GOOGL": {
-    "averageGrowth": 0.14778087649402377,
+    "averageGrowth": -0.07221912350597623,
     "deviation": 2.070011566213052,
-    "shareValue": 414.2843490995695,
+    "shareValue": 459.4951816709646,
     "shares": 1.3051224E7
   },
   "SONY": {
-    "averageGrowth": 0.1249760956175299,
+    "averageGrowth": 0.01497609561752992,
     "deviation": 0.2071446927424626,
-    "shareValue": 78.14620617740796,
+    "shareValue": 40.83442615596414,
     "shares": 2400678.0
   },
   "CARR": {
-    "averageGrowth": 0.15626294820717151,
+    "averageGrowth": -0.013737051792828506,
     "deviation": 0.8503366679066161,
-    "shareValue": 159.7926362467928,
+    "shareValue": 131.10186398989444,
     "shares": 2873467.0
   },
   "AAPL": {
-    "averageGrowth": 0.22190143426294837,
+    "averageGrowth": 0.2719014342629484,
     "deviation": 2.5827499597945325,
-    "shareValue": 448.344558168128,
+    "shareValue": 856.4324925824592,
     "shares": 1.5731917E7
   },
   "JNJ": {
-    "averageGrowth": 0.13234661354581678,
+    "averageGrowth": 0.2723466135458169,
     "deviation": 1.4987436077499725,
-    "shareValue": 229.8145038129806,
+    "shareValue": 823.6235635132256,
     "shares": 8018352.0
   },
   "BIDU": {
-    "averageGrowth": 0.07596015936254982,
+    "averageGrowth": 0.14596015936254983,
     "deviation": 3.787046552423339,
-    "shareValue": 158.35903320823533,
+    "shareValue": 473.84702559959516,
     "shares": 5281307.0
   },
   "RIVN": {
-    "averageGrowth": -0.097282538071066,
+    "averageGrowth": 0.032717461928933995,
     "deviation": 1.731490097753648,
-    "shareValue": -28.198548684254757,
+    "shareValue": 253.24655992720014,
     "shares": 1.5291133E7
   },
   "SPYG": {
-    "averageGrowth": 0.09323505976095621,
+    "averageGrowth": 0.1132350597609562,
     "deviation": 0.7448615559790921,
-    "shareValue": 81.94835438447518,
+    "shareValue": 344.5292179038438,
     "shares": 1463078.0
   },
   "PFE": {
-    "averageGrowth": -0.021960159362549823,
+    "averageGrowth": 0.04803984063745019,
     "deviation": 0.5450337377678137,
-    "shareValue": 21.678765525418484,
+    "shareValue": 225.8662895549573,
     "shares": 2.5108037E7
   },
   "COIN": {
-    "averageGrowth": -0.25988683745583036,
+    "averageGrowth": -0.2898868374558304,
     "deviation": 8.248902205837979,
-    "shareValue": 293.6293566567686,
+    "shareValue": 330.36239590230747,
     "shares": 6374179.0
   },
   "TSLA": {
-    "averageGrowth": -0.05147171314741074,
+    "averageGrowth": -0.18147171314741073,
     "deviation": 8.363240735635191,
-    "shareValue": 519.3380188397667,
+    "shareValue": -631.1007833261704,
     "shares": 5.1972442E7
   },
   "SBUX": {
-    "averageGrowth": -0.056364940239043614,
+    "averageGrowth": 0.2836350597609565,
     "deviation": 1.3631016222408627,
-    "shareValue": 43.66398299071986,
+    "shareValue": 511.9175235036578,
     "shares": 3822483.0
   },
   "AMD": {
-    "averageGrowth": -0.2102321115537848,
+    "averageGrowth": -0.07023211155378475,
     "deviation": 3.2274643369560914,
-    "shareValue": 237.18786995262326,
+    "shareValue": -68.53028677990348,
     "shares": 5.3099746E7
   },
   "TLRY": {
-    "averageGrowth": -0.08665035856573705,
+    "averageGrowth": -0.2066503585657371,
     "deviation": 0.8347059923918908,
-    "shareValue": -93.11045554892468,
+    "shareValue": -193.85243726087515,
     "shares": 5.2455949E7
   },
   "RBLX": {
-    "averageGrowth": -0.007474826989619253,
+    "averageGrowth": -0.11747482698961924,
     "deviation": 2.271702966116122,
-    "shareValue": 197.7779834795715,
+    "shareValue": 366.83903921572573,
     "shares": 5804525.0
   },
   "BILI": {
-    "averageGrowth": -0.014681673306772969,
+    "averageGrowth": 0.025318326693227033,
     "deviation": 1.902470150202924,
-    "shareValue": 58.30860390707248,
+    "shareValue": 109.25099170640891,
     "shares": 3195031.0
   },
   "SPY": {
-    "averageGrowth": 0.04653784860557868,
+    "averageGrowth": 0.2665378486055788,
     "deviation": 4.162304136253264,
-    "shareValue": 819.4389039603441,
+    "shareValue": 1243.5659740861745,
     "shares": 5.338323E7
   },
   "DOCU": {
-    "averageGrowth": -0.03552589641434248,
+    "averageGrowth": -0.15552589641434245,
     "deviation": 3.6783696861699697,
-    "shareValue": -114.05888867749366,
+    "shareValue": -600.9522986776512,
     "shares": 1123885.0
   },
   "BABA": {
-    "averageGrowth": -0.08376494023904392,
+    "averageGrowth": -0.023764940239043922,
     "deviation": 2.5919364057015524,
-    "shareValue": 65.88258695557673,
+    "shareValue": -226.4951323532497,
     "shares": 1.42343E7
   },
   "META": {
-    "averageGrowth": 0.11319920318725091,
+    "averageGrowth": -0.14680079681274907,
     "deviation": 7.100404765422049,
-    "shareValue": 619.7902528526876,
+    "shareValue": 796.9501744271464,
     "shares": 5113497.0
   },
   "HCA": {
-    "averageGrowth": 0.25089243027888464,
+    "averageGrowth": 0.5108924302788849,
     "deviation": 4.14571556792094,
-    "shareValue": 788.4697818027186,
+    "shareValue": 1630.9012126154344,
     "shares": 607121.0
   },
   "NKE": {
-    "averageGrowth": -0.012952191235059427,
+    "averageGrowth": -0.0029521912350594266,
     "deviation": 1.5804299775848925,
-    "shareValue": 104.7359786661797,
+    "shareValue": -25.905746072217077,
     "shares": 4752917.0
   },
   "ABBV": {
-    "averageGrowth": 0.10953386454183286,
+    "averageGrowth": 0.19953386454183292,
     "deviation": 1.999269568272905,
-    "shareValue": 490.1978051301666,
+    "shareValue": 718.5618985196093,
     "shares": 2658840.0
   },
   "NOK": {
-    "averageGrowth": -0.08597609561752989,
+    "averageGrowth": 0.06402390438247015,
     "deviation": 0.07852083380180758,
-    "shareValue": -50.80312801809174,
+    "shareValue": 309.65702500363034,
     "shares": 3.1443245E7
   },
   "SIRI": {
-    "averageGrowth": -0.04705450199203201,
+    "averageGrowth": -0.087054501992032,
     "deviation": 1.2171282408877815,
-    "shareValue": -31.190562945933262,
+    "shareValue": -213.64221298898343,
     "shares": 1130143.0
   },
   "AAL": {
-    "averageGrowth": 0.037358804780876505,
+    "averageGrowth": -0.05264119521912352,
     "deviation": 0.4003509810355174,
-    "shareValue": 62.911237345716486,
+    "shareValue": -97.81406773106842,
     "shares": 4.3632098E7
   },
   "TSM": {
-    "averageGrowth": -0.08322310756972136,
+    "averageGrowth": -0.0032231075697213597,
     "deviation": 2.50261073840738,
-    "shareValue": 266.2715528375243,
+    "shareValue": 64.70861588729588,
     "shares": 1.1543126E7
   },
   "ET": {
-    "averageGrowth": -0.04466932270916335,
+    "averageGrowth": 0.14533067729083665,
     "deviation": 0.19180187272707536,
-    "shareValue": -0.4887847510763062,
+    "shareValue": 368.44694662507374,
     "shares": 7504205.0
   },
   "VWO": {
-    "averageGrowth": 0.04804788844621517,
+    "averageGrowth": 0.02804788844621519,
     "deviation": 0.29915735780123665,
-    "shareValue": 79.17442812521992,
+    "shareValue": 174.3466579877901,
     "shares": 6995037.0
   },
   "ZM": {
-    "averageGrowth": -0.31949195219123583,
+    "averageGrowth": -0.07949195219123568,
     "deviation": 5.709197737341971,
-    "shareValue": -352.3791656776362,
+    "shareValue": -353.6858011331357,
     "shares": 949691.0
   },
   "XOM": {
-    "averageGrowth": 0.04041832669322707,
+    "averageGrowth": -0.249581673306773,
     "deviation": 1.3110547304661528,
-    "shareValue": 196.93448568653827,
+    "shareValue": -178.30714100564316,
     "shares": 4133507.0
   },
   "ATVI": {
-    "averageGrowth": 0.048091567852437456,
+    "averageGrowth": -0.07190843214756255,
     "deviation": 0.9663991082489095,
-    "shareValue": 121.11112230364613,
+    "shareValue": -196.6135978061414,
     "shares": 0.0
   },
   "ADBE": {
-    "averageGrowth": -0.04166430278884461,
+    "averageGrowth": -0.07166430278884461,
     "deviation": 7.828567189012123,
-    "shareValue": 104.9707224478409,
+    "shareValue": 379.10130648548204,
     "shares": 1632215.0
   },
   "SOFI": {
-    "averageGrowth": 0.06505416666666666,
+    "averageGrowth": -0.12494583333333333,
     "deviation": 0.5130687263799801,
-    "shareValue": 78.9926541609538,
+    "shareValue": -289.4997317683425,
     "shares": 4.2138261E7
   },
   "RKT": {
-    "averageGrowth": -0.035195219123506004,
+    "averageGrowth": -0.075195219123506,
     "deviation": 0.6331573177190067,
-    "shareValue": 35.518050874493845,
+    "shareValue": 47.890653383588784,
     "shares": 1.7561359E7
   },
   "MRNA": {
-    "averageGrowth": 0.15487752988047793,
+    "averageGrowth": 0.14487752988047792,
     "deviation": 6.603840140057249,
-    "shareValue": 47.41948338154792,
+    "shareValue": 667.0235075226984,
     "shares": 3615743.0
   },
   "HOOD": {
-    "averageGrowth": -0.10543137996219284,
+    "averageGrowth": 0.12456862003780712,
     "deviation": 1.583218623611253,
-    "shareValue": 139.284196591788,
+    "shareValue": 404.4751303729979,
     "shares": 1.922356E7
   },
   "VIAC": {
-    "averageGrowth": 0.04947130177514772,
+    "averageGrowth": 0.019471301775147713,
     "deviation": 1.8335889416705842,
-    "shareValue": 79.32535129521074,
+    "shareValue": 120.14043412629991,
     "shares": 8.7606196E7
   },
   "BA": {
-    "averageGrowth": 0.13882653386454172,
+    "averageGrowth": 0.2288265338645418,
     "deviation": 3.768513600468156,
-    "shareValue": 165.75450351284476,
+    "shareValue": 693.5186758154804,
     "shares": 3359284.0
   },
   "WMT": {
-    "averageGrowth": 0.018019920318725104,
+    "averageGrowth": 0.028019920318725106,
     "deviation": 0.681670700431146,
-    "shareValue": 205.2512686887062,
+    "shareValue": 327.17238481630187,
     "shares": 1.6006463E7
   },
   "TGT": {
-    "averageGrowth": 0.039725099601593546,
+    "averageGrowth": -0.09027490039840645,
     "deviation": 2.605028615538874,
-    "shareValue": 70.10276368545202,
+    "shareValue": 56.288727143359786,
     "shares": 3319089.0
   },
   "UAL": {
-    "averageGrowth": -0.00810095617529879,
+    "averageGrowth": 0.05189904382470122,
     "deviation": 1.4766211375810907,
-    "shareValue": 83.25977064140764,
+    "shareValue": 144.68371784446165,
     "shares": 3476672.0
   },
   "ROKU": {
-    "averageGrowth": -0.18865545816733048,
+    "averageGrowth": -0.2086554581673305,
     "deviation": 6.024392851450316,
-    "shareValue": 82.06084102391073,
+    "shareValue": -448.1437791196216,
     "shares": 901170.0
   },
   "CSCO": {
-    "averageGrowth": 0.07033466135458182,
+    "averageGrowth": 0.18033466135458184,
     "deviation": 0.5979807385685505,
-    "shareValue": 164.73482543378708,
+    "shareValue": 455.8697674621767,
     "shares": 6979518.0
   },
   "C": {
-    "averageGrowth": 0.007537848605577812,
+    "averageGrowth": 0.04753784860557782,
     "deviation": 0.9208028897190178,
-    "shareValue": 139.04763661244093,
+    "shareValue": 154.07264100363545,
     "shares": 1.859563E7
   },
   "VZ": {
-    "averageGrowth": -0.08162151394422311,
+    "averageGrowth": 0.1683784860557769,
     "deviation": 0.4720286600954359,
-    "shareValue": -17.05053956456281,
+    "shareValue": 440.8703000449471,
     "shares": 1.2964365E7
   },
   "CVX": {
-    "averageGrowth": 0.027756972111554215,
+    "averageGrowth": -0.1622430278884458,
     "deviation": 1.9089313797647596,
-    "shareValue": 99.27803847378247,
+    "shareValue": 76.29700776094872,
     "shares": 2992074.0
   },
   "JPM": {
-    "averageGrowth": 0.14331872509960156,
+    "averageGrowth": 0.07331872509960158,
     "deviation": 2.2115006086906286,
-    "shareValue": 326.5744557911747,
+    "shareValue": 468.3362231800971,
     "shares": 1.0376335E7
   },
   "F": {
-    "averageGrowth": 0.06751155378486054,
+    "averageGrowth": -0.052488446215139484,
     "deviation": 0.268808478425963,
-    "shareValue": 75.01480843430252,
+    "shareValue": -51.524070109936815,
     "shares": 6.3927085E7
   },
   "MRO": {
-    "averageGrowth": 0.0423959341723136,
+    "averageGrowth": -0.25760406582768647,
     "deviation": 0.46755309896452346,
-    "shareValue": 53.04563985619032,
+    "shareValue": -251.76118784170598,
     "shares": 3.6027438E7
   },
   "UNH": {
-    "averageGrowth": 0.052054422310757936,
+    "averageGrowth": 0.09205442231075794,
     "deviation": 6.181856494831271,
-    "shareValue": 274.8403387073843,
+    "shareValue": 903.1057699259237,
     "shares": 3595118.0
   },
   "MSFT": {
-    "averageGrowth": 0.2189442231075702,
+    "averageGrowth": 0.2589442231075702,
     "deviation": 4.342865558114033,
-    "shareValue": 570.3612803086702,
+    "shareValue": 1213.4368390177037,
     "shares": 6964757.0
   },
   "SHOP": {
-    "averageGrowth": -0.035553386454183086,
+    "averageGrowth": -0.3555533864541833,
     "deviation": 2.7619641190873514,
-    "shareValue": 112.46723702626724,
+    "shareValue": -290.91401510799807,
     "shares": 5716051.0
   },
   "COST": {
-    "averageGrowth": 0.30999171314740975,
+    "averageGrowth": 0.4599917131474099,
     "deviation": 8.088209289602334,
-    "shareValue": 1293.9977879133262,
+    "shareValue": 2015.7112493973245,
     "shares": 880522.0
   },
   "T": {
-    "averageGrowth": 0.007554342629482057,
+    "averageGrowth": 0.03755434262948206,
     "deviation": 0.25632124707145354,
-    "shareValue": 38.45026453265953,
+    "shareValue": 100.92792047981891,
     "shares": 2.0646048E7
   },
   "WFC": {
-    "averageGrowth": -0.06642629482071706,
+    "averageGrowth": -0.05642629482071706,
     "deviation": 0.8039932939266984,
-    "shareValue": 90.00126963840306,
+    "shareValue": -35.06319593872192,
     "shares": 2.2396328E7
   },
   "V": {
-    "averageGrowth": 0.12586055776892516,
+    "averageGrowth": 0.26586055776892525,
     "deviation": 3.0211421114947075,
-    "shareValue": 549.7547514127955,
+    "shareValue": 1025.2746399747357,
     "shares": 2155871.0
   },
   "WBA": {
-    "averageGrowth": 0.11546606704824207,
+    "averageGrowth": 0.04546606704824209,
     "deviation": 0.5786702228140777,
-    "shareValue": 48.415367730816904,
+    "shareValue": 51.21723299997634,
     "shares": 0.0
   },
   "FDX": {
-    "averageGrowth": 0.1582988047808768,
+    "averageGrowth": 0.018298804780876782,
     "deviation": 3.5382888860850494,
-    "shareValue": 378.7079796185536,
+    "shareValue": 135.97732318168,
     "shares": 510675.0
   },
   "PINS": {
-    "averageGrowth": 0.02070756972111558,
+    "averageGrowth": -0.05929243027888443,
     "deviation": 1.133487120609722,
-    "shareValue": 86.57470960989734,
+    "shareValue": -308.84592073948005,
     "shares": 1.0633536E7
   },
   "UBER": {
-    "averageGrowth": -0.020034820717131405,
+    "averageGrowth": -0.1700348207171314,
     "deviation": 1.2514787549321338,
-    "shareValue": 140.6323627043386,
+    "shareValue": -147.42705331161102,
     "shares": 5640662.0
   },
   "GE": {
-    "averageGrowth": 0.26550900398406396,
+    "averageGrowth": 0.25550900398406395,
     "deviation": 2.0464337317773995,
-    "shareValue": 386.01469977407316,
+    "shareValue": 1109.5643408375827,
     "shares": 1297051.0
   },
   "SQ": {
-    "averageGrowth": -0.09310559566787055,
+    "averageGrowth": -0.28310559566787064,
     "deviation": 4.083839492511974,
-    "shareValue": 54.41442527081295,
+    "shareValue": -744.6120858057271,
     "shares": 8942303.0
   },
   "PLTR": {
-    "averageGrowth": 0.11213721115537831,
+    "averageGrowth": -0.16786278884462172,
     "deviation": 1.8364876197534659,
-    "shareValue": 245.23072345469762,
+    "shareValue": -111.54201062892186,
     "shares": 3.5994659E7
   },
   "NFLX": {
-    "averageGrowth": 0.18066573705179145,
+    "averageGrowth": 0.15066573705179143,
     "deviation": 10.822737392288678,
-    "shareValue": 1782.29376620218,
+    "shareValue": 1462.8905604191343,
     "shares": 1262088.0
   },
   "PYPL": {
-    "averageGrowth": -0.08651689243027885,
+    "averageGrowth": -0.016516892430278853,
     "deviation": 2.7454151213598164,
-    "shareValue": -140.20513938906237,
+    "shareValue": -264.49827202083515,
     "shares": 8168988.0
   },
   "NVDA": {
-    "averageGrowth": 0.13386852589641438,
+    "averageGrowth": 0.23386852589641446,
     "deviation": 1.9307086809260072,
-    "shareValue": 341.28806669143444,
+    "shareValue": 549.7548716726204,
     "shares": 1.34515237E8
   },
   "BAC": {
-    "averageGrowth": -0.016896414342629416,
+    "averageGrowth": 0.04310358565737059,
     "deviation": 0.5143293986404702,
-    "shareValue": 42.345001128153875,
+    "shareValue": 121.3984056874436,
     "shares": 2.2395265E7
   },
   "KO": {
-    "averageGrowth": -0.01575617529880477,
+    "averageGrowth": -0.015756175298804777,
     "deviation": 0.5511196885137042,
-    "shareValue": 53.68712489957491,
+    "shareValue": 151.79004520235443,
     "shares": 7757196.0
   },
   "GM": {
-    "averageGrowth": 0.01091235059760943,
+    "averageGrowth": 0.12091235059760942,
     "deviation": 0.8516774777943368,
-    "shareValue": 71.42480854420545,
+    "shareValue": 331.9851252940042,
     "shares": 3638996.0
   },
   "TWTR": {
-    "averageGrowth": 0.0027062378167639588,
+    "averageGrowth": -0.01729376218323605,
     "deviation": 1.3120331210607106,
-    "shareValue": 136.99206790169634,
+    "shareValue": 237.263557199888,
     "shares": 1.40831508E8
   },
   "SNAP": {
-    "averageGrowth": -0.025102310756972154,
+    "averageGrowth": -0.08510231075697215,
     "deviation": 1.078166762531349,
-    "shareValue": 17.857568936982215,
+    "shareValue": 77.86771046339422,
     "shares": 2.7336931E7
   },
   "CPRX": {
-    "averageGrowth": -0.0527367330677291,
+    "averageGrowth": 0.03726326693227091,
     "deviation": 0.39081236002242736,
-    "shareValue": 37.31338555605631,
+    "shareValue": 204.43963122049553,
     "shares": 451935.0
   },
   "GS": {
-    "averageGrowth": 0.3496693227091632,
+    "averageGrowth": 0.5196693227091633,
     "deviation": 6.097188800189352,
-    "shareValue": 923.3126772377303,
+    "shareValue": 1916.790548512973,
     "shares": 3370937.0
   },
   "CCL": {
-    "averageGrowth": 0.01823633466135454,
+    "averageGrowth": 0.08823633466135454,
     "deviation": 0.532523682508844,
-    "shareValue": 99.47578593907406,
+    "shareValue": 61.53116576291235,
     "shares": 1.0247851E7
   },
   "DAL": {
     "averageGrowth": 0.07080876494023915,
     "deviation": 0.8939695949728519,
-    "shareValue": 109.84200826666027,
+    "shareValue": 94.82924427405256,
     "shares": 6367022.0
   },
   "DIS": {
-    "averageGrowth": 0.13099203187250996,
+    "averageGrowth": 0.05099203187250999,
     "deviation": 1.7466070329145436,
-    "shareValue": 51.90574683175501,
+    "shareValue": 486.7913963167689,
     "shares": 3551873.0
   },
   "LCID": {
-    "averageGrowth": -0.08093227091633437,
+    "averageGrowth": 0.02906772908366563,
     "deviation": 10.2009804176593,
-    "shareValue": -146.367001069569,
+    "shareValue": -431.0194072710023,
     "shares": 3623492.0
   },
   "LMT": {
-    "averageGrowth": -0.1348326693227095,
+    "averageGrowth": 0.13516733067729048,
     "deviation": 5.01990984703897,
-    "shareValue": 231.42982115352473,
+    "shareValue": 395.5536030157251,
     "shares": 617657.0
   },
   "MGM": {
-    "averageGrowth": 0.07857752988047796,
+    "averageGrowth": 0.15857752988047796,
     "deviation": 0.8136335322599506,
-    "shareValue": 37.00210150059664,
+    "shareValue": 385.78827641087923,
     "shares": 2454403.0
   },
   "ETSY": {
-    "averageGrowth": -0.010094023904382842,
+    "averageGrowth": -0.16009402390438285,
     "deviation": 4.248725706994865,
-    "shareValue": 131.58810771085894,
+    "shareValue": -111.49631171259406,
     "shares": 1364115.0
   },
   "NIO": {
-    "averageGrowth": -0.03638629482071712,
+    "averageGrowth": 0.0536137051792829,
     "deviation": 0.9892784709106871,
-    "shareValue": -2.2344725568748998,
+    "shareValue": 110.00777518480804,
     "shares": 3.4588407E7
   },
   "INTC": {
-    "averageGrowth": 0.08966000000000002,
+    "averageGrowth": -0.04033999999999998,
     "deviation": 0.7402099184394756,
-    "shareValue": 139.03897262591633,
+    "shareValue": 23.037613586543287,
     "shares": 7.9987534E7
   },
   "RIOT": {
-    "averageGrowth": -0.06062948207171313,
+    "averageGrowth": 0.19937051792828692,
     "deviation": 1.3101364707082284,
-    "shareValue": -35.3640281031313,
+    "shareValue": 246.3779385503679,
     "shares": 1.3463092E7
   },
   "PEP": {
-    "averageGrowth": -0.05637665338645418,
+    "averageGrowth": -0.036376653386454176,
     "deviation": 1.6380020963375872,
-    "shareValue": 103.52764084310112,
+    "shareValue": 216.87232647761698,
     "shares": 4003326.0
   },
   "FUBO": {
-    "averageGrowth": 0.05864175298804776,
+    "averageGrowth": 0.12864175298804773,
     "deviation": 0.8705368600163499,
-    "shareValue": 46.8356742865294,
+    "shareValue": -22.205280565841665,
     "shares": 7420933.0
   },
   "AMZN": {
-    "averageGrowth": -0.10993227091633472,
+    "averageGrowth": -0.2099322709163348,
     "deviation": 2.6322071267213336,
-    "shareValue": 236.4049101738166,
+    "shareValue": -183.7267448491727,
     "shares": 2.8361483E7
   }
 }

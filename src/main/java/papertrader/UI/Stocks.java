@@ -1,4 +1,5 @@
 package papertrader.UI;
+import com.sun.javafx.scene.control.InputField;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
@@ -15,9 +16,12 @@ import javafx.scene.control.Button;
 public class Stocks {
 
 
-    public GridPane buildStocks() {
+    public VBox buildStocks() {
         System.out.println("Building Stocks");
-        GridPane pane = new GridPane();
+        VBox pane = new VBox();
+        TextField field = new TextField();
+        field.setPromptText("Enter stock Ticker");
+        pane.getChildren().add(field);
         return pane;
     }
 }

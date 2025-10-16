@@ -1,20 +1,20 @@
 {
-  "money": 179499.0333457172,
+  "money": 83714.36357167989,
   "trades": [
     {
-      "name": "NVDA",
+      "name": "TGT",
       "shares": 500.0,
-      "shareValue": 182.29,
+      "shareValue": 88.86,
       "type": "BUY"
     },
     {
-      "name": "NVDA",
+      "name": "TGT",
       "shares": 500.0,
-      "shareValue": 341.28806669143444,
+      "shareValue": 56.288727143359786,
       "type": "SELL"
     }
   ],
   "ownedStocks": {
-    "NVDA": 0.0
+    "TGT": 0.0
   }
 }
