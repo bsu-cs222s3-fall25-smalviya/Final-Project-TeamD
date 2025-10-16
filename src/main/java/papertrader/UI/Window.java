@@ -23,8 +23,8 @@ public class Window extends Application {
 
         Scene scene = new Scene(root, 600, 400);
         SideButtons buttons = new SideButtons();
-        GridPane buttonPane = buttons.loadButtons();
-        root.getChildren().add(buttonPane);
+        VBox buttonBox = buttons.loadButtons();
+        root.getChildren().add(buttonBox);
         stage.setScene(scene);
         stage.setTitle("Stock Market Game");
         stage.show();
