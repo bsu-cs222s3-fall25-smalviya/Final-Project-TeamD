@@ -54,6 +54,8 @@ public class Player {
 
     public void loadDefaultData() {
         this.portfolio.money = 100000;
+        this.portfolio.trades.clear();
+        this.portfolio.ownedStocks.clear();
     }
 
     public static class Portfolio {
