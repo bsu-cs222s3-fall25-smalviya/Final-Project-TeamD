@@ -13,21 +13,10 @@ public class Player {
 
     private static final Player player = new Player();
 
-    public final Portfolio portfolio;
+    public Portfolio portfolio = new Portfolio();
 
     public static Player get() {
         return player;
-    }
-
-    Player() {
-        Gson gson = new Gson();
-        Portfolio tempPortfolio;
-        try (FileReader reader = new FileReader(getSaveFile())) {
-            tempPortfolio = gson.fromJson(reader, Portfolio.class);
-        } catch (IOException e) {
-            tempPortfolio = new Portfolio();
-        }
-        this.portfolio = tempPortfolio;
     }
 
     public static File getSaveFile() {
@@ -54,15 +43,23 @@ public class Player {
         }
     }
 
+    public void loadData() {
+        Gson gson = new Gson();
+        try (FileReader reader = new FileReader(getSaveFile())) {
+            this.portfolio = gson.fromJson(reader, Portfolio.class);
+        } catch (IOException e) {
+            System.out.println("Error loading portfolio!");
+        }
+    }
+
+    public void loadDefaultData() {
+        this.portfolio.money = 100000;
+    }
+
     public static class Portfolio {
         private double money;
         private final ArrayList<MarketSystem.Trade> trades = new ArrayList<>();
         private final HashMap<String, Double> ownedStocks = new HashMap<>();
-
-        Portfolio() {
-            // TODO: load in constructor
-            this.money = 100000;
-        };
 
         public double getMoney() { return this.money; }
 
