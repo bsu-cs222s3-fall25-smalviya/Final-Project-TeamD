@@ -3,23 +3,33 @@ package papertrader.UI;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import papertrader.engine.MarketSystem;
 import papertrader.player.Player;
 
 public class Window extends Application {
 
-    private final BorderPane root = new BorderPane();
+    public static final Font LARGE_TEXT = Font.font(25);
+    public static final Font MEDIUM_TEXT = Font.font(18);
+    public static final Font SMALL_TEXT = Font.font(12);
+
+    private final VBox root = new VBox();
     private final StateMachine stateMachine = new StateMachine();
 
     @Override
     public void start(Stage stage) {
+        MarketSystem.get().loadDefaultData();
+        Player.get().loadDefaultData();
+
         Scene scene = new Scene(root, 800, 600);
 
         stateMachine.addListener(this::onStateChanged);
 
         SideButtons buttons = new SideButtons(stateMachine);
-        root.setLeft(buttons.loadButtons());
+        root.getChildren().add(buttons.loadButtons());
 
         onStateChanged(stateMachine.getState());
 
@@ -35,6 +45,10 @@ public class Window extends Application {
     }
 
     private void onStateChanged(UIState newState) {
-        root.setCenter(newState.render());
+        if (root.getChildren().size() < 2) {
+            root.getChildren().add(newState.render());
+            return;
+        }
+        root.getChildren().set(1, newState.render());
     }
 }

@@ -1,9 +1,11 @@
 package papertrader.UI;
 
 import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import java.util.List;
@@ -32,16 +34,16 @@ public class SideButtons {
 
     private Button buttonTemplate(String buttonText) {
         Button button = new Button(buttonText);
+        button.setFont(Window.MEDIUM_TEXT);
         button.setOnAction(event -> actionEvent(event, buttonText));
-        button.setPrefWidth(150);
+        button.setMinWidth(200);
         return button;
     }
 
-    public VBox loadButtons() {
-        VBox box = new VBox(30);
-        box.setMaxWidth(100);
-        box.setMinWidth(100);
-        box.setMinHeight(850);
+    public HBox loadButtons() {
+        HBox box = new HBox(30);
+        box.setFillHeight(true);
+        box.alignmentProperty().set(Pos.CENTER);
         box.setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
 
         for (String buttonText : buttonList) {
