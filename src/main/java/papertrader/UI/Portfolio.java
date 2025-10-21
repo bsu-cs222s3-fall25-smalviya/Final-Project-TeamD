@@ -9,15 +9,14 @@ import java.util.List;
 
 import java.awt.*;
 
-public class Portfolio extends GridPane {
+public class Portfolio extends VBox {
 
     private String filterSetting = "Start";
-    private final VBox vbox = new VBox(10);
 
     private List<String> filterButtons = List.of("Start of Game", "This Year", "Past Month", "Last Week");
 
     Portfolio() {
-        this.getChildren().add(vbox);
+        super(10);
         MakeButtons();
     }
 
@@ -25,7 +24,7 @@ public class Portfolio extends GridPane {
         for (String buttonName : filterButtons) {
             Button button = new Button(buttonName);
             button.setFont(Window.SMALL_TEXT);
-            this.vbox.getChildren().add(button);
+            this.getChildren().add(button);
         }
     }
 }

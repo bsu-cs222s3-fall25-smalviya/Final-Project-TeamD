@@ -2,6 +2,7 @@ package papertrader.UI;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -49,5 +50,14 @@ public class Window extends Application {
             return;
         }
         root.getChildren().set(1, newState);
+    }
+
+    public static void errorMessage(String error) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("");
+        alert.setGraphic(null);
+        alert.setTitle("Error");
+        alert.setContentText(error);
+        alert.showAndWait();
     }
 }

@@ -22,61 +22,53 @@ import static papertrader.UI.Window.MEDIUM_TEXT;
 
 public class Stocks extends VBox {
 
-    public VBox stockTemplate = buildStockTemplate();
-    private ScrollPane scrollPane = null;
-    private int scrollTotal = 0;
-
     Stocks() {
         TextField field = new TextField();
         field.setPromptText("Enter stock Ticker");
         field.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                System.out.println(field.getText());
+                onSelectStock(field.getText());
             }
         });
         this.getChildren().add(field);
-        this.getChildren().add(buildScrollPane());
+        HBox hbox = new HBox();
+
+        ScrollPane scrollPane = buildScrollPane();
+        hbox.getChildren().add(scrollPane);
+
+        this.getChildren().add(hbox);
     }
 
     private ScrollPane buildScrollPane() {
-        if (this.scrollPane == null) {
-            this.scrollPane = new ScrollPane();
-            this.scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-            this.scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-           // this.scrollPane.fitToHeightProperty().set(true);
-            this.scrollPane.setFitToWidth(true);
-            this.scrollPane.setOnScroll(event -> {
-                scrollTotal++;
-                //System.out.println(scrollTotal);
-            });
+        ScrollPane pane = new ScrollPane();
+        pane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        pane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        pane.setFitToWidth(true);
 
-            VBox vBox = new VBox();
+        VBox vBox = new VBox();
 
-            MarketSystem.get().stockList.forEach((string, stock) -> {
+        MarketSystem.get().stockList.forEach((string, stock) -> {
 
-                Button button = new Button(string);
-                //button.setOnAction(event -> actionEvent(event, buttonText));
-                button.setFont(Window.MEDIUM_TEXT);
-                button.setPrefWidth(200);
+            Button button = new Button(string);
+            button.setOnAction(event -> onSelectStock(string));
+            button.setFont(Window.MEDIUM_TEXT);
+            button.setPrefWidth(150);
 
-                vBox.getChildren().add(button);
-            });
+            vBox.getChildren().add(button);
+        });
 
-            this.scrollPane.setContent(vBox);
-            this.scrollPane.setFitToWidth(true);
-            this.scrollPane.setPannable(true);
-        }
-        return this.scrollPane;
-    }
-
-
-    private VBox buildStockTemplate() {
-        VBox pane = new VBox();
-
-
-
-
+        pane.setContent(vBox);
+        pane.setPannable(true);
 
         return pane;
+    }
+
+    private void onSelectStock(String stock) {
+        System.out.println(stock);
+        if (!MarketSystem.get().stockList.containsKey(stock)) {
+            Window.errorMessage("Stock does not exist!");
+            return;
+        }
+
     }
 }
