@@ -33,7 +33,7 @@ public class SideButtons {
     private Button buttonTemplate(String buttonText) {
         Button button = new Button(buttonText);
         button.setOnAction(event -> actionEvent(event, buttonText));
-        button.setPrefWidth(100);
+        button.setPrefWidth(150);
         return button;
     }
 

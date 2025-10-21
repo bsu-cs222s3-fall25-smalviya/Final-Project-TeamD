@@ -3,7 +3,11 @@ package papertrader.UI;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
+import java.awt.*;
+
 public class History implements UIState {
+
+
 
 
     @Override
@@ -12,4 +16,5 @@ public class History implements UIState {
         // TODO: populate with history info
         return historyPane;
     }
+
 }
