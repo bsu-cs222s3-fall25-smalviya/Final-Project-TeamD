@@ -22,8 +22,6 @@ public class Window extends Application {
 
     @Override
     public void start(Stage stage) {
-        MarketSystem.get().loadDefaultData();
-        Player.get().loadDefaultData();
 
         Scene scene = new Scene(root, 800, 600);
 
