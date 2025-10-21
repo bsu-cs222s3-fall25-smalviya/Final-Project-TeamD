@@ -20,17 +20,13 @@ import java.util.Map;
 
 import static papertrader.UI.Window.MEDIUM_TEXT;
 
-public class Stocks implements UIState {
+public class Stocks extends VBox {
 
     public VBox stockTemplate = buildStockTemplate();
-    private ScrollPane scrollPane;
+    private ScrollPane scrollPane = null;
     private int scrollTotal = 0;
 
-
-    @Override
-    public Pane render() {
-        System.out.println("Building Stocks");
-        VBox pane = new VBox();
+    Stocks() {
         TextField field = new TextField();
         field.setPromptText("Enter stock Ticker");
         field.setOnKeyPressed(event -> {
@@ -38,9 +34,8 @@ public class Stocks implements UIState {
                 System.out.println(field.getText());
             }
         });
-        pane.getChildren().add(field);
-        pane.getChildren().add(buildScrollPane());
-        return pane;
+        this.getChildren().add(field);
+        this.getChildren().add(buildScrollPane());
     }
 
     private ScrollPane buildScrollPane() {
@@ -48,8 +43,8 @@ public class Stocks implements UIState {
             this.scrollPane = new ScrollPane();
             this.scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             this.scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-            this.scrollPane.fitToHeightProperty().set(true);
-            this.scrollPane.setMinHeight(500);
+           // this.scrollPane.fitToHeightProperty().set(true);
+            this.scrollPane.setFitToWidth(true);
             this.scrollPane.setOnScroll(event -> {
                 scrollTotal++;
                 //System.out.println(scrollTotal);

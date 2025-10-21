@@ -9,18 +9,16 @@ import java.util.List;
 
 import java.awt.*;
 
-public class Portfolio implements UIState {
+public class Portfolio extends GridPane {
 
     private String filterSetting = "Start";
-    private final GridPane grid = new GridPane();
     private final VBox vbox = new VBox(10);
 
     private List<String> filterButtons = List.of("Start of Game", "This Year", "Past Month", "Last Week");
-    @Override
-    public Pane render() {
-        this.grid.getChildren().add(vbox);
+
+    Portfolio() {
+        this.getChildren().add(vbox);
         MakeButtons();
-        return this.grid;
     }
 
     private void MakeButtons() {

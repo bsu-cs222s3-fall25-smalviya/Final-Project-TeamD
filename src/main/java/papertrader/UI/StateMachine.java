@@ -1,31 +1,33 @@
 package papertrader.UI;
 
+import javafx.scene.layout.Pane;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
 public class StateMachine {
 
-    private UIState currentState = new Stocks();
-    private final List<Consumer<UIState>> listeners = new ArrayList<>();
+    private Pane currentState = new Stocks();
+    private final List<Consumer<Pane>> listeners = new ArrayList<>();
 
-    public UIState getState() {
+    public Pane getState() {
         return currentState;
     }
 
-    public void changeState(UIState newState) {
+    public void changeState(Pane newState) {
         if (!currentState.getClass().equals(newState.getClass())) {
             currentState = newState;
             notifyListeners();
         }
     }
 
-    public void addListener(Consumer<UIState> listener) {
+    public void addListener(Consumer<Pane> listener) {
         listeners.add(listener);
     }
 
     private void notifyListeners() {
-        for (Consumer<UIState> listener : listeners) {
+        for (Consumer<Pane> listener : listeners) {
             listener.accept(currentState);
         }
     }

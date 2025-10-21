@@ -3,10 +3,7 @@ package papertrader.UI;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +14,7 @@ public class SideButtons {
     private final List<String> buttonList = List.of("Stocks", "Portfolio", "History");
     private final StateMachine stateMachine;
 
-    private final Map<String, Supplier<UIState>> stateMap = Map.of(
+    private final Map<String, Supplier<Pane>> stateMap = Map.of(
             "Stocks", Stocks::new,
             "Portfolio", Portfolio::new,
             "History", History::new
@@ -28,7 +25,7 @@ public class SideButtons {
     }
 
     private void actionEvent(ActionEvent event, String buttonText) {
-        UIState newState = stateMap.getOrDefault(buttonText, Stocks::new).get();
+        Pane newState = stateMap.getOrDefault(buttonText, Stocks::new).get();
         stateMachine.changeState(newState);
     }
 

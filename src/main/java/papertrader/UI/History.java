@@ -5,16 +5,10 @@ import javafx.scene.layout.Pane;
 
 import java.awt.*;
 
-public class History implements UIState {
+public class History extends GridPane {
 
-
-
-
-    @Override
-    public Pane render() {
-        GridPane historyPane = new GridPane();
+    History() {
         // TODO: populate with history info
-        return historyPane;
     }
 
 }

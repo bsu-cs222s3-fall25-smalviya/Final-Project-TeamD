@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -44,11 +45,11 @@ public class Window extends Application {
         MarketSystem.get().saveData();
     }
 
-    private void onStateChanged(UIState newState) {
+    private void onStateChanged(Pane newState) {
         if (root.getChildren().size() < 2) {
-            root.getChildren().add(newState.render());
+            root.getChildren().add(newState);
             return;
         }
-        root.getChildren().set(1, newState.render());
+        root.getChildren().set(1, newState);
     }
 }
