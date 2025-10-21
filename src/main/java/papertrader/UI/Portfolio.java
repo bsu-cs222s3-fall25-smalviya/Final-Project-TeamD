@@ -25,8 +25,9 @@ public class Portfolio implements UIState {
 
     private void MakeButtons() {
         for (String buttonName : filterButtons) {
-            Button button = new javafx.scene.control.Button(buttonName);
-           this.vbox.getChildren().add(button);
+            Button button = new Button(buttonName);
+            button.setFont(Window.SMALL_TEXT);
+            this.vbox.getChildren().add(button);
         }
     }
 }

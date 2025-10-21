@@ -45,18 +45,15 @@ public class Stocks implements UIState {
 
     private ScrollPane buildScrollPane() {
         if (this.scrollPane == null) {
-            ScrollPane pane = new ScrollPane();
-            pane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-            pane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-            pane.fitToHeightProperty().set(true);
-            pane.setMinHeight(500);
-            pane.setOnScroll(event -> {
+            this.scrollPane = new ScrollPane();
+            this.scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            this.scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+            this.scrollPane.fitToHeightProperty().set(true);
+            this.scrollPane.setMinHeight(500);
+            this.scrollPane.setOnScroll(event -> {
                 scrollTotal++;
                 //System.out.println(scrollTotal);
             });
-
-        this.scrollPane.setFitToWidth(true);
-        this.scrollPane.setPannable(true);
 
             VBox vBox = new VBox();
 
@@ -70,13 +67,9 @@ public class Stocks implements UIState {
                 vBox.getChildren().add(button);
             });
 
-            //vBox.setSpacing(10);
-            //vBox.setPadding(new Insets(10));
-
-            pane.setContent(vBox);
-            pane.setPannable(true);
-
-            return pane;
+            this.scrollPane.setContent(vBox);
+            this.scrollPane.setFitToWidth(true);
+            this.scrollPane.setPannable(true);
         }
         return this.scrollPane;
     }

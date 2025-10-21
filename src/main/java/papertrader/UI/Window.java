@@ -14,7 +14,7 @@ public class Window extends Application {
 
     public static final Font LARGE_TEXT = Font.font(25);
     public static final Font MEDIUM_TEXT = Font.font(18);
-    public static final Font SMALL_TEXT = Font.font(12);
+    public static final Font SMALL_TEXT = Font.font(14);
 
     private final VBox root = new VBox();
     private final StateMachine stateMachine = new StateMachine();
