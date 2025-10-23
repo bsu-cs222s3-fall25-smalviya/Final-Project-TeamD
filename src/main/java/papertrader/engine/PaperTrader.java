@@ -2,6 +2,7 @@ package papertrader.engine;
 import papertrader.player.Player;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 public class PaperTrader {
@@ -14,22 +15,11 @@ public class PaperTrader {
 
     private static final List<Map.Entry<String, Supplier<Integer>>> ACTIONS = List.of(
             Map.entry("0) Exit Program", PaperTrader::exit),
-            Map.entry("1) View Stock", PaperTrader::viewStock),
-            Map.entry("2) Buy Stock", PaperTrader::buyStock),
-            Map.entry("3) Sell Stock", PaperTrader::sellStock),
-            Map.entry("4) Next Day", PaperTrader::nextDay),
-            Map.entry("5) Next Day (100)", () -> {
-                for (int i = 0; i < 100; ++i) {
-                    PaperTrader.nextDay();
-                }
-                return 0;
-            }),
-            Map.entry("6) Next Day (1000)", () -> {
-                for (int i = 0; i < 1000; ++i) {
-                    PaperTrader.nextDay();
-                }
-                return 0;
-            })
+            Map.entry("1) View Portfolio", PaperTrader::viewPortfolio),
+            Map.entry("2) View Stock", PaperTrader::viewStock),
+            Map.entry("3) Buy Stock", PaperTrader::buyStock),
+            Map.entry("4) Sell Stock", PaperTrader::sellStock),
+            Map.entry("5) Next Day", PaperTrader::nextDay)
     );
 
     public static void main(String[] args) {
@@ -87,6 +77,31 @@ public class PaperTrader {
                 return action.getValue().get();
             }
         }
+    }
+
+    public static int viewPortfolio() {
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println();
+        MarketSystem.get().stockList.forEach((string, stock) -> {
+            if (Player.get().portfolio.ownsStock(string)) {
+                double valueOf = Player.get().portfolio.getMoneyInStock(string);
+                double sharesOf = Player.get().portfolio.getNumberOfShares(string);
+
+                System.out.println("You own " + sharesOf + " shares of " + string + " worth $" + valueOf + ".");
+            }
+        });
+
+        printCurrentPortfolioValue();
+
+        System.out.println("You have $" + Player.get().portfolio.getMoney() + " in liquid money.");
+        System.out.println();
+
+        System.out.println("Press ENTER to continue.");
+        scanner.nextLine();
+
+        return 0;
     }
 
     public static int viewStock() {
@@ -186,8 +201,51 @@ public class PaperTrader {
         return 0;
     }
 
+    public static void printCurrentPortfolioValue() {
+        System.out.println();
+        System.out.println("Your portfolio is worth $" + String.format("%.2f", Player.get().portfolio.getTotalMoney()) + ".");
+        System.out.println();
+    }
+
     public static int nextDay() {
+
+        System.out.println();
+
+        // If the player has no stocks, do not calculate money made
+        if (Player.get().portfolio.isEmpty()) {
+            MarketSystem.get().incrementStocks();
+            System.out.println("You have no money invested.");
+            System.out.println();
+            return 0;
+        }
+
+        // Get value of all stocks before incrementing them by a day
+        AtomicReference<Double> previousValue = new AtomicReference<>();
+        previousValue.set(0.0);
+
+        MarketSystem.get().stockList.forEach((string, stock) -> previousValue.set(previousValue.get() + Player.get().portfolio.getMoneyInStock(string)));
+
         MarketSystem.get().incrementStocks();
+
+        // Get value of all stocks after incrementing them by a day
+        AtomicReference<Double> nextValue = new AtomicReference<>();
+        nextValue.set(0.0);
+
+        MarketSystem.get().stockList.forEach((string, stock) -> nextValue.set(nextValue.get() + Player.get().portfolio.getMoneyInStock(string)));
+
+        // Calculate how money changed and give a message depending on it.
+        double moneyChanged = nextValue.get() - previousValue.get();
+
+        printCurrentPortfolioValue();
+
+        if (moneyChanged > 0.0) {
+            System.out.println("You made $" + String.format("%.2f", moneyChanged) + "!");
+        } else {
+            System.out.println("You lost $" + String.format("%.2f", -moneyChanged) + ".");
+        }
+
+        System.out.println();
+
         return 0;
     }
 }

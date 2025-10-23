@@ -82,11 +82,8 @@ public class MarketSystem {
             double value = stock.averageGrowth + random.nextGaussian() * stock.deviation;
             stock.shareValue += value;
 
-            if (random.nextFloat() < 0.025) { // Small chance to grow stock
-                stock.averageGrowth += 0.01;
-            }
-            if (random.nextFloat() < 0.025) { // Small chance to shrink stock
-                stock.averageGrowth -= 0.01;
+            if (random.nextFloat() < 0.025) { // Small chance to grow or shrink stock
+                stock.averageGrowth += (random.nextDouble() * 2.0 - 1.0) * 0.01;
             }
         });
     }

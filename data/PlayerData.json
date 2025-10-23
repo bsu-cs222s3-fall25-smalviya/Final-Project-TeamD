@@ -1,5 +1,14 @@
 {
-  "money": 100000.0,
-  "trades": [],
-  "ownedStocks": {}
+  "money": 8855.0,
+  "trades": [
+    {
+      "name": "NVDA",
+      "shares": 500.0,
+      "shareValue": 182.29,
+      "type": "BUY"
+    }
+  ],
+  "ownedStocks": {
+    "NVDA": 500.0
+  }
 }
