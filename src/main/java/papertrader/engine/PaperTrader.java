@@ -1,10 +1,7 @@
 package papertrader.engine;
 import papertrader.player.Player;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class PaperTrader {
@@ -136,7 +133,13 @@ public class PaperTrader {
         System.out.println();
         System.out.print("Enter number of shares: ");
 
-        double amount = scanner.nextDouble();
+        double amount;
+        try {
+            amount = scanner.nextDouble();
+        } catch (InputMismatchException _) {
+            System.out.println("Not a Number!");
+            return 0;
+        }
         scanner.nextLine();
 
         Player.get().portfolio.buyStock(ticker, amount);
@@ -165,7 +168,13 @@ public class PaperTrader {
         System.out.println();
         System.out.print("Enter number of shares: ");
 
-        double amount = scanner.nextDouble();
+        double amount;
+        try {
+            amount = scanner.nextDouble();
+        } catch (InputMismatchException _) {
+            System.out.println("Not a Number!");
+            return 0;
+        }
         scanner.nextLine();
 
         Player.get().portfolio.sellStock(ticker, amount);
