@@ -13,7 +13,7 @@ public class Portfolio extends VBox {
 
     private String filterSetting = "Start";
 
-    private List<String> filterButtons = List.of("Start of Game", "This Year", "Past Month", "Last Week");
+    private final List<String> filterButtons = List.of("Start of Game", "This Year", "Past Month", "Last Week");
 
     Portfolio() {
         super(10);
