@@ -93,12 +93,12 @@ public class MarketSystem {
 
     private File getStockData() {
         String workingDirectory = System.getProperty("user.dir");
-        return new File(workingDirectory + "\\data\\StockData.json");
+        return new File(workingDirectory + "/data/StockData.json");
     }
 
     private File getDefaultStockData() {
         String workingDirectory = System.getProperty("user.dir");
-        return new File(workingDirectory + "\\data\\DefaultStockData.json");
+        return new File(workingDirectory + "/data/DefaultStockData.json");
     }
 
     public static class Stock {
