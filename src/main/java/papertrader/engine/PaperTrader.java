@@ -31,8 +31,16 @@ public class PaperTrader {
                 System.out.println(action.getKey());
             }
 
-            int choice = scanner.nextInt();
+            int choice;
+            try {
+                choice = scanner.nextInt();
+            } catch (Exception _) {
+                System.out.println("Invalid Choice!");
+                continue;
+            }
+
             scanner.nextLine();
+
 
             Map.Entry<String, Supplier<Integer>> action = STARTUP_ACTIONS.get(choice);
 
@@ -151,7 +159,7 @@ public class PaperTrader {
         double amount;
         try {
             amount = scanner.nextDouble();
-        } catch (InputMismatchException _) {
+        } catch (Exception _) {
             System.out.println("Not a Number!");
             return 0;
         }
@@ -186,7 +194,7 @@ public class PaperTrader {
         double amount;
         try {
             amount = scanner.nextDouble();
-        } catch (InputMismatchException _) {
+        } catch (Exception _) {
             System.out.println("Not a Number!");
             return 0;
         }
