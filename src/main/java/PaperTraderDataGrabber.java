@@ -14,28 +14,7 @@ public class PaperTraderDataGrabber {
 
     private static final String APIKEY = "PQVbisd28MxeTJJSWyEVHCerZnNkbkvI";
 
-    private static final int startingPlace = 0; //0 to 42
-
-    private static final Map<Integer, Integer> MONTHS_TO_DAYS = Map.ofEntries(
-            Map.entry(1, 31),
-            Map.entry(2, 28), //Leap Years
-            Map.entry(3, 31),
-            Map.entry(4, 30),
-            Map.entry(5, 31),
-            Map.entry(6, 30),
-            Map.entry(7, 31),
-            Map.entry(8, 31),
-            Map.entry(9, 30),
-            Map.entry(10, 31),
-            Map.entry(11, 30),
-            Map.entry(12, 31)
-    );
-
-    public static final List<String> SP_TICKERS = List.of(
-            "NVDA","MSFT","AAPL","GOOGL","AMZN","META","AVGO","TSLA","TSM","BRK.B","ORCL","JPM","WMT","LLY","V","NFLX","MA","XOM","JNJ","PLTR","COST","ABBV","BABA","ASML","HD","AMD","BAC","PG","UNH","SAP","GE","CVX","KO","CSCO","IBM","AZN","NVO","NVS","TMUS","WFC","TM","MS","GS","PM","CAT","CRM","ABT","HSBC","AXP","RTX","MRK","LIN","SHEL","MU","SHOP","MCD","RY","APP","TMO","UBER","DIS","ANET","BX","PEP","NOW","T","PDD","SONY","INTU","BLK","ARM","LRCX","INTC","C","QCOM","MUFG","AMAT","NEE","VZ","GEV","SCHW","HDB","BKNG","BA","TXN","ISRG","AMGN","ACN","TJX","APH","SPGI","SAN","DHR","ETN","UL","PANW","GILD","BSX","ADBE","PFE","BHP","PGR","SYK","SPOT","TD","UNP","KLAC","COF","HOOD","LOW","HON","UBS","TTE","CRWD","MDT","DE","SNY","LMT","DASH","CEG","ADP","ADI","RIO","BUD","COP","CB","MELI","WELL","BTI","CMCSA","IBN","MO","SE","KKR","BBVA","PLD","ENB","VRTX","SO","SCCO","DELL","BN","SMFG","MMC","NKE","COIN","HCA","NTES","CVS","DUK","CME","BAM","TT","MCK","CDNS","PH","NEM","GD","MSTR","NOC","BMO","ICE","BMY","SBUX","SNPS","BP","MCO","WM","GSK","RBLX","AMT","ORLY","SNOW","RCL","SHW","RELX","CI","ELV","AEM","MMM","MFG","MDLZ","MRVL","CRH","EQIX","BNS","AON","ECL","CVNA","AJG","CTAS","WMB","NET","PBR","PBR.A","HWM","MSI","PNC","BK","NU","CM","GLW","EMR","ABNB","USB","MAR","RACE","CRWV","NGG","ITW","PYPL","UPS","TDG","BCS","CP","ITUB","JCI","APO","INFY","VST","RSG","ING","FI","TRI","CNQ","LYG","EPD","DB","CSX","MNST","SPG","NSC","ADSK","AZO","FTNT","TEL","PWR","WDAY","AMX","VRT","ZTS","CL","URI","AEP","TRV","KMI","EQNR","FCX","HLT","COR","DLR","EOG","CNI","SRE","ALNY","AFL","NWG","CMI","REGN","CPNG","APD","AXON","B","DDOG","MPC","TFC","ET","LHX","TRP","FDX","ROP","NXPI","CMG","ALL","MFC","MET","BDX","E","O","FAST","GM","DEO","PSX","NDAQ","PSA","D","LNG","IDXX","VLO","PCAR","EA","ZS","SU","CARR","GRMN","SLB","MPLX","VEEV","XYZ","ARGX","WPM","ROST","XEL","JD","ARES","TTWO","STX","VALE","EXC","BKR","MPWR","GWW","TCOM","AMP","AIG","F","FERG","RKT","IMO","DHI","BIDU","OKE","PAYX","CBRE","KR","TAK","EW","WCN","HEI","WBD","OXY","FLUT","MSCI","FER","CPRT","ETR","CTVA","AME","CCI","FANG","UI","EBAY","FNV","FICO","WDC","CHTR","PEG","HLN","RMD","TGT","HMC","VMC","YUM","CCEP","KMB","A","RDDT","DAL","SYM","HEI.A","TEAM","HSY","GFI","ROK","MLM","ALC","ALAB","CCJ","CAH","SYY","CCL","TKO","ONC","TME","WEC","HIG","ED","AU","PRU","PCG","FIS","XYL","LYV","HUM","LVS","MCHP","OTIS","KDP","TRGP","SMCI","PUK","SLF","ABEV","INSM","IQV","CRCL","HPE","EQT","ACGL","EL","SOFI","CHT","VRSK","GEHC","WAB","CTSH","FIG","STT","VICI","CSGP","WTW","RJF","RKLB","UAL","DD","NRG","IBKR","KVUE","NBIS","CVE","NUE","ASTS","BRO","EXR","RYAAY","STLA","FMX","IR","BBD","MT","VTR","IRM","VG","KGC","PSTG","EME","QSR","KB","LEN","ODFL","ADM","KHC","MTB","WRB","NTR","CLS","DTE","KEYS","FIX","WIT","FITB","EFX","K","TSCO","AWK","TEF","WDS","ERIC","ATO","IX","AEE","ROL","NOK","PPL","BR","VOD","FE","TDY","ES","MTD","MDB","PHG","EXPE","SYF","DXCM","FWONA","FOXA","VIK","AVB","TTD","GIS","LPLA","CRDO","CYBR","CNP","STM","VLTO","TW","CQP","ASX","ULTA","CINF","FOX","FTS","BNTX","CBOE","GRAB","LDOS","FSLR","HPQ"
-    );
-
-    public static final List<String> USED_TICKERS = List.of(
+    public static final List<String> TICKERS = List.of(
             "AAPL", "TSLA", "AMZN", "MSFT", "NVDA", "GOOGL", "META", "NFLX",
             "JPM", "V", "BAC", "AMD", "PYPL", "DIS", "T", "PFE", "COST", "INTC",
             "KO", "TGT", "NKE", "SPY", "BA", "BABA", "XOM", "WMT", "GE", "CSCO",
@@ -64,7 +43,7 @@ public class PaperTraderDataGrabber {
 
         Map<String, CompressedStock> stockMap = new HashMap<>();
 
-        for (String symbol : USED_TICKERS) {
+        for (String symbol : TICKERS) {
 
             System.out.println("Starting to create data for " + symbol);
 
