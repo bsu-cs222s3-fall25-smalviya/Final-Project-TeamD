@@ -7,7 +7,6 @@ import java.io.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Player {
@@ -72,7 +71,7 @@ public class Player {
             AtomicReference<Double> totalInvestment = new AtomicReference<>();
             totalInvestment.set(0.0);
 
-            MarketSystem.get().stockList.forEach((string, stock) -> totalInvestment.set(totalInvestment.get() + Player.get().portfolio.getMoneyInStock(string)));
+            MarketSystem.get().stockList.forEach((string, _) -> totalInvestment.set(totalInvestment.get() + Player.get().portfolio.getMoneyInStock(string)));
 
             return this.money + totalInvestment.get();
         }
@@ -165,7 +164,7 @@ public class Player {
 
             // Remove from owned stocks
             {
-                ownedStocks.compute(stockName, (_, amount) -> amount - amountOfShares);
+                ownedStocks.compute(stockName, (_, amount) -> amount  - amountOfShares);
             }
 
             // Add trade

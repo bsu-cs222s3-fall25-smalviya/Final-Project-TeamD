@@ -11,6 +11,9 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import papertrader.engine.MarketSystem;
 import papertrader.player.Player;
+import javafx.scene.paint.Color;
+
+import java.awt.*;
 
 public class Window extends Application {
 
@@ -25,6 +28,8 @@ public class Window extends Application {
     public void start(Stage stage) {
 
         Scene scene = new Scene(root, 800, 600);
+        root.setStyle("-fx-background-color: grey;");
+        scene.setFill(Color.BLACK);
 
         stateMachine.addListener(this::onStateChanged);
 
