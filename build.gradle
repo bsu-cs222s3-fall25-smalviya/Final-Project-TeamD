@@ -12,7 +12,7 @@ repositories {
 }
 
 application {
-    mainClass = 'papertrader.engine.PaperTrader'
+    mainClass = 'papertrader.engine.UILauncher'
 
     run {
         standardInput = System.in
