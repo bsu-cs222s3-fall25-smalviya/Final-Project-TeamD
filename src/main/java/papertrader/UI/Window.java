@@ -13,6 +13,9 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import papertrader.engine.MarketSystem;
 import papertrader.player.Player;
+import javafx.scene.paint.Color;
+
+import java.awt.*;
 
 import java.util.Objects;
 
