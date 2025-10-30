@@ -37,7 +37,7 @@ public class Window extends Application {
         SideButtons buttons = new SideButtons(stateMachine);
         root.getChildren().add(buttons.loadButtons());
 
-        Separator separator = new Separator(Orientation.HORIZONTAL);
+        VBox separator = new VBox();
         separator.getStyleClass().add("side_buttons_separator");
         root.getChildren().add(separator);
 
