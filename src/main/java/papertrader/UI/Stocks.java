@@ -18,8 +18,6 @@ import papertrader.engine.MarketSystem;
 
 import java.util.Map;
 
-import static papertrader.UI.Window.MEDIUM_TEXT;
-
 public class Stocks extends VBox {
 
     Stocks() {
@@ -51,7 +49,6 @@ public class Stocks extends VBox {
 
             Button button = new Button(string);
             button.setOnAction(event -> onSelectStock(string));
-            button.setFont(Window.MEDIUM_TEXT);
             button.setPrefWidth(150);
 
             vBox.getChildren().add(button);

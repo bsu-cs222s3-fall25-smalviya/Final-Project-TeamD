@@ -17,13 +17,14 @@ public class Portfolio extends VBox {
 
     Portfolio() {
         super(10);
+
         MakeButtons();
     }
 
     private void MakeButtons() {
         for (String buttonName : filterButtons) {
             Button button = new Button(buttonName);
-            button.setFont(Window.SMALL_TEXT);
+            button.getStyleClass().add("stat");
             this.getChildren().add(button);
         }
     }

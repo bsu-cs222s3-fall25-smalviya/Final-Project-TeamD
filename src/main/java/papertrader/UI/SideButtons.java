@@ -1,10 +1,14 @@
 package papertrader.UI;
 
 import javafx.event.ActionEvent;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Separator;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Box;
+
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -25,23 +29,19 @@ public class SideButtons {
     }
 
     private void actionEvent(ActionEvent event, String buttonText) {
-        Pane newState = stateMap.getOrDefault(buttonText, Stocks::new).get();
+        Pane newState = stateMap.get(buttonText).get();
         stateMachine.changeState(newState);
     }
 
     private Button buttonTemplate(String buttonText) {
         Button button = new Button(buttonText);
-        button.setFont(Window.MEDIUM_TEXT);
+        button.getStyleClass().add("side_buttons");
         button.setOnAction(event -> actionEvent(event, buttonText));
-        button.setMinWidth(200);
         return button;
     }
 
     public HBox loadButtons() {
         HBox box = new HBox(30);
-        box.setFillHeight(true);
-        box.alignmentProperty().set(Pos.CENTER);
-        box.setBackground(new Background(new BackgroundFill(Color.GREEN, null, null)));
 
         for (String buttonText : buttonList) {
             box.getChildren().add(buttonTemplate(buttonText));
