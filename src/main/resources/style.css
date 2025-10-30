@@ -11,5 +11,7 @@
 }
 
 .side_buttons_separator {
-    -fx-min-height: 10;
+    -fx-padding: 4px 0px 4px 0px; /* Top Right Bottom Left */
+    -fx-background-color: rgba(40,40,50,255);
+    -fx-background-radius: 13;
 }
