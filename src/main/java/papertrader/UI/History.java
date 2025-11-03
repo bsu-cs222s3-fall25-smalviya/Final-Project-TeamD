@@ -1,5 +1,6 @@
 package papertrader.UI;
 
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -46,6 +47,10 @@ public class History extends VBox {
 
         // placeholder to get it on the screen
         MarketSystem.get().stockList.forEach((string, stock) -> {
+
+            Separator sep = new Separator();
+            sep.setPrefHeight(25);
+            vBox.getChildren().add(sep);
 
             Label label = MakeHistoryButton(string);
 
