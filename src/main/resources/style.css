@@ -53,6 +53,10 @@
     -fx-background-color: -fx-light-accent
 }
 
+.button_list {
+    -fx-pref-width: 150
+}
+
 .side_buttons {
     -fx-font-size: 22px;
     -fx-pref-width: 225;

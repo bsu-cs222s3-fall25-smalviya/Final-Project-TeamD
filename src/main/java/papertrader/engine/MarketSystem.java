@@ -7,14 +7,13 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 public class MarketSystem {
 
     private static final MarketSystem marketSystem = new MarketSystem();
 
-    public HashMap<String, Stock> stockList = new HashMap<>();
+    public TreeMap<String, Stock> stockList = new TreeMap<>();
 
     public static MarketSystem get() {
         return marketSystem;
@@ -41,7 +40,7 @@ public class MarketSystem {
     public void loadDefaultData() {
         Gson gson = new Gson();
 
-        Type mapType = new TypeToken<HashMap<String, Stock>>(){}.getType();
+        Type mapType = new TypeToken<TreeMap<String, Stock>>(){}.getType();
 
         try {
             Reader reader = new FileReader(getDefaultStockData());

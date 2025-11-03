@@ -45,17 +45,13 @@ public class Stocks extends VBox {
 
         VBox vBox = new VBox();
 
-        MarketSystem.get().stockList.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey(String.CASE_INSENSITIVE_ORDER))
-                .forEach(entry -> {
-                    String string = entry.getKey();
+        MarketSystem.get().stockList.forEach((string, stock) -> {
+            Button button = new Button(string);
+            button.setOnAction(event -> onSelectStock(string));
+            button.getStyleClass().add("button_list");
 
-                    Button button = new Button(string);
-                    button.setOnAction(event -> onSelectStock(string));
-                    button.setPrefWidth(150);
-
-                    vBox.getChildren().add(button);
-                });
+            vBox.getChildren().add(button);
+        });
 
         pane.setContent(vBox);
         pane.setPannable(true);
