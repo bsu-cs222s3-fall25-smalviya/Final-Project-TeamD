@@ -1,17 +1,62 @@
 .root {
-    -fx-background-color: rgba(15,15,15,255);
+    /* General Colors */
+    -fx-base: rgba(7, 10, 14, 255);
+    -fx-light-base: derive(-fx-base, 8%);
+    -fx-accent: derive(-fx-light-base, 8%);
+    -fx-light-accent: derive(-fx-accent, 8%);
+    -fx-theme: rgba(30, 116, 198, 255);
+
+    /* Background */
+    -fx-background-color: -fx-base;
+
+    /* Defines outlines around TextField and some other components */
+    -fx-control-inner-background: -fx-accent;
+    -fx-control-inner-background-alt: -fx-control-inner-background;
+    -fx-focus-color: -fx-theme;
+
+    /* Text*/
+    -fx-general-text-color: rgba(255,255,255,255);
+    -fx-hovered-text-color: derive(-fx-general-text-color, -25%);
+    -fx-pressed-text-color: derive(-fx-hovered-text-color, -25%);
+}
+
+.label{
+    -fx-font-size: 18px;
+    -fx-text-fill: -fx-general-text-color
+}
+
+.text-field {
+    -fx-font-size: 18px;
+    -fx-prompt-text-fill: -fx-general-text-color;
+}
+
+.button {
+    -fx-background-color: -fx-light-base;
+    -fx-font-size: 18px;
+    -fx-text-fill: -fx-general-text-color;
+    -fx-border-color: derive(-fx-light-base, -50%);
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+}
+
+.button:hover {
+    -fx-background-color: derive(-fx-light-base, -25%);
+    -fx-text-fill: -fx-hovered-text-color;
+}
+
+.button:pressed {
+    -fx-background-color: derive(-fx-light-base, -50%);
+    -fx-text-fill: -fx-pressed-text-color;
+}
+
+.scroll-bar{
+    -fx-background-color: -fx-light-accent
 }
 
 .side_buttons {
     -fx-font-size: 22px;
-    -fx-background-color: rgba(60,60,70,255);
-    -fx-text-fill: white;
-    -fx-background-radius: 13;
     -fx-pref-width: 225;
-}
-
-.side_buttons_separator {
-    -fx-padding: 4px 0px 4px 0px; /* Top Right Bottom Left */
-    -fx-background-color: rgba(40,40,50,255);
-    -fx-background-radius: 13;
+    -fx-background-radius: 13px;
+    -fx-border-width: 3px;
+    -fx-border-radius: 10px;
 }

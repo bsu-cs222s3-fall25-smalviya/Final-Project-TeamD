@@ -37,10 +37,6 @@ public class Window extends Application {
         SideButtons buttons = new SideButtons(stateMachine);
         root.getChildren().add(buttons.loadButtons());
 
-        VBox separator = new VBox();
-        separator.getStyleClass().add("side_buttons_separator");
-        root.getChildren().add(separator);
-
         onStateChanged(stateMachine.getState());
 
         stage.setScene(scene);
@@ -55,11 +51,11 @@ public class Window extends Application {
     }
 
     private void onStateChanged(Pane newState) {
-        if (root.getChildren().size() < 3) {
+        if (root.getChildren().size() < 2) {
             root.getChildren().add(newState);
             return;
         }
-        root.getChildren().set(2, newState);
+        root.getChildren().set(1, newState);
     }
 
     public static void errorMessage(String error) {
