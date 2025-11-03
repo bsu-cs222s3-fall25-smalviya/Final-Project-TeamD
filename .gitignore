@@ -1,3 +1,7 @@
+# Build Files
 .gradle
 build
 .idea
+
+# Save Data
+data

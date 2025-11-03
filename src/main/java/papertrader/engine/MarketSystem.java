@@ -61,7 +61,7 @@ public class MarketSystem {
     public void loadData() {
         Gson gson = new Gson();
 
-        Type mapType = new TypeToken<HashMap<String, Stock>>(){}.getType();
+        Type mapType = new TypeToken<TreeMap<String, Stock>>(){}.getType();
 
         try {
             Reader reader = new FileReader(getStockData());
@@ -93,8 +93,8 @@ public class MarketSystem {
     }
 
     private File getDefaultStockData() {
-        String workingDirectory = System.getProperty("user.dir");
-        return new File(workingDirectory + "/data/DefaultStockData.json");
+        String defaultDataLocation = Objects.requireNonNull(getClass().getResource("/DefaultStockData.json")).getFile();
+        return new File(defaultDataLocation);
     }
 
     public static class Stock {
