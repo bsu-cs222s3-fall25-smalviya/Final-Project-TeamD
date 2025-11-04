@@ -20,6 +20,8 @@ import java.util.Map;
 
 public class Stocks extends VBox {
 
+    //private Pane stockInfo = new Pane();
+
     Stocks() {
         TextField field = new TextField();
         field.setPromptText("Enter stock Ticker");
@@ -33,6 +35,7 @@ public class Stocks extends VBox {
 
         ScrollPane scrollPane = buildScrollPane();
         hbox.getChildren().add(scrollPane);
+        //hbox.getChildren().add(stockInfo);
 
         this.getChildren().add(hbox);
     }
@@ -66,6 +69,7 @@ public class Stocks extends VBox {
             Window.errorMessage("Stock does not exist!");
             return;
         }
-
+        //stockInfo.getChildren().clear();
+        //stockInfo.getChildren().add(new Label(stock));
     }
 }

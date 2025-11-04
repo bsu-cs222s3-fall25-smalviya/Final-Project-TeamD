@@ -1,43 +1,62 @@
 package papertrader.UI;
 
 import javafx.application.Application;
-import javafx.geometry.Orientation;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventType;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Separator;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import papertrader.engine.MarketSystem;
 import papertrader.player.Player;
-import javafx.scene.paint.Color;
 
 import java.awt.*;
+import java.util.*;
 
-import java.util.Objects;
+import java.util.List;
+import java.util.function.Supplier;
 
 public class Window extends Application {
 
     private final VBox root = new VBox();
-    private final StateMachine stateMachine = new StateMachine();
+    private final AnchorPane pane = new AnchorPane();
+
+    private static final List<Map.Entry<String, Supplier<Pane>>> panelList = List.of(
+            Map.entry("Stocks", Stocks::new),
+            Map.entry("Portfolio", Portfolio::new),
+            Map.entry("History", History::new)
+    );
 
     @Override
     public void start(Stage stage) {
 
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(this.root, 800, 600);
         scene.getStylesheets().add(
                 Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm()
         );
 
-        stateMachine.addListener(this::onStateChanged);
+        HBox sideButtons = new HBox(30);
+        sideButtons.setAlignment(Pos.CENTER);
+        for (Map.Entry<String, Supplier<Pane>> panel : panelList) {
+            Button button = new Button(panel.getKey());
+            button.getStyleClass().add("side_buttons");
+            button.setOnAction(_ -> {
+               setPane(panel.getValue().get());
+            });
+            sideButtons.getChildren().add(button);
+        }
 
-        SideButtons buttons = new SideButtons(stateMachine);
-        root.getChildren().add(buttons.loadButtons());
+        this.root.getChildren().add(sideButtons);
+        this.root.getChildren().add(this.pane);
 
-        onStateChanged(stateMachine.getState());
+        // Set Defaults
+        setPane(panelList.getFirst().getValue().get());
 
         stage.setScene(scene);
         stage.setTitle("Paper Trader");
@@ -50,12 +69,12 @@ public class Window extends Application {
         MarketSystem.get().saveData();
     }
 
-    private void onStateChanged(Pane newState) {
-        if (root.getChildren().size() < 2) {
-            root.getChildren().add(newState);
-            return;
-        }
-        root.getChildren().set(1, newState);
+    private void setPane(Pane pane) {
+        AnchorPane.setTopAnchor(pane, 0.0);
+        AnchorPane.setLeftAnchor(pane, 0.0);
+        AnchorPane.setBottomAnchor(pane, 0.0);
+        AnchorPane.setRightAnchor(pane, 0.0);
+        this.pane.getChildren().setAll(pane);
     }
 
     public static void errorMessage(String error) {
