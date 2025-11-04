@@ -35,12 +35,6 @@
     "shareValue": 217.71,
     "shares": 2.8361483E7
   },
-  "ATVI": {
-    "averageGrowth": -0.056908432147562554,
-    "deviation": 0.9663991082489095,
-    "shareValue": 94.42,
-    "shares": 0.0
-  },
   "BA": {
     "averageGrowth": -0.026173466135458272,
     "deviation": 3.768513600468156,
@@ -490,12 +484,6 @@
     "deviation": 0.4720286600954359,
     "shareValue": 40.5,
     "shares": 1.2964365E7
-  },
-  "WBA": {
-    "averageGrowth": -0.019533932951757926,
-    "deviation": 0.5786702228140777,
-    "shareValue": 11.98,
-    "shares": 0.0
   },
   "WFC": {
     "averageGrowth": 0.018573705179282952,

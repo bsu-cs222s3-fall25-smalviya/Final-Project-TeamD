@@ -1,4 +1,7 @@
 package papertrader.gui;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -51,12 +54,30 @@ public class Stocks extends VBox {
         return pane;
     }
 
-    private void onSelectStock(String stock) {
-        System.out.println(stock);
-        if (!MarketSystem.get().stockList.containsKey(stock)) {
+    private void onSelectStock(String string) {
+        if (!MarketSystem.get().stockList.containsKey(string)) {
             Window.errorMessage("Stock does not exist!");
             return;
         }
-        stockInfo.set(new Label(stock));
+        MarketSystem.Stock stock = MarketSystem.get().stockList.get(string);
+
+        final NumberAxis xAxis = new NumberAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        xAxis.setLabel("Number of Month");
+
+        final LineChart<Number,Number> lineChart = new LineChart<>(xAxis,yAxis);
+
+        lineChart.setTitle("Value vs. Time");
+        //defining a series
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        series.setName(string);
+
+        series.getData().add(new XYChart.Data<>(1.0, 23.0));
+        series.getData().add(new XYChart.Data<>(2.0, 14.0));
+        series.getData().add(new XYChart.Data<>(3.0, 15.0));
+
+        lineChart.getData().add(series);
+
+        stockInfo.set(lineChart);
     }
 }
