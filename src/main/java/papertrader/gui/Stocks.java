@@ -12,7 +12,7 @@ import papertrader.core.MarketSystem;
 
 public class Stocks extends VBox {
 
-    private SwitchPane stockInfo = new SwitchPane();
+    private final SwitchPane stockInfo = new SwitchPane();
 
     Stocks() {
         TextField field = new TextField();
