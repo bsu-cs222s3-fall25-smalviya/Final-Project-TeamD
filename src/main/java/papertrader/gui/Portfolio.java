@@ -22,6 +22,11 @@ public class Portfolio extends VBox {
             Button button = new Button(buttonName);
             button.getStyleClass().add("stat");
             this.getChildren().add(button);
+            button.setOnAction(event -> {
+                System.out.println("Hello ");
+                filterSetting = buttonName;
+                System.out.println(filterSetting);
+            });
         }
     }
 
