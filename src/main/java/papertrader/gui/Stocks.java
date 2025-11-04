@@ -1,4 +1,5 @@
 package papertrader.gui;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
@@ -8,7 +9,7 @@ import papertrader.core.MarketSystem;
 
 public class Stocks extends VBox {
 
-    //private Pane stockInfo = new Pane();
+    private SwitchPane stockInfo = new SwitchPane();
 
     Stocks() {
         TextField field = new TextField();
@@ -23,7 +24,7 @@ public class Stocks extends VBox {
 
         ScrollPane scrollPane = buildScrollPane();
         hbox.getChildren().add(scrollPane);
-        //hbox.getChildren().add(stockInfo);
+        hbox.getChildren().add(this.stockInfo);
 
         this.getChildren().add(hbox);
     }
@@ -50,14 +51,12 @@ public class Stocks extends VBox {
         return pane;
     }
 
-
     private void onSelectStock(String stock) {
         System.out.println(stock);
         if (!MarketSystem.get().stockList.containsKey(stock)) {
             Window.errorMessage("Stock does not exist!");
             return;
         }
-        //stockInfo.getChildren().clear();
-        //stockInfo.getChildren().add(new Label(stock));
+        stockInfo.set(new Label(stock));
     }
 }

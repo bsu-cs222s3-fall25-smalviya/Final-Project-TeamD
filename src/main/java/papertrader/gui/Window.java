@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 public class Window extends Application {
 
     private final VBox root = new VBox();
-    private final AnchorPane pane = new AnchorPane();
+    private final SwitchPane pane = new SwitchPane();
 
     private static final List<Map.Entry<String, Supplier<Pane>>> panelList = List.of(
             Map.entry("Stocks", Stocks::new),
@@ -50,7 +50,7 @@ public class Window extends Application {
             Button button = new Button(panel.getKey());
             button.getStyleClass().add("side_buttons");
             button.setOnAction(_ -> {
-               setPane(panel.getValue().get());
+               this.pane.set(panel.getValue().get());
             });
             sideButtons.getChildren().add(button);
         }
@@ -59,7 +59,7 @@ public class Window extends Application {
         this.root.getChildren().add(this.pane);
 
         // Set Defaults
-        setPane(panelList.getFirst().getValue().get());
+        this.pane.set(panelList.getFirst().getValue().get());
 
         stage.setScene(scene);
         stage.setTitle("Paper Trader");
@@ -70,14 +70,6 @@ public class Window extends Application {
     public void stop() {
         Player.get().saveData();
         MarketSystem.get().saveData();
-    }
-
-    private void setPane(Pane pane) {
-        AnchorPane.setTopAnchor(pane, 0.0);
-        AnchorPane.setLeftAnchor(pane, 0.0);
-        AnchorPane.setBottomAnchor(pane, 0.0);
-        AnchorPane.setRightAnchor(pane, 0.0);
-        this.pane.getChildren().setAll(pane);
     }
 
     public static void errorMessage(String error) {
