@@ -1,9 +1,6 @@
-package papertrader.UI;
+package papertrader.gui;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventType;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -13,10 +10,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import papertrader.engine.MarketSystem;
-import papertrader.player.Player;
+import papertrader.core.MarketSystem;
+import papertrader.core.Player;
 
-import java.awt.*;
 import java.util.*;
 
 import java.util.List;
@@ -32,6 +28,13 @@ public class Window extends Application {
             Map.entry("Portfolio", Portfolio::new),
             Map.entry("History", History::new)
     );
+
+    public static void main(String[] args) {
+        MarketSystem.get().loadDefaultData();
+        Player.get().loadDefaultData();
+
+        Application.launch(Window.class, args);
+    }
 
     @Override
     public void start(Stage stage) {

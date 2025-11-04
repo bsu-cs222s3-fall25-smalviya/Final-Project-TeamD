@@ -1,7 +1,6 @@
-package papertrader.player;
+package papertrader.core;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import papertrader.engine.MarketSystem;
 
 import java.io.*;
 

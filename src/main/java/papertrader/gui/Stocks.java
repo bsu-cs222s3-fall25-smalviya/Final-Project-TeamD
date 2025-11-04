@@ -1,22 +1,10 @@
-package papertrader.UI;
-import com.sun.javafx.scene.control.InputField;
-import javafx.application.Application;
-import javafx.beans.property.ObjectProperty;
-import javafx.event.ActionEvent;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
+package papertrader.gui;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import papertrader.engine.MarketSystem;
-
-import java.util.Map;
+import papertrader.core.MarketSystem;
 
 public class Stocks extends VBox {
 

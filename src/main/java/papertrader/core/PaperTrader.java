@@ -1,5 +1,4 @@
-package papertrader.engine;
-import papertrader.player.Player;
+package papertrader.core;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;

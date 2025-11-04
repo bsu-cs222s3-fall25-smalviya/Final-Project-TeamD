@@ -1,11 +1,10 @@
-package papertrader.UI;
+package papertrader.gui;
 
 import javafx.scene.control.*;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import papertrader.engine.MarketSystem;
+import papertrader.core.MarketSystem;
 
 public class History extends VBox {
 

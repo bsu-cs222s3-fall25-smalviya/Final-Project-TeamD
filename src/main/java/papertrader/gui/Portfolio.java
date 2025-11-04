@@ -1,13 +1,9 @@
-package papertrader.UI;
+package papertrader.gui;
 
 import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
-
-import java.awt.*;
 
 public class Portfolio extends VBox {
 
