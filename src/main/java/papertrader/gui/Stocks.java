@@ -59,22 +59,26 @@ public class Stocks extends VBox {
             Window.errorMessage("Stock does not exist!");
             return;
         }
-        MarketSystem.Stock stock = MarketSystem.get().stockList.get(string);
+        if (!MarketSystem.get().stockHistory.containsKey(string)) {
+            return;
+        }
 
         final NumberAxis xAxis = new NumberAxis();
         final NumberAxis yAxis = new NumberAxis();
-        xAxis.setLabel("Number of Month");
+        xAxis.setLabel("Days Since Jan 1st, 2024");
 
         final LineChart<Number,Number> lineChart = new LineChart<>(xAxis,yAxis);
 
         lineChart.setTitle("Value vs. Time");
+        lineChart.setCreateSymbols(false);
+
         //defining a series
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
         series.setName(string);
 
-        series.getData().add(new XYChart.Data<>(1.0, 23.0));
-        series.getData().add(new XYChart.Data<>(2.0, 14.0));
-        series.getData().add(new XYChart.Data<>(3.0, 15.0));
+        for (MarketSystem.StockDate stockDate : MarketSystem.get().stockHistory.get(string)) {
+            series.getData().add(new XYChart.Data<>(stockDate.getDaysSince((short) 2024), stockDate.shareValue));
+        }
 
         lineChart.getData().add(series);
 

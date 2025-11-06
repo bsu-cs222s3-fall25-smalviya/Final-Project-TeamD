@@ -14,6 +14,7 @@ public class MarketSystem {
     private static final MarketSystem marketSystem = new MarketSystem();
 
     public TreeMap<String, Stock> stockList = new TreeMap<>();
+    public final TreeMap<String, ArrayList<StockDate>> stockHistory = new TreeMap<>();
 
     public static MarketSystem get() {
         return marketSystem;
@@ -56,6 +57,8 @@ public class MarketSystem {
             System.out.println("No Stock data found!");
             throw new RuntimeException();
         }
+
+        loadStockHistory(getDefaultHistoryFile());
     }
 
     public void loadData() {
@@ -71,6 +74,29 @@ public class MarketSystem {
             // If no data, create an empty stock list
             System.out.println("No Stock data found!");
             throw new RuntimeException();
+        }
+    }
+
+    public void loadStockHistory(File file) {
+        try (DataInputStream input = new DataInputStream(new FileInputStream(file))){
+            while (input.available() != 0) {
+                String stockName = input.readUTF();
+
+                int arrLength = input.readInt();
+                ArrayList<StockDate> stockDates = new ArrayList<>();
+                for (int i = 0; i < arrLength; ++i) {
+                    StockDate stock = new StockDate();
+                    stock.month = input.readByte();
+                    stock.day = input.readByte();
+                    stock.year = input.readShort();
+                    stock.shareValue = input.readDouble();
+                    stock.shares = input.readInt();
+                    stockDates.add(stock);
+                }
+                this.stockHistory.put(stockName, stockDates);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -97,6 +123,16 @@ public class MarketSystem {
         return new File(defaultDataLocation);
     }
 
+    private File getHistoryFile() {
+        String workingDirectory = System.getProperty("user.dir");
+        return new File(workingDirectory + "/data/StockHistory.bin");
+    }
+
+    private File getDefaultHistoryFile() {
+        String defaultDataLocation = Objects.requireNonNull(getClass().getResource("/DefaultStockHistory.bin")).getFile();
+        return new File(defaultDataLocation);
+    }
+
     public static class Stock {
         public double averageGrowth;
         public double deviation;
@@ -109,6 +145,54 @@ public class MarketSystem {
                     "Deviation: " + deviation + "\n" +
                     "Price: " + shareValue + "\n" +
                     "Volume: " + shares;
+        }
+    }
+
+    private static boolean isLeapYear(int year) {
+        return year % 400 == 0 || (year % 4 == 0 && year % 100 != 0);
+    }
+
+    private static int getDaysInMonth(int month, int year) {
+        Map<Integer, Integer> MONTHS_TO_DAYS = Map.ofEntries(
+                Map.entry(1, 31),
+                Map.entry(3, 31),
+                Map.entry(4, 30),
+                Map.entry(5, 31),
+                Map.entry(6, 30),
+                Map.entry(7, 31),
+                Map.entry(8, 31),
+                Map.entry(9, 30),
+                Map.entry(10, 31),
+                Map.entry(11, 30),
+                Map.entry(12, 31)
+        );
+
+        // February has an extra day on leap years
+        if (month == 2) {
+            return isLeapYear(year) ? 29 : 28;
+        }
+        if (!MONTHS_TO_DAYS.containsKey(month)) {
+            System.out.println("Month " + month + " does not exist!");
+            return 0;
+        }
+        return MONTHS_TO_DAYS.get(month);
+    }
+
+    public static class StockDate {
+        public byte month = 0;
+        public byte day = 0;
+        public short year = 0;
+        public double shareValue = 0d;
+        public int shares = 0;
+
+        public long getDaysSince(short year) {
+            long inDays = ((this.year - year) * 365L) + this.day;
+
+            for (int m = 1; m < this.month; ++m) {
+                inDays += getDaysInMonth(m, this.year);
+            }
+
+            return inDays;
         }
     }
 
