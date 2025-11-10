@@ -64,3 +64,19 @@
     -fx-border-width: 3px;
     -fx-border-radius: 10px;
 }
+
+.chart {
+    -fx-create-symbols: false;
+}
+
+.axis {
+    -fx-padding: -10;
+}
+
+.chart-series-area-line {
+    -fx-stroke: rgba(0,200,0,255);
+}
+
+.chart-series-area-fill {
+    -fx-fill: rgba(0,200,0,0.25)
+}

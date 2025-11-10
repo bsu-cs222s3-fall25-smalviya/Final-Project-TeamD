@@ -148,36 +148,6 @@ public class MarketSystem {
         }
     }
 
-    private static boolean isLeapYear(int year) {
-        return year % 400 == 0 || (year % 4 == 0 && year % 100 != 0);
-    }
-
-    private static int getDaysInMonth(int month, int year) {
-        Map<Integer, Integer> MONTHS_TO_DAYS = Map.ofEntries(
-                Map.entry(1, 31),
-                Map.entry(3, 31),
-                Map.entry(4, 30),
-                Map.entry(5, 31),
-                Map.entry(6, 30),
-                Map.entry(7, 31),
-                Map.entry(8, 31),
-                Map.entry(9, 30),
-                Map.entry(10, 31),
-                Map.entry(11, 30),
-                Map.entry(12, 31)
-        );
-
-        // February has an extra day on leap years
-        if (month == 2) {
-            return isLeapYear(year) ? 29 : 28;
-        }
-        if (!MONTHS_TO_DAYS.containsKey(month)) {
-            System.out.println("Month " + month + " does not exist!");
-            return 0;
-        }
-        return MONTHS_TO_DAYS.get(month);
-    }
-
     public static class StockDate {
         public byte month = 0;
         public byte day = 0;
@@ -189,10 +159,10 @@ public class MarketSystem {
             long inDays = ((this.year - year) * 365L) + this.day;
 
             for (int m = 1; m < this.month; ++m) {
-                inDays += getDaysInMonth(m, this.year);
+                inDays += Time.getDaysInMonth(m, this.year);
             }
 
-            return inDays;
+            return inDays - 1;
         }
     }
 
