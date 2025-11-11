@@ -1,5 +1,6 @@
 package papertrader.gui;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.NumberAxis;
@@ -37,6 +38,7 @@ public class Stocks extends VBox {
         pane.setLeft(scrollPane);
 
         HBox buttonBox = new HBox(25.0);
+        buttonBox.setPadding(new Insets(10.0, 0.0, 0.0, 0.0));
         buttonBox.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
         buttonBox.setAlignment(Pos.TOP_CENTER);
 
@@ -52,12 +54,12 @@ public class Stocks extends VBox {
 
         this.contentPane.setTop(buttonBox);
 
+        buttonBox.getChildren().add(buttonTemplate.apply("Trading", this::tradingMenu));
+        //buttonBox.getChildren().add(buttonTemplate.apply("Hello2", (_) -> this.contentPane.setCenter(null)));
         buttonBox.getChildren().add(buttonTemplate.apply("Visualize", this::valueOverTimeChart));
-        buttonBox.getChildren().add(buttonTemplate.apply("Hello1", (_) -> {this.contentPane.setCenter(null);}));
-        buttonBox.getChildren().add(buttonTemplate.apply("Hello2", (_) -> {this.contentPane.setCenter(null);}));
 
         this.currentStock = MarketSystem.get().stockList.firstKey();
-        this.currentMenu = this::valueOverTimeChart;
+        this.currentMenu = this::tradingMenu;
         refresh(null);
 
         pane.setCenter(this.contentPane);
@@ -91,6 +93,23 @@ public class Stocks extends VBox {
         return pane;
     }
 
+    private void tradingMenu(ActionEvent event) {
+        if (this.currentStock.isEmpty()) return;
+
+        BorderPane pane = new BorderPane();
+
+        HBox box = new HBox(30.0);
+        box.setPadding(new Insets(0.0, 0.0, 50.0, 0.0));
+        box.setAlignment(Pos.BOTTOM_CENTER);
+        box.getChildren().add(new Button("Hello"));
+        box.getChildren().add(new Button("Hello1"));
+        box.getChildren().add(new Button("Hello2"));
+
+        pane.setBottom(box);
+
+        this.contentPane.setCenter(pane);
+    }
+
     private void valueOverTimeChart(ActionEvent event) {
         if (this.currentStock.isEmpty()) return;
 
@@ -105,6 +124,8 @@ public class Stocks extends VBox {
         yAxis.setLabel("Share Value");
 
         final AreaChart<Number,Number> chart = new AreaChart<>(xAxis,yAxis);
+        chart.setLegendVisible(false);
+        chart.setPadding(new Insets(0.0, 60.0, 0.0, 0.0));
 
         //defining a series
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
