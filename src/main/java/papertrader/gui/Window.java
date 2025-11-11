@@ -5,10 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import papertrader.core.MarketSystem;
 import papertrader.core.Player;
@@ -20,8 +17,7 @@ import java.util.function.Supplier;
 
 public class Window extends Application {
 
-    private final VBox root = new VBox();
-    private final SwitchPane pane = new SwitchPane();
+    private final BorderPane root = new BorderPane();
 
     private static final List<Map.Entry<String, Supplier<Pane>>> panelList = List.of(
             Map.entry("Stocks", Stocks::new),
@@ -49,17 +45,14 @@ public class Window extends Application {
         for (Map.Entry<String, Supplier<Pane>> panel : panelList) {
             Button button = new Button(panel.getKey());
             button.getStyleClass().add("side_buttons");
-            button.setOnAction(_ -> {
-               this.pane.set(panel.getValue().get());
-            });
+            button.setOnAction(_ -> this.root.setCenter(panel.getValue().get()));
             sideButtons.getChildren().add(button);
         }
 
-        this.root.getChildren().add(sideButtons);
-        this.root.getChildren().add(this.pane);
+        this.root.setTop(sideButtons);
 
         // Set Defaults
-        this.pane.set(panelList.getFirst().getValue().get());
+        this.root.setCenter(panelList.getFirst().getValue().get());
 
         stage.setScene(scene);
         stage.setTitle("Paper Trader");

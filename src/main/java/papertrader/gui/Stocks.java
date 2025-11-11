@@ -1,11 +1,9 @@
 package papertrader.gui;
-import javafx.geometry.Insets;
+import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.chart.AreaChart;
-import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
@@ -15,9 +13,13 @@ import javafx.util.StringConverter;
 import papertrader.core.MarketSystem;
 import papertrader.core.Time;
 
+import java.util.function.*;
+
 public class Stocks extends VBox {
 
-    private final SwitchPane stockInfo = new SwitchPane();
+    private final BorderPane contentPane = new BorderPane();
+    private String currentStock;
+    private Consumer<ActionEvent> currentMenu;
 
     Stocks() {
         TextField field = new TextField();
@@ -28,13 +30,43 @@ public class Stocks extends VBox {
             }
         });
         this.getChildren().add(field);
-        HBox hbox = new HBox();
+
+        BorderPane pane = new BorderPane();
 
         ScrollPane scrollPane = buildScrollPane();
-        hbox.getChildren().add(scrollPane);
-        hbox.getChildren().add(this.stockInfo);
+        pane.setLeft(scrollPane);
 
-        this.getChildren().add(hbox);
+        HBox buttonBox = new HBox(25.0);
+        buttonBox.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+        buttonBox.setAlignment(Pos.TOP_CENTER);
+
+        BiFunction<String, Consumer<ActionEvent>, Button> buttonTemplate = (str, func) -> {
+            Button button = new Button(str);
+            button.setPrefWidth(100.0);
+            button.setOnAction((event) -> {
+                this.currentMenu = func;
+                refresh(event);
+            });
+            return button;
+        };
+
+        this.contentPane.setTop(buttonBox);
+
+        buttonBox.getChildren().add(buttonTemplate.apply("Visualize", this::valueOverTimeChart));
+        buttonBox.getChildren().add(buttonTemplate.apply("Hello1", (_) -> {this.contentPane.setCenter(null);}));
+        buttonBox.getChildren().add(buttonTemplate.apply("Hello2", (_) -> {this.contentPane.setCenter(null);}));
+
+        this.currentStock = MarketSystem.get().stockList.firstKey();
+        this.currentMenu = this::valueOverTimeChart;
+        refresh(null);
+
+        pane.setCenter(this.contentPane);
+
+        this.getChildren().add(pane);
+    }
+
+    private void refresh(ActionEvent event) {
+        currentMenu.accept(event);
     }
 
     private ScrollPane buildScrollPane() {
@@ -45,9 +77,9 @@ public class Stocks extends VBox {
 
         VBox vBox = new VBox();
 
-        MarketSystem.get().stockList.forEach((string, stock) -> {
+        MarketSystem.get().stockList.forEach((string, _) -> {
             Button button = new Button(string);
-            button.setOnAction(event -> onSelectStock(string));
+            button.setOnAction(_ -> onSelectStock(string));
             button.getStyleClass().add("button_list");
 
             vBox.getChildren().add(button);
@@ -59,27 +91,24 @@ public class Stocks extends VBox {
         return pane;
     }
 
-    private void onSelectStock(String string) {
-        if (!MarketSystem.get().stockList.containsKey(string)) {
-            Window.errorMessage("Stock does not exist!");
-            return;
-        }
-        if (!MarketSystem.get().stockHistory.containsKey(string)) {
+    private void valueOverTimeChart(ActionEvent event) {
+        if (this.currentStock.isEmpty()) return;
+
+        if (!MarketSystem.get().stockHistory.containsKey(this.currentStock)) {
             return;
         }
 
-        HBox hbox = new HBox();
 
         final NumberAxis xAxis = new NumberAxis();
-        final NumberAxis yAxis = new NumberAxis();
         xAxis.setLabel("Days Since Jan 1st, 2024");
+        final NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("Share Value");
 
         final AreaChart<Number,Number> chart = new AreaChart<>(xAxis,yAxis);
-        chart.setTitle("Share Value over Time");
 
         //defining a series
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        series.setName(string);
+        series.setName(this.currentStock);
 
         StringConverter<Number> formatter = new StringConverter<>() {
             @Override
@@ -97,27 +126,25 @@ public class Stocks extends VBox {
         xAxis.setTickLabelFormatter(formatter);
 
         xAxis.setLowerBound(0.0);
-        xAxis.setUpperBound(MarketSystem.get().stockHistory.get(string).getFirst().getDaysSince((short) 2024) + 1);
+        xAxis.setUpperBound(MarketSystem.get().stockHistory.get(this.currentStock).getFirst().getDaysSince((short) 2024) + 1);
         xAxis.setTickUnit(365.0/12.0);
         xAxis.setAutoRanging(false);
 
-        for (MarketSystem.StockDate stockDate : MarketSystem.get().stockHistory.get(string)) {
+        for (MarketSystem.StockDate stockDate : MarketSystem.get().stockHistory.get(this.currentStock)) {
             series.getData().add(new XYChart.Data<>(stockDate.getDaysSince((short) 2024), stockDate.shareValue));
         }
 
         chart.getData().add(series);
 
-        hbox.getChildren().add(chart);
+        this.contentPane.setCenter(chart);
+    }
 
-        VBox vbox = new VBox();
-        vbox.setAlignment(Pos.CENTER_RIGHT);
-
-        vbox.getChildren().add(new Button("Hello"));
-        vbox.getChildren().add(new Button("Hello1"));
-        vbox.getChildren().add(new Button("Hello2"));
-
-        hbox.getChildren().add(vbox);
-
-        stockInfo.set(hbox);
+    private void onSelectStock(String string) {
+        if (!MarketSystem.get().stockList.containsKey(string)) {
+            Window.errorMessage("Stock does not exist!");
+            return;
+        }
+        this.currentStock = string;
+        refresh(null);
     }
 }
