@@ -16,26 +16,24 @@ import papertrader.core.Time;
 
 import java.util.function.*;
 
-public class Stocks extends VBox {
+public class Stocks extends BorderPane {
 
     private final BorderPane contentPane = new BorderPane();
     private String currentStock;
     private Consumer<ActionEvent> currentMenu;
+    private final VBox scrollBox = new VBox();
 
     Stocks() {
         TextField field = new TextField();
         field.setPromptText("Enter stock Ticker");
-        field.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                onSelectStock(field.getText());
-            }
+        field.setOnKeyPressed(_ -> {
+            refreshScrollBox(field.getText());
         });
-        this.getChildren().add(field);
+        this.setTop(field);
 
         BorderPane pane = new BorderPane();
 
-        ScrollPane scrollPane = buildScrollPane();
-        pane.setLeft(scrollPane);
+        pane.setLeft(buildScrollPane());
 
         HBox buttonBox = new HBox(25.0);
         buttonBox.setPadding(new Insets(10.0, 0.0, 0.0, 0.0));
@@ -64,7 +62,7 @@ public class Stocks extends VBox {
 
         pane.setCenter(this.contentPane);
 
-        this.getChildren().add(pane);
+        this.setCenter(pane);
     }
 
     private void refresh(ActionEvent event) {
@@ -72,25 +70,33 @@ public class Stocks extends VBox {
     }
 
     private ScrollPane buildScrollPane() {
-        ScrollPane pane = new ScrollPane();
-        pane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        pane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-        pane.setFitToWidth(true);
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setPrefWidth(150.0);
 
-        VBox vBox = new VBox();
+        refreshScrollBox("");
+
+        scrollPane.setContent(this.scrollBox);
+        scrollPane.setPannable(true);
+
+        return scrollPane;
+    }
+
+    private void refreshScrollBox(String filter) {
+        this.scrollBox.getChildren().clear();
 
         MarketSystem.get().stockList.forEach((string, _) -> {
-            Button button = new Button(string);
-            button.setOnAction(_ -> onSelectStock(string));
-            button.getStyleClass().add("button_list");
+            if (string.startsWith(filter)) {
+                Button button = new Button(string);
+                button.setOnAction(_ -> onSelectStock(string));
+                button.getStyleClass().add("button_list");
 
-            vBox.getChildren().add(button);
+                this.scrollBox.getChildren().add(button);
+            }
         });
 
-        pane.setContent(vBox);
-        pane.setPannable(true);
-
-        return pane;
     }
 
     private void tradingMenu(ActionEvent event) {
