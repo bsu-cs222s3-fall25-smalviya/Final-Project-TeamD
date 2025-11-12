@@ -1,13 +1,12 @@
-package papertrader.player;
+package papertrader.core;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import papertrader.engine.MarketSystem;
 
 import java.io.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Player {
 
@@ -67,12 +66,39 @@ public class Player {
 
         public double getMoney() { return this.money; }
 
+        public double getTotalMoney() {
+
+            // Get value of all stocks after incrementing them by a day
+            AtomicReference<Double> totalInvestment = new AtomicReference<>();
+            totalInvestment.set(0.0);
+
+            MarketSystem.get().stockList.forEach((string, _) -> totalInvestment.set(totalInvestment.get() + Player.get().portfolio.getMoneyInStock(string)));
+
+            return this.money + totalInvestment.get();
+        }
+
         public void addMoney(int amount) {
             this.money += amount;
         }
 
         public ArrayList<MarketSystem.Trade> getTrades() {
             return trades;
+        }
+
+        public double getNumberOfShares(String stockName) {
+            return ownedStocks.getOrDefault(stockName, 0.0);
+        }
+
+        public double getMoneyInStock(String stockName) {
+            return ownedStocks.getOrDefault(stockName, 0.0) * MarketSystem.get().stockList.get(stockName).shareValue;
+        }
+
+        public boolean ownsStock(String stockName) {
+            return ownedStocks.containsKey(stockName);
+        }
+
+        public boolean isEmpty() {
+            return ownedStocks.isEmpty();
         }
 
         public void buyStock(String stockName, double amountOfShares) {
@@ -139,7 +165,7 @@ public class Player {
 
             // Remove from owned stocks
             {
-                ownedStocks.compute(stockName, (_, amount) -> amount - amountOfShares);
+                ownedStocks.compute(stockName, (_, amount) -> amount  - amountOfShares);
             }
 
             // Add trade

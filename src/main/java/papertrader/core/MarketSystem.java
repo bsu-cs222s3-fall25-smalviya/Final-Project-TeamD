@@ -1,4 +1,4 @@
-package papertrader.engine;
+package papertrader.core;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -7,14 +7,14 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 public class MarketSystem {
 
     private static final MarketSystem marketSystem = new MarketSystem();
 
-    public HashMap<String, Stock> stockList = new HashMap<>();
+    public TreeMap<String, Stock> stockList = new TreeMap<>();
+    public final TreeMap<String, ArrayList<StockDate>> stockHistory = new TreeMap<>();
 
     public static MarketSystem get() {
         return marketSystem;
@@ -41,7 +41,7 @@ public class MarketSystem {
     public void loadDefaultData() {
         Gson gson = new Gson();
 
-        Type mapType = new TypeToken<HashMap<String, Stock>>(){}.getType();
+        Type mapType = new TypeToken<TreeMap<String, Stock>>(){}.getType();
 
         try {
             Reader reader = new FileReader(getDefaultStockData());
@@ -57,12 +57,14 @@ public class MarketSystem {
             System.out.println("No Stock data found!");
             throw new RuntimeException();
         }
+
+        loadStockHistory(getDefaultHistoryFile());
     }
 
     public void loadData() {
         Gson gson = new Gson();
 
-        Type mapType = new TypeToken<HashMap<String, Stock>>(){}.getType();
+        Type mapType = new TypeToken<TreeMap<String, Stock>>(){}.getType();
 
         try {
             Reader reader = new FileReader(getStockData());
@@ -75,6 +77,29 @@ public class MarketSystem {
         }
     }
 
+    public void loadStockHistory(File file) {
+        try (DataInputStream input = new DataInputStream(new FileInputStream(file))){
+            while (input.available() != 0) {
+                String stockName = input.readUTF();
+
+                int arrLength = input.readInt();
+                ArrayList<StockDate> stockDates = new ArrayList<>();
+                for (int i = 0; i < arrLength; ++i) {
+                    StockDate stock = new StockDate();
+                    stock.month = input.readByte();
+                    stock.day = input.readByte();
+                    stock.year = input.readShort();
+                    stock.shareValue = input.readDouble();
+                    stock.shares = input.readInt();
+                    stockDates.add(stock);
+                }
+                this.stockHistory.put(stockName, stockDates);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void incrementStocks() {
         Random random = new Random();
 
@@ -82,11 +107,8 @@ public class MarketSystem {
             double value = stock.averageGrowth + random.nextGaussian() * stock.deviation;
             stock.shareValue += value;
 
-            if (random.nextFloat() < 0.025) { // Small chance to grow stock
-                stock.averageGrowth += 0.01;
-            }
-            if (random.nextFloat() < 0.025) { // Small chance to shrink stock
-                stock.averageGrowth -= 0.01;
+            if (random.nextFloat() < 0.025) { // Small chance to grow or shrink stock
+                stock.averageGrowth += (random.nextDouble() * 2.0 - 1.0) * 0.01;
             }
         });
     }
@@ -97,8 +119,18 @@ public class MarketSystem {
     }
 
     private File getDefaultStockData() {
+        String defaultDataLocation = Objects.requireNonNull(getClass().getResource("/DefaultStockData.json")).getFile();
+        return new File(defaultDataLocation);
+    }
+
+    private File getHistoryFile() {
         String workingDirectory = System.getProperty("user.dir");
-        return new File(workingDirectory + "/data/DefaultStockData.json");
+        return new File(workingDirectory + "/data/StockHistory.bin");
+    }
+
+    private File getDefaultHistoryFile() {
+        String defaultDataLocation = Objects.requireNonNull(getClass().getResource("/DefaultStockHistory.bin")).getFile();
+        return new File(defaultDataLocation);
     }
 
     public static class Stock {
@@ -113,6 +145,24 @@ public class MarketSystem {
                     "Deviation: " + deviation + "\n" +
                     "Price: " + shareValue + "\n" +
                     "Volume: " + shares;
+        }
+    }
+
+    public static class StockDate {
+        public byte month = 0;
+        public byte day = 0;
+        public short year = 0;
+        public double shareValue = 0d;
+        public int shares = 0;
+
+        public long getDaysSince(short year) {
+            long inDays = ((this.year - year) * 365L) + this.day;
+
+            for (int m = 1; m < this.month; ++m) {
+                inDays += Time.getDaysInMonth(m, this.year);
+            }
+
+            return inDays - 1;
         }
     }
 

@@ -1,13 +1,9 @@
-package papertrader.UI;
+package papertrader.gui;
 
 import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
-
-import java.awt.*;
 
 public class Portfolio extends VBox {
 
@@ -17,14 +13,21 @@ public class Portfolio extends VBox {
 
     Portfolio() {
         super(10);
+
         MakeButtons();
     }
 
     private void MakeButtons() {
         for (String buttonName : filterButtons) {
             Button button = new Button(buttonName);
-            button.setFont(Window.SMALL_TEXT);
+            button.getStyleClass().add("stat");
             this.getChildren().add(button);
+            button.setOnAction(event -> {
+                System.out.println("Hello ");
+                filterSetting = buttonName;
+                System.out.println(filterSetting);
+            });
         }
     }
+
 }
