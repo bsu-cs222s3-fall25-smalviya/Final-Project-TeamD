@@ -69,27 +69,29 @@ public class Player {
         public double getMoney() { return this.money; }
 
         public double getTotalMoney() {
+            double total = this.money;
 
-            // Get value of all stocks after incrementing them by a day
-            AtomicReference<Double> totalInvestment = new AtomicReference<>();
-            totalInvestment.set(0.0);
+            for (String stockName : ownedStocks.keySet()) {
+                if (MarketSystem.get().stockList.containsKey(stockName)) {
+                    double shares = ownedStocks.get(stockName);
+                    double currentPrice = MarketSystem.get().stockList.get(stockName).shareValue;
+                    total += shares * currentPrice;
+                }
+            }
 
-            MarketSystem.get().stockList.forEach((string, _) -> {
-                totalInvestment.set(totalInvestment.get() + Player.get().portfolio.getMoneyInStock(string));
-            });
+            for (String stockName : shortedStocks.keySet()) {
+                if (MarketSystem.get().stockList.containsKey(stockName)) {
+                    ShortPosition shortPosition = shortedStocks.get(stockName);
+                    double currentPrice = MarketSystem.get().stockList.get(stockName).shareValue;
+                    double initialValue = shortPosition.shares * shortPosition.initialPrice;
+                    double currentValue = shortPosition.shares * currentPrice;
+                    double pnl = initialValue - currentValue;
 
-            AtomicReference<Double> shortPnL = new AtomicReference<>();
-            shortPnL.set(0.0);
+                    total += shortPosition.marginHeld + pnl;
+                }
+            }
 
-            shortedStocks.forEach((stockName, shortPosition) -> {
-                double currentPrice = MarketSystem.get().stockList.get(stockName).shareValue;
-                double initialValue = shortPosition.shares * shortPosition.initialPrice;
-                double currentValue = shortPosition.shares * currentPrice;
-                double pnl = initialValue - currentValue; // Profit if price went down
-                shortPnL.set(shortPnL.get() + pnl);
-            });
-
-            return this.money + totalInvestment.get() + shortPnL.get();
+            return total;
         }
 
         public void addMoney(int amount) {
