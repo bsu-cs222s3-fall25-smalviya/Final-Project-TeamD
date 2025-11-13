@@ -113,14 +113,16 @@ public class Stocks extends BorderPane {
         javafx.scene.control.Label stockLabel = new javafx.scene.control.Label("Stock: " + this.currentStock);
         javafx.scene.control.Label priceLabel = new javafx.scene.control.Label(String.format("Current Price: $%.2f", stock.shareValue));
         javafx.scene.control.Label ownedLabel = new javafx.scene.control.Label(String.format("Shares Owned: %.2f", Player.get().portfolio.getNumberOfShares(this.currentStock)));
+        javafx.scene.control.Label shortedLabel = new javafx.scene.control.Label(String.format("Shares Shorted: %.2f", Player.get().portfolio.getShortedShares(this.currentStock)));
         javafx.scene.control.Label moneyLabel = new javafx.scene.control.Label(String.format("Available Money: $%.2f", Player.get().portfolio.getMoney()));
 
         stockLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
         priceLabel.setStyle("-fx-font-size: 14px;");
         ownedLabel.setStyle("-fx-font-size: 14px;");
+        shortedLabel.setStyle("-fx-font-size: 14px;");
         moneyLabel.setStyle("-fx-font-size: 14px;");
 
-        infoBox.getChildren().addAll(stockLabel, priceLabel, ownedLabel, moneyLabel);
+        infoBox.getChildren().addAll(stockLabel, priceLabel, ownedLabel, shortedLabel, moneyLabel);
         pane.setCenter(infoBox);
 
         TextField sharesField = new TextField();
@@ -132,7 +134,7 @@ public class Stocks extends BorderPane {
         inputBox.setPadding(new Insets(0.0, 0.0, 20.0, 0.0));
         inputBox.getChildren().add(sharesField);
 
-        HBox box = new HBox(30.0);
+        HBox box = new HBox(20.0);
         box.setPadding(new Insets(0.0, 0.0, 50.0, 0.0));
         box.setAlignment(Pos.BOTTOM_CENTER);
 
@@ -191,7 +193,28 @@ public class Stocks extends BorderPane {
             }
         });
 
-        box.getChildren().addAll(buyButton, sellButton, shortButton);
+        Button coverButton = new Button("Cover Short");
+        coverButton.setPrefWidth(100.0);
+        coverButton.setOnAction(_ -> {
+            try {
+                double shares = Double.parseDouble(sharesField.getText());
+                if (shares <= 0) {
+                    Window.errorMessage("Please enter a positive number of shares!");
+                    return;
+                }
+                if (!Player.get().portfolio.hasShortPosition(this.currentStock)) {
+                    Window.errorMessage("You don't have a short position in " + this.currentStock + "!");
+                    return;
+                }
+                Player.get().portfolio.coverShort(this.currentStock, shares);
+                sharesField.clear();
+                refresh(null);
+            } catch (NumberFormatException e) {
+                Window.errorMessage("Please enter a valid number!");
+            }
+        });
+
+        box.getChildren().addAll(buyButton, sellButton, shortButton, coverButton);
 
         VBox bottomBox = new VBox(10.0);
         bottomBox.getChildren().addAll(inputBox, box);

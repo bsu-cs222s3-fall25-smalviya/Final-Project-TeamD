@@ -55,6 +55,7 @@ public class Player {
         this.portfolio.money = 100000;
         this.portfolio.trades.clear();
         this.portfolio.ownedStocks.clear();
+        this.portfolio.shortedStocks.clear();
     }
 
 
@@ -63,6 +64,7 @@ public class Player {
         private double money;
         private final ArrayList<MarketSystem.Trade> trades = new ArrayList<>();
         private final HashMap<String, Double> ownedStocks = new HashMap<>();
+        private final HashMap<String, ShortPosition> shortedStocks = new HashMap<>();
 
         public double getMoney() { return this.money; }
 
@@ -72,9 +74,20 @@ public class Player {
             AtomicReference<Double> totalInvestment = new AtomicReference<>();
             totalInvestment.set(0.0);
 
-            MarketSystem.get().stockList.forEach((string, _) -> totalInvestment.set(totalInvestment.get() + Player.get().portfolio.getMoneyInStock(string)));
+            MarketSystem.get().stockList.forEach((string, _) -> {
+                totalInvestment.set(totalInvestment.get() + Player.get().portfolio.getMoneyInStock(string));
+            });
 
-            return this.money + totalInvestment.get();
+            AtomicReference<Double> shortLiabilities = new AtomicReference<>();
+            shortLiabilities.set(0.0);
+
+            shortedStocks.forEach((stockName, shortPosition) -> {
+                double currentPrice = MarketSystem.get().stockList.get(stockName).shareValue;
+                double currentValue = shortPosition.shares * currentPrice;
+                shortLiabilities.set(shortLiabilities.get() + currentValue);
+            });
+
+            return this.money + totalInvestment.get() - shortLiabilities.get();
         }
 
         public void addMoney(int amount) {
@@ -89,12 +102,21 @@ public class Player {
             return ownedStocks.getOrDefault(stockName, 0.0);
         }
 
+        public double getShortedShares(String stockName) {
+            ShortPosition pos = shortedStocks.get(stockName);
+            return pos != null ? pos.shares : 0.0;
+        }
+
         public double getMoneyInStock(String stockName) {
             return ownedStocks.getOrDefault(stockName, 0.0) * MarketSystem.get().stockList.get(stockName).shareValue;
         }
 
         public boolean ownsStock(String stockName) {
             return ownedStocks.containsKey(stockName);
+        }
+
+        public boolean hasShortPosition(String stockName) {
+            return shortedStocks.containsKey(stockName);
         }
 
         public boolean isEmpty() {
@@ -129,7 +151,6 @@ public class Player {
                 ownedStocks.put(stockName, value);
             }
 
-            // Add trade
             {
                 MarketSystem.Trade trade = new MarketSystem.Trade();
                 trade.name = stockName;
@@ -163,12 +184,10 @@ public class Player {
 
             this.money += moneyGained;
 
-            // Remove from owned stocks
             {
                 ownedStocks.compute(stockName, (_, amount) -> amount  - amountOfShares);
             }
 
-            // Add trade
             {
                 MarketSystem.Trade trade = new MarketSystem.Trade();
                 trade.name = stockName;
@@ -181,11 +200,91 @@ public class Player {
         }
 
         public void shortStock(String stockName, double amountOfShares) {
+            if (!MarketSystem.get().stockList.containsKey(stockName)) {
+                System.out.println("Stock " + stockName + " does not exist!");
+                return;
+            }
 
+            MarketSystem.Stock stock = MarketSystem.get().stockList.get(stockName);
+
+            double moneyReceived = amountOfShares * stock.shareValue;
+            this.money += moneyReceived;
+
+            if (shortedStocks.containsKey(stockName)) {
+                ShortPosition existing = shortedStocks.get(stockName);
+                double totalShares = existing.shares + amountOfShares;
+                double weightedAvgPrice = ((existing.shares * existing.initialPrice) + (amountOfShares * stock.shareValue)) / totalShares;
+                existing.shares = totalShares;
+                existing.initialPrice = weightedAvgPrice;
+            } else {
+                ShortPosition newPosition = new ShortPosition();
+                newPosition.shares = amountOfShares;
+                newPosition.initialPrice = stock.shareValue;
+                shortedStocks.put(stockName, newPosition);
+            }
+
+            {
+                MarketSystem.Trade trade = new MarketSystem.Trade();
+                trade.name = stockName;
+                trade.shares = amountOfShares;
+                trade.shareValue = stock.shareValue;
+                trade.type = MarketSystem.TradeType.SHORT;
+
+                trades.add(trade);
+            }
+        }
+
+        public void coverShort(String stockName, double amountOfShares) {
+            if (!MarketSystem.get().stockList.containsKey(stockName)) {
+                System.out.println("Stock " + stockName + " does not exist!");
+                return;
+            }
+
+            if (!this.shortedStocks.containsKey(stockName)) {
+                System.out.println("You do not have a short position in " + stockName + "!");
+                return;
+            }
+
+            ShortPosition position = shortedStocks.get(stockName);
+            if (position.shares < amountOfShares) {
+                System.out.println("You only have " + position.shares + " shares shorted!");
+                return;
+            }
+
+            MarketSystem.Stock stock = MarketSystem.get().stockList.get(stockName);
+
+            double moneyRequired = amountOfShares * stock.shareValue;
+
+            if (this.money < moneyRequired) {
+                System.out.println("Not enough money to cover short position!");
+                return;
+            }
+
+            this.money -= moneyRequired;
+
+            position.shares -= amountOfShares;
+            if (position.shares <= 0) {
+                shortedStocks.remove(stockName);
+            }
+
+            {
+                MarketSystem.Trade trade = new MarketSystem.Trade();
+                trade.name = stockName;
+                trade.shares = amountOfShares;
+                trade.shareValue = stock.shareValue;
+                trade.type = MarketSystem.TradeType.COVER;
+
+                trades.add(trade);
+            }
         }
 
         public void removeMoney(int amount) {
             this.money -= amount;
+        }
+
+        public static class ShortPosition {
+            public double shares;
+            public double initialPrice;
         }
     }
 }

@@ -169,7 +169,8 @@ public class MarketSystem {
     public enum TradeType {
         BUY,
         SELL,
-        SHORT
+        SHORT,
+        COVER
     }
 
     public static class Trade {
