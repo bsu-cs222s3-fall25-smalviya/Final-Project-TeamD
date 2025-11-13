@@ -27,9 +27,11 @@ public class Stocks extends BorderPane {
     Stocks() {
         TextField field = new TextField();
         field.setPromptText("Enter stock Ticker");
-        field.setOnKeyPressed(_ -> {
-            refreshScrollBox(field.getText());
+
+        field.textProperty().addListener((observable, oldValue, newValue) -> {
+            refreshScrollBox(newValue);
         });
+
         this.setTop(field);
 
         BorderPane pane = new BorderPane();
