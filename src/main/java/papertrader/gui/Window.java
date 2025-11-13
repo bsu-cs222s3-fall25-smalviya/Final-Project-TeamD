@@ -1,6 +1,7 @@
 package papertrader.gui;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -18,6 +19,7 @@ import java.util.function.Supplier;
 public class Window extends Application {
 
     private final BorderPane root = new BorderPane();
+    private Supplier<Pane> currentPanelSupplier;
 
     private static final List<Map.Entry<String, Supplier<Pane>>> panelList = List.of(
             Map.entry("Stocks", Stocks::new),
@@ -40,19 +42,37 @@ public class Window extends Application {
                 Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm()
         );
 
+        BorderPane topBar = new BorderPane();
+        topBar.setPadding(new Insets(10));
+
         HBox sideButtons = new HBox(30);
         sideButtons.setAlignment(Pos.CENTER);
         for (Map.Entry<String, Supplier<Pane>> panel : panelList) {
             Button button = new Button(panel.getKey());
             button.getStyleClass().add("side_buttons");
-            button.setOnAction(_ -> this.root.setCenter(panel.getValue().get()));
+            button.setOnAction(_ -> {
+                currentPanelSupplier = panel.getValue();
+                this.root.setCenter(panel.getValue().get());
+            });
             sideButtons.getChildren().add(button);
         }
 
-        this.root.setTop(sideButtons);
+        Button simulateButton = new Button("Simulate");
+        simulateButton.getStyleClass().add("side_buttons");
+        simulateButton.setOnAction(_ -> {
+            MarketSystem.get().incrementStocks();
+            if (currentPanelSupplier != null) {
+                this.root.setCenter(currentPanelSupplier.get());
+            }
+        });
 
-        // Set Defaults
-        this.root.setCenter(panelList.getFirst().getValue().get());
+        topBar.setCenter(sideButtons);
+        topBar.setRight(simulateButton);
+
+        this.root.setTop(topBar);
+
+        currentPanelSupplier = panelList.getFirst().getValue();
+        this.root.setCenter(currentPanelSupplier.get());
 
         stage.setScene(scene);
         stage.setTitle("Paper Trader");
