@@ -102,7 +102,6 @@ public class Stocks extends BorderPane {
 
     }
 
-    // Replace your tradingMenu method with this version that shows short position P&L:
 
     private void tradingMenu(ActionEvent event) {
         if (this.currentStock.isEmpty()) return;
