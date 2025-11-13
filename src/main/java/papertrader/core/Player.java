@@ -64,7 +64,7 @@ public class Player {
         private double money;
         private final ArrayList<MarketSystem.Trade> trades = new ArrayList<>();
         private final HashMap<String, Double> ownedStocks = new HashMap<>();
-        private final HashMap<String, ShortPosition> shortedStocks = new HashMap<>();
+        public final HashMap<String, ShortPosition> shortedStocks = new HashMap<>();
 
         public double getMoney() { return this.money; }
 
@@ -78,16 +78,18 @@ public class Player {
                 totalInvestment.set(totalInvestment.get() + Player.get().portfolio.getMoneyInStock(string));
             });
 
-            AtomicReference<Double> shortLiabilities = new AtomicReference<>();
-            shortLiabilities.set(0.0);
+            AtomicReference<Double> shortPnL = new AtomicReference<>();
+            shortPnL.set(0.0);
 
             shortedStocks.forEach((stockName, shortPosition) -> {
                 double currentPrice = MarketSystem.get().stockList.get(stockName).shareValue;
+                double initialValue = shortPosition.shares * shortPosition.initialPrice;
                 double currentValue = shortPosition.shares * currentPrice;
-                shortLiabilities.set(shortLiabilities.get() + currentValue);
+                double pnl = initialValue - currentValue; // Profit if price went down
+                shortPnL.set(shortPnL.get() + pnl);
             });
 
-            return this.money + totalInvestment.get() - shortLiabilities.get();
+            return this.money + totalInvestment.get() + shortPnL.get();
         }
 
         public void addMoney(int amount) {
@@ -140,7 +142,6 @@ public class Player {
 
             this.money -= moneyRequired;
 
-            // Add to owned stocks
             {
                 double value = amountOfShares;
 
@@ -184,6 +185,7 @@ public class Player {
 
             this.money += moneyGained;
 
+
             {
                 ownedStocks.compute(stockName, (_, amount) -> amount  - amountOfShares);
             }
@@ -207,19 +209,33 @@ public class Player {
 
             MarketSystem.Stock stock = MarketSystem.get().stockList.get(stockName);
 
-            double moneyReceived = amountOfShares * stock.shareValue;
-            this.money += moneyReceived;
+
+            double shortValue = amountOfShares * stock.shareValue;
+
+            // i think this is right? you need a 50% margin, a few sources said this so :shrug:
+            // without the margin you could own infinite stock cause theres no collateral lol
+            double marginRequired = shortValue * 1.5;
+
+            if (this.money < marginRequired) {
+                System.out.println("Not enough money for margin requirement! Need: $" + String.format("%.2f", marginRequired));
+                return;
+            }
+
+            this.money -= marginRequired;
 
             if (shortedStocks.containsKey(stockName)) {
                 ShortPosition existing = shortedStocks.get(stockName);
                 double totalShares = existing.shares + amountOfShares;
                 double weightedAvgPrice = ((existing.shares * existing.initialPrice) + (amountOfShares * stock.shareValue)) / totalShares;
+                double totalMargin = existing.marginHeld + marginRequired;
                 existing.shares = totalShares;
                 existing.initialPrice = weightedAvgPrice;
+                existing.marginHeld = totalMargin;
             } else {
                 ShortPosition newPosition = new ShortPosition();
                 newPosition.shares = amountOfShares;
                 newPosition.initialPrice = stock.shareValue;
+                newPosition.marginHeld = marginRequired;
                 shortedStocks.put(stockName, newPosition);
             }
 
@@ -240,6 +256,9 @@ public class Player {
                 return;
             }
 
+            // i lowkey forgot how shorting worked
+            // you could own infinite shorts at one point
+
             if (!this.shortedStocks.containsKey(stockName)) {
                 System.out.println("You do not have a short position in " + stockName + "!");
                 return;
@@ -253,16 +272,17 @@ public class Player {
 
             MarketSystem.Stock stock = MarketSystem.get().stockList.get(stockName);
 
-            double moneyRequired = amountOfShares * stock.shareValue;
+            double initialValue = amountOfShares * position.initialPrice;
+            double currentValue = amountOfShares * stock.shareValue;
+            double profitLoss = initialValue - currentValue;
 
-            if (this.money < moneyRequired) {
-                System.out.println("Not enough money to cover short position!");
-                return;
-            }
+            double marginToReturn = (amountOfShares / position.shares) * position.marginHeld;
 
-            this.money -= moneyRequired;
+            this.money += marginToReturn + profitLoss;
 
             position.shares -= amountOfShares;
+            position.marginHeld -= marginToReturn;
+
             if (position.shares <= 0) {
                 shortedStocks.remove(stockName);
             }
@@ -285,6 +305,7 @@ public class Player {
         public static class ShortPosition {
             public double shares;
             public double initialPrice;
+            public double marginHeld;
         }
     }
 }

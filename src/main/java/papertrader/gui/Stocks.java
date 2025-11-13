@@ -102,6 +102,8 @@ public class Stocks extends BorderPane {
 
     }
 
+    // Replace your tradingMenu method with this version that shows short position P&L:
+
     private void tradingMenu(ActionEvent event) {
         if (this.currentStock.isEmpty()) return;
 
@@ -112,19 +114,41 @@ public class Stocks extends BorderPane {
         infoBox.setAlignment(Pos.CENTER);
 
         MarketSystem.Stock stock = MarketSystem.get().stockList.get(this.currentStock);
+
         javafx.scene.control.Label stockLabel = new javafx.scene.control.Label("Stock: " + this.currentStock);
         javafx.scene.control.Label priceLabel = new javafx.scene.control.Label(String.format("Current Price: $%.2f", stock.shareValue));
         javafx.scene.control.Label ownedLabel = new javafx.scene.control.Label(String.format("Shares Owned: %.2f", Player.get().portfolio.getNumberOfShares(this.currentStock)));
         javafx.scene.control.Label shortedLabel = new javafx.scene.control.Label(String.format("Shares Shorted: %.2f", Player.get().portfolio.getShortedShares(this.currentStock)));
-        javafx.scene.control.Label moneyLabel = new javafx.scene.control.Label(String.format("Available Money: $%.2f", Player.get().portfolio.getMoney()));
+
+        // Show short position P&L if exists
+        String shortPnLText = "";
+        if (Player.get().portfolio.hasShortPosition(this.currentStock)) {
+            Player.Portfolio.ShortPosition pos = Player.get().portfolio.shortedStocks.get(this.currentStock);
+            double currentValue = pos.shares * stock.shareValue;
+            double initialValue = pos.shares * pos.initialPrice;
+            double pnl = initialValue - currentValue; // Profit if price went down
+            String pnlColor = pnl >= 0 ? "green" : "red";
+            shortPnLText = String.format("Short P&L: $%.2f (Entry: $%.2f)", pnl, pos.initialPrice);
+        }
+
+        javafx.scene.control.Label shortPnLLabel = new javafx.scene.control.Label(shortPnLText);
+        javafx.scene.control.Label moneyLabel = new javafx.scene.control.Label(String.format("Cash Available: $%.2f", Player.get().portfolio.getMoney()));
+        javafx.scene.control.Label totalLabel = new javafx.scene.control.Label(String.format("Total Net Worth: $%.2f", Player.get().portfolio.getTotalMoney()));
 
         stockLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
         priceLabel.setStyle("-fx-font-size: 14px;");
         ownedLabel.setStyle("-fx-font-size: 14px;");
         shortedLabel.setStyle("-fx-font-size: 14px;");
+        shortPnLLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
         moneyLabel.setStyle("-fx-font-size: 14px;");
+        totalLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
 
-        infoBox.getChildren().addAll(stockLabel, priceLabel, ownedLabel, shortedLabel, moneyLabel);
+        if (shortPnLText.isEmpty()) {
+            infoBox.getChildren().addAll(stockLabel, priceLabel, ownedLabel, shortedLabel, moneyLabel, totalLabel);
+        } else {
+            infoBox.getChildren().addAll(stockLabel, priceLabel, ownedLabel, shortedLabel, shortPnLLabel, moneyLabel, totalLabel);
+        }
+
         pane.setCenter(infoBox);
 
         TextField sharesField = new TextField();
