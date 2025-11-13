@@ -26,6 +26,10 @@ public class PaperTrader {
         boolean isRunning = true;
         while (isRunning) {
 
+            System.out.println(" PAPER TRADER");
+            System.out.println("As a beginning investor with no experience,");
+            System.out.println("you can learn about trading and test strategies with zero risk included\n");
+
             for (Map.Entry<String, Supplier<Integer>> action : STARTUP_ACTIONS) {
                 System.out.println(action.getKey());
             }
@@ -35,11 +39,16 @@ public class PaperTrader {
                 choice = scanner.nextInt();
             } catch (Exception _) {
                 System.out.println("Invalid Choice!");
+                scanner.nextLine();
                 continue;
             }
 
             scanner.nextLine();
 
+            if (choice < 0 || choice >= STARTUP_ACTIONS.size()) {
+                System.out.println("Invalid Choice!");
+                continue;
+            }
 
             Map.Entry<String, Supplier<Integer>> action = STARTUP_ACTIONS.get(choice);
 
@@ -58,6 +67,9 @@ public class PaperTrader {
     public static int newGame() {
         Player.get().loadDefaultData();
         MarketSystem.get().loadDefaultData();
+
+        tutorial();
+
         return runGame();
     }
 
@@ -67,16 +79,56 @@ public class PaperTrader {
         return runGame();
     }
 
+
+    public static void tutorial() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\nBEGINNER TRADING TUTORIAL");
+        System.out.println("Here are some useful facts about trading to get you stored\n");
+
+        String[][] terms = {
+                {"Stock", "A share of ownership in a company."},
+                {"Portfolio", "Your collection of all owned stocks and cash."},
+                {"Ticker", "A short symbol representing a company (e.g., AAPL for Apple)."},
+                {"Share", "A single unit of stock ownership."},
+                {"Buy", "Purchase shares of a stock, spending your available money."},
+                {"Sell", "Sell shares you own to get cash back."},
+                {"Market Value", "The current price of a share in the market."},
+                {"Profit/Loss", "The money you gain or lose based on stock price changes."}
+        };
+
+        for (String[] term : terms) {
+            System.out.println(term[0] + ": " + term[1]);
+        }
+
+        System.out.println("\nTip: You can view your portfolio, check stock prices, and advance days");
+        System.out.println("\nPress ENTER to start");
+        scanner.nextLine();
+    }
+
     public static int runGame() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
 
+            System.out.println("\n=== MAIN MENU ===");
             for (Map.Entry<String, Supplier<Integer>> action : ACTIONS) {
                 System.out.println(action.getKey());
             }
 
-            int choice = scanner.nextInt();
+            int choice;
+            try {
+                choice = scanner.nextInt();
+            } catch (Exception _) {
+                System.out.println("Invalid choice!");
+                scanner.nextLine();
+                continue;
+            }
+
             scanner.nextLine();
+
+            if (choice < 0 || choice >= ACTIONS.size()) {
+                System.out.println("Invalid choice!");
+                continue;
+            }
 
             Map.Entry<String, Supplier<Integer>> action = ACTIONS.get(choice);
 
@@ -87,7 +139,6 @@ public class PaperTrader {
     }
 
     public static int viewPortfolio() {
-
         Scanner scanner = new Scanner(System.in);
 
         System.out.println();
@@ -215,7 +266,6 @@ public class PaperTrader {
     }
 
     public static int nextDay() {
-
         System.out.println();
 
         // If the player has no stocks, do not calculate money made
