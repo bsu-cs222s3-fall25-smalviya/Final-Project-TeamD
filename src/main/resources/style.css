@@ -80,3 +80,80 @@
 .chart-series-area-fill {
     -fx-fill: rgba(0,200,0,0.25)
 }
+
+
+.history_title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.history_empty {
+    -fx-font-size: 14px;
+    -fx-text-fill: gray;
+}
+
+.trade_card {
+    -fx-border-color: #444;
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.trade_number {
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+.trade_type_buy {
+    -fx-background-color: #28a745;
+    -fx-text-fill: white;
+    -fx-padding: 3 8 3 8;
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.trade_type_sell {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+    -fx-padding: 3 8 3 8;
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.trade_type_short {
+    -fx-background-color: #ffc107;
+    -fx-text-fill: black;
+    -fx-padding: 3 8 3 8;
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.trade_type_cover {
+    -fx-background-color: #17a2b8;
+    -fx-text-fill: white;
+    -fx-padding: 3 8 3 8;
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.trade_stock_name {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.trade_detail {
+    -fx-font-size: 13px;
+}
+
+.trade_total {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
