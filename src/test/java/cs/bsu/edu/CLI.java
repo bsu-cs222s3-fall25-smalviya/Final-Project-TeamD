@@ -2,9 +2,8 @@ package cs.bsu.edu;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import papertrader.engine.MarketSystem;
-import papertrader.engine.PaperTrader;
-import papertrader.player.*;
+import papertrader.core.MarketSystem;
+import papertrader.core.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;

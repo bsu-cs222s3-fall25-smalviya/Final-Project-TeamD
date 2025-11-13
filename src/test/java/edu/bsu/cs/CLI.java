@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import papertrader.core.MarketSystem;
 import papertrader.core.Player;
+import papertrader.core.Time;
 
 import java.util.ArrayList;
 
@@ -59,7 +60,7 @@ public class CLI {
     }
 
 
-    /*
+
     @Test
     public void ShortStock() {
         Player player = Player.get();
@@ -67,11 +68,11 @@ public class CLI {
         MarketSystem market = MarketSystem.get();
         market.loadDefaultData();
         player.portfolio.shortStock("NVDA", 1);
-        player.portfolio.sellStock("NVDA", 1);
-        Assertions.assertEquals(1, player.portfolio.getTrades().size());
+        player.portfolio.coverShort("NVDA", 1);
+        Assertions.assertEquals(2, player.portfolio.getTrades().size());
     }
 
-     */
+
 
     @Test
     public void NormalSimulation() {
@@ -95,5 +96,21 @@ public class CLI {
         System.out.println(player.portfolio.getMoney());
 
         Assertions.assertTrue(player.portfolio.getMoney() != money);
+    }
+
+    @Test
+    public void testLeapYears() {
+        Assertions.assertTrue(Time.isLeapYear(2024));
+
+    }
+
+    @Test
+    public void testCaseToMonths() {
+        Assertions.assertEquals("Jan", Time.monthToString(1));
+    }
+
+    @Test
+    public void testDaysInMonth() {
+        Assertions.assertEquals(31, Time.getDaysInMonth(1, 2026));
     }
 }
