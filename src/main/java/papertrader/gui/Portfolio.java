@@ -1,27 +1,35 @@
 package papertrader.gui;
 
+import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
 
-public class Portfolio extends VBox {
+public class Portfolio extends Window.SubPane {
 
     private String filterSetting = "Start";
 
     private final List<String> filterButtons = List.of("Start of Game", "This Year", "Past Month", "Last Week");
 
     Portfolio() {
-        super(10);
+        VBox vbox = new VBox(10);
 
-        MakeButtons();
+        MakeButtons(vbox);
+
+        this.getChildren().add(vbox);
     }
 
-    private void MakeButtons() {
+    @Override
+    public void refresh(ActionEvent event) {
+
+    }
+
+    private void MakeButtons(VBox vbox) {
         for (String buttonName : filterButtons) {
             Button button = new Button(buttonName);
             button.getStyleClass().add("stat");
-            this.getChildren().add(button);
+            vbox.getChildren().add(button);
             button.setOnAction(event -> {
                 System.out.println("Hello ");
                 filterSetting = buttonName;

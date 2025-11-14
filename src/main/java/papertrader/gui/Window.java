@@ -1,6 +1,7 @@
 package papertrader.gui;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -14,17 +15,15 @@ import papertrader.core.Player;
 import java.util.*;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 public class Window extends Application {
 
     private final BorderPane root = new BorderPane();
-    private Supplier<Pane> currentPanelSupplier;
 
-    private static final List<Map.Entry<String, Supplier<Pane>>> panelList = List.of(
-            Map.entry("Stocks", Stocks::new),
-            Map.entry("Portfolio", Portfolio::new),
-            Map.entry("History", History::new)
+    private final List<Map.Entry<String, SubPane>> panelList = List.of(
+            Map.entry("Stocks", new Stocks()),
+            Map.entry("Portfolio", new Portfolio()),
+            Map.entry("History", new History())
     );
 
     public static void main(String[] args) {
@@ -47,22 +46,22 @@ public class Window extends Application {
 
         HBox sideButtons = new HBox(30);
         sideButtons.setAlignment(Pos.CENTER);
-        for (Map.Entry<String, Supplier<Pane>> panel : panelList) {
+        for (Map.Entry<String, SubPane> panel : panelList) {
             Button button = new Button(panel.getKey());
             button.getStyleClass().add("side_buttons");
-            button.setOnAction(_ -> {
-                currentPanelSupplier = panel.getValue();
-                this.root.setCenter(panel.getValue().get());
+            button.setOnAction(event -> {
+                this.root.setCenter(panel.getValue());
+                panel.getValue().refresh(event);
             });
             sideButtons.getChildren().add(button);
         }
 
         Button simulateButton = new Button("Simulate");
         simulateButton.getStyleClass().add("side_buttons");
-        simulateButton.setOnAction(_ -> {
+        simulateButton.setOnAction(event -> {
             MarketSystem.get().incrementStocks();
-            if (currentPanelSupplier != null) {
-                this.root.setCenter(currentPanelSupplier.get());
+            if (this.root.getCenter() instanceof SubPane pane) {
+                pane.refresh(event);
             }
         });
 
@@ -71,8 +70,7 @@ public class Window extends Application {
 
         this.root.setTop(topBar);
 
-        currentPanelSupplier = panelList.getFirst().getValue();
-        this.root.setCenter(currentPanelSupplier.get());
+        this.root.setCenter(panelList.getFirst().getValue());
 
         stage.setScene(scene);
         stage.setTitle("Paper Trader");
@@ -92,5 +90,9 @@ public class Window extends Application {
         alert.setTitle("Error");
         alert.setContentText(error);
         alert.showAndWait();
+    }
+
+    public abstract static class SubPane extends BorderPane {
+        public abstract void refresh(ActionEvent event);
     }
 }

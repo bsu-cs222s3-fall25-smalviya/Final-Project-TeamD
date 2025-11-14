@@ -1,5 +1,6 @@
 package papertrader.gui;
 
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -9,12 +10,12 @@ import javafx.scene.layout.Region;
 import papertrader.core.MarketSystem;
 import papertrader.core.Player;
 
-public class History extends VBox {
+public class History extends Window.SubPane {
 
     private final VBox tradeList = new VBox(5);
 
     public History() {
-        super(10);
+        VBox vbox = new VBox(10);
         this.setPadding(new Insets(20));
         this.getStyleClass().add("root");
 
@@ -24,25 +25,14 @@ public class History extends VBox {
         ScrollPane scrollPane = makeScrollPane();
         scrollPane.setPrefHeight(500);
 
-        this.getChildren().addAll(titleLabel, scrollPane);
+        vbox.getChildren().addAll(titleLabel, scrollPane);
+        this.setCenter(vbox);
 
-        refreshHistory();
+        refresh(null);
     }
 
-    public ScrollPane makeScrollPane() {
-        ScrollPane pane = new ScrollPane();
-        pane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        pane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-        pane.setFitToWidth(true);
-        pane.setPannable(true);
-
-        tradeList.setPadding(new Insets(10));
-        pane.setContent(tradeList);
-
-        return pane;
-    }
-
-    public void refreshHistory() {
+    @Override
+    public void refresh(ActionEvent event) {
         tradeList.getChildren().clear();
 
         var trades = Player.get().portfolio.getTrades();
@@ -58,6 +48,19 @@ public class History extends VBox {
             MarketSystem.Trade trade = trades.get(i);
             tradeList.getChildren().add(createTradeCard(trade, i + 1));
         }
+    }
+
+    public ScrollPane makeScrollPane() {
+        ScrollPane pane = new ScrollPane();
+        pane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        pane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        pane.setFitToWidth(true);
+        pane.setPannable(true);
+
+        tradeList.setPadding(new Insets(10));
+        pane.setContent(tradeList);
+
+        return pane;
     }
 
     private VBox createTradeCard(MarketSystem.Trade trade, int tradeNumber) {
@@ -97,9 +100,5 @@ public class History extends VBox {
         card.getChildren().addAll(headerBox, stockLabel, sharesLabel, priceLabel, totalLabel);
 
         return card;
-    }
-
-    public void pushHistory() {
-        refreshHistory();
     }
 }

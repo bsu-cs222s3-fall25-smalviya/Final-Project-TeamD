@@ -17,7 +17,7 @@ import papertrader.core.Time;
 
 import java.util.function.*;
 
-public class Stocks extends BorderPane {
+public class Stocks extends Window.SubPane {
 
     private final BorderPane contentPane = new BorderPane();
     private String currentStock;
@@ -68,8 +68,9 @@ public class Stocks extends BorderPane {
         this.setCenter(pane);
     }
 
-    private void refresh(ActionEvent event) {
-        currentMenu.accept(event);
+    @Override
+    public void refresh(ActionEvent event) {
+        this.currentMenu.accept(event);
     }
 
     private ScrollPane buildScrollPane() {
