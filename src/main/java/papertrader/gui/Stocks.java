@@ -135,13 +135,13 @@ public class Stocks extends Window.SubPane {
         javafx.scene.control.Label moneyLabel = new javafx.scene.control.Label(String.format("Cash Available: $%.2f", Player.get().portfolio.getMoney()));
         javafx.scene.control.Label totalLabel = new javafx.scene.control.Label(String.format("Total Net Worth: $%.2f", Player.get().portfolio.getTotalMoney()));
 
-        stockLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-        priceLabel.setStyle("-fx-font-size: 14px;");
-        ownedLabel.setStyle("-fx-font-size: 14px;");
-        shortedLabel.setStyle("-fx-font-size: 14px;");
-        shortPnLLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
-        moneyLabel.setStyle("-fx-font-size: 14px;");
-        totalLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+        stockLabel.getStyleClass().add("bold");
+        priceLabel.getStyleClass().add("small");
+        ownedLabel.getStyleClass().add("small");
+        shortedLabel.getStyleClass().add("small");
+        shortPnLLabel.getStyleClass().addAll("small", "bold");
+        moneyLabel.getStyleClass().add("small");
+        totalLabel.getStyleClass().addAll("medium", "bold");
 
         if (shortPnLText.isEmpty()) {
             infoBox.getChildren().addAll(stockLabel, priceLabel, ownedLabel, shortedLabel, moneyLabel, totalLabel);

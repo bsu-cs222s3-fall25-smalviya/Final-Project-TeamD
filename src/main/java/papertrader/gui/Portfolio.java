@@ -17,7 +17,7 @@ public class Portfolio extends Window.SubPane {
 
         MakeButtons(vbox);
 
-        this.getChildren().add(vbox);
+        this.setCenter(vbox);
     }
 
     @Override

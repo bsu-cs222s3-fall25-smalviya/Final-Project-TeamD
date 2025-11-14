@@ -25,6 +25,30 @@
     -fx-text-fill: -fx-general-text-color
 }
 
+.label.bold{
+    -fx-font-weight: bold;
+}
+
+.label.inactive {
+    -fx-text-fill: gray;
+}
+
+.label.large {
+    -fx-font-size: 24px;
+}
+
+.label.medium{
+    -fx-font-size: 16px;
+}
+
+.label.small{
+    -fx-font-size: 14px;
+}
+
+.label.tiny{
+    -fx-font-size: 12px;
+}
+
 .text-field {
     -fx-font-size: 18px;
     -fx-prompt-text-fill: -fx-general-text-color;
@@ -81,79 +105,36 @@
     -fx-fill: rgba(0,200,0,0.25)
 }
 
-
-.history_title {
-    -fx-font-size: 24px;
-    -fx-font-weight: bold;
-}
-
-.history_empty {
-    -fx-font-size: 14px;
-    -fx-text-fill: gray;
-}
+/* History Menu */
 
 .trade_card {
-    -fx-border-color: #444;
+    -fx-border-color: -fx-light-base;
     -fx-border-width: 1;
     -fx-border-radius: 5;
     -fx-background-radius: 5;
 }
 
-.trade_number {
+.trade_type {
+    -fx-text-fill: white;
+    -fx-padding: 3px 8px 3px 8px;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+    -fx-font-size: 11px;
     -fx-font-weight: bold;
-    -fx-font-size: 12px;
 }
 
-.trade_type_buy {
+.trade_type.buy {
     -fx-background-color: #28a745;
-    -fx-text-fill: white;
-    -fx-padding: 3 8 3 8;
-    -fx-border-radius: 3;
-    -fx-background-radius: 3;
-    -fx-font-size: 11px;
-    -fx-font-weight: bold;
 }
 
-.trade_type_sell {
+.trade_type.sell {
     -fx-background-color: #dc3545;
-    -fx-text-fill: white;
-    -fx-padding: 3 8 3 8;
-    -fx-border-radius: 3;
-    -fx-background-radius: 3;
-    -fx-font-size: 11px;
-    -fx-font-weight: bold;
 }
 
-.trade_type_short {
+.trade_type.short {
     -fx-background-color: #ffc107;
-    -fx-text-fill: black;
-    -fx-padding: 3 8 3 8;
-    -fx-border-radius: 3;
-    -fx-background-radius: 3;
-    -fx-font-size: 11px;
-    -fx-font-weight: bold;
 }
 
-.trade_type_cover {
+.trade_type.cover {
     -fx-background-color: #17a2b8;
-    -fx-text-fill: white;
-    -fx-padding: 3 8 3 8;
-    -fx-border-radius: 3;
-    -fx-background-radius: 3;
-    -fx-font-size: 11px;
-    -fx-font-weight: bold;
-}
-
-.trade_stock_name {
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
-}
-
-.trade_detail {
-    -fx-font-size: 13px;
-}
-
-.trade_total {
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
 }

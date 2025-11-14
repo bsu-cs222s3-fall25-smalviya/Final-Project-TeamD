@@ -17,10 +17,9 @@ public class History extends Window.SubPane {
     public History() {
         VBox vbox = new VBox(10);
         this.setPadding(new Insets(20));
-        this.getStyleClass().add("root");
 
         Label titleLabel = new Label("Trade History");
-        titleLabel.getStyleClass().add("history_title");
+        titleLabel.getStyleClass().addAll("large", "bold");
 
         ScrollPane scrollPane = makeScrollPane();
         scrollPane.setPrefHeight(500);
@@ -39,7 +38,7 @@ public class History extends Window.SubPane {
 
         if (trades.isEmpty()) {
             Label emptyLabel = new Label("You have no trade history.");
-            emptyLabel.getStyleClass().add("history_empty");
+            emptyLabel.getStyleClass().addAll("small", "inactive");
             tradeList.getChildren().add(emptyLabel);
             return;
         }
@@ -73,29 +72,30 @@ public class History extends Window.SubPane {
         headerBox.setAlignment(Pos.CENTER_LEFT);
 
         Label numberLabel = new Label("#" + tradeNumber);
-        numberLabel.getStyleClass().add("trade_number");
+        numberLabel.getStyleClass().addAll("tiny", "bold");
 
         Label typeLabel = new Label(trade.type.toString());
+        typeLabel.getStyleClass().add("trade_type");
         switch (trade.type) {
-            case BUY -> typeLabel.getStyleClass().add("trade_type_buy");
-            case SELL -> typeLabel.getStyleClass().add("trade_type_sell");
-            case SHORT -> typeLabel.getStyleClass().add("trade_type_short");
-            case COVER -> typeLabel.getStyleClass().add("trade_type_cover");
+            case BUY -> typeLabel.getStyleClass().add("buy");
+            case SELL -> typeLabel.getStyleClass().add("sell");
+            case SHORT -> typeLabel.getStyleClass().add("short");
+            case COVER -> typeLabel.getStyleClass().add("cover");
         }
 
         headerBox.getChildren().addAll(numberLabel, typeLabel);
 
         Label stockLabel = new Label(trade.name);
-        stockLabel.getStyleClass().add("trade_stock_name");
+        stockLabel.getStyleClass().addAll("medium", "bold");
 
         Label sharesLabel = new Label(String.format("Shares: %.2f", trade.shares));
-        sharesLabel.getStyleClass().add("trade_detail");
+        sharesLabel.getStyleClass().add("small");
 
         Label priceLabel = new Label(String.format("Price: $%.2f", trade.shareValue));
-        priceLabel.getStyleClass().add("trade_detail");
+        priceLabel.getStyleClass().add("small");
 
         Label totalLabel = new Label(String.format("Total: $%.2f", trade.shares * trade.shareValue));
-        totalLabel.getStyleClass().add("trade_total");
+        totalLabel.getStyleClass().addAll("small", "bold");
 
         card.getChildren().addAll(headerBox, stockLabel, sharesLabel, priceLabel, totalLabel);
 
