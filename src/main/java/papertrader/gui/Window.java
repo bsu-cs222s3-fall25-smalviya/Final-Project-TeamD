@@ -2,6 +2,7 @@ package papertrader.gui;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -15,15 +16,24 @@ import papertrader.core.Player;
 import java.util.*;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class Window extends Application {
 
     private final BorderPane root = new BorderPane();
 
-    private final List<Map.Entry<String, SubPane>> panelList = List.of(
-            Map.entry("Stocks", new Stocks()),
-            Map.entry("Portfolio", new Portfolio()),
-            Map.entry("History", new History())
+    private final Stocks stockMenu = new Stocks();
+    private final Portfolio portfolioMenu = new Portfolio();
+    private final History historyMenu = new History();
+
+    private final List<Map.Entry<String, EventHandler<ActionEvent>>> panelList = List.of(
+            Map.entry("Stocks", (event) -> setPanel(this.stockMenu, event)),
+            Map.entry("Portfolio", (event) -> setPanel(this.portfolioMenu, event)),
+            Map.entry("History", (event) -> setPanel(this.historyMenu, event)),
+            Map.entry("Simulate", (event) -> {
+                MarketSystem.get().incrementStocks();
+                ((SubPane)this.root.getCenter()).refresh(event);
+            })
     );
 
     public static void main(String[] args) {
@@ -41,40 +51,29 @@ public class Window extends Application {
                 Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm()
         );
 
-        BorderPane topBar = new BorderPane();
-        topBar.setPadding(new Insets(10));
-
         HBox sideButtons = new HBox(30);
+        sideButtons.setPadding(new Insets(5.0, 25.0, 5.0, 25.0));
         sideButtons.setAlignment(Pos.CENTER);
-        for (Map.Entry<String, SubPane> panel : panelList) {
+
+        for (Map.Entry<String, EventHandler<ActionEvent>> panel : panelList) {
             Button button = new Button(panel.getKey());
             button.getStyleClass().add("side_buttons");
-            button.setOnAction(event -> {
-                this.root.setCenter(panel.getValue());
-                panel.getValue().refresh(event);
-            });
+            button.setOnAction(panel.getValue());
             sideButtons.getChildren().add(button);
         }
 
-        Button simulateButton = new Button("Simulate");
-        simulateButton.getStyleClass().add("side_buttons");
-        simulateButton.setOnAction(event -> {
-            MarketSystem.get().incrementStocks();
-            if (this.root.getCenter() instanceof SubPane pane) {
-                pane.refresh(event);
-            }
-        });
+        this.root.setTop(sideButtons);
 
-        topBar.setCenter(sideButtons);
-        topBar.setRight(simulateButton);
-
-        this.root.setTop(topBar);
-
-        this.root.setCenter(panelList.getFirst().getValue());
+        panelList.getFirst().getValue().handle(null);
 
         stage.setScene(scene);
         stage.setTitle("Paper Trader");
         stage.show();
+    }
+
+    private void setPanel(SubPane panel, ActionEvent event) {
+        this.root.setCenter(panel);
+        panel.refresh(event);
     }
 
     @Override
