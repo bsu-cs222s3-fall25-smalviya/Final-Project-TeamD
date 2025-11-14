@@ -5,11 +5,16 @@ import javafx.geometry.Pos;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
 import javafx.util.StringConverter;
 import papertrader.core.MarketSystem;
 import papertrader.core.Player;
@@ -115,44 +120,60 @@ public class Stocks extends Window.SubPane {
 
         MarketSystem.Stock stock = MarketSystem.get().stockList.get(this.currentStock);
 
-        javafx.scene.control.Label stockLabel = new javafx.scene.control.Label("Stock: " + this.currentStock);
-        javafx.scene.control.Label priceLabel = new javafx.scene.control.Label(String.format("Current Price: $%.2f", stock.shareValue));
-        javafx.scene.control.Label ownedLabel = new javafx.scene.control.Label(String.format("Shares Owned: %.2f", Player.get().portfolio.getNumberOfShares(this.currentStock)));
-        javafx.scene.control.Label shortedLabel = new javafx.scene.control.Label(String.format("Shares Shorted: %.2f", Player.get().portfolio.getShortedShares(this.currentStock)));
+        Label stockLabel = new Label("Stock: " + this.currentStock);
+        stockLabel.getStyleClass().add("bold");
+
+        KeyValueLabel priceLabel = new KeyValueLabel("Current Price: ", "$%.2f");
+        priceLabel.setValue(stock.shareValue);
+        priceLabel.addChildrenStyle("small");
+        priceLabel.setValueColor(Color.GREEN);
+
+        KeyValueLabel ownedLabel = new KeyValueLabel("Shares Owned: ", "%.2f");
+        ownedLabel.setValue(Player.get().portfolio.getNumberOfShares(this.currentStock));
+        ownedLabel.addChildrenStyle("small");
+        ownedLabel.setValueColor(Player.get().portfolio.getNumberOfShares(this.currentStock) <= 0 ? Color.RED : Color.GREEN);
+
+        KeyValueLabel shortedLabel = new KeyValueLabel("Shares Shorted: ", "%.2f");
+        shortedLabel.setValue(Player.get().portfolio.getShortedShares(this.currentStock));
+        shortedLabel.addChildrenStyle("small");
+        shortedLabel.setValueColor(Player.get().portfolio.getShortedShares(this.currentStock) <= 0 ? Color.RED : Color.GREEN);
+
+        KeyValueLabel shortPnText = new KeyValueLabel("$%.2f");
 
         // Show short position P&L if exists
-        String shortPnLText = "";
         if (Player.get().portfolio.hasShortPosition(this.currentStock)) {
             Player.Portfolio.ShortPosition pos = Player.get().portfolio.shortedStocks.get(this.currentStock);
             double currentValue = pos.shares * stock.shareValue;
             double initialValue = pos.shares * pos.initialPrice;
             double pnl = initialValue - currentValue; // Profit if price went down
-            String pnlColor = pnl >= 0 ? "green" : "red";
-            shortPnLText = String.format("Short P&L: $%.2f (Entry: $%.2f)", pnl, pos.initialPrice);
+            Text text3 = new Text(String.format(" (Entry: $%.2f)", pos.initialPrice));
+            shortPnText.setKey("Short P&L: ");
+            shortPnText.setValue(pnl);
+            shortPnText.addAllChildrenStyle("small");
+            shortPnText.setValueColor(pnl >= 0 ? Color.GREEN : Color.RED);
         }
 
-        javafx.scene.control.Label shortPnLLabel = new javafx.scene.control.Label(shortPnLText);
-        javafx.scene.control.Label moneyLabel = new javafx.scene.control.Label(String.format("Cash Available: $%.2f", Player.get().portfolio.getMoney()));
-        javafx.scene.control.Label totalLabel = new javafx.scene.control.Label(String.format("Total Net Worth: $%.2f", Player.get().portfolio.getTotalMoney()));
+        KeyValueLabel moneyLabel = new KeyValueLabel("Cash Available: ", "$%.2f");
+        moneyLabel.setValue(Player.get().portfolio.getMoney());
+        moneyLabel.addChildrenStyle("small");
+        moneyLabel.getValue().getStyleClass().add("bold");
+        moneyLabel.setValueColor(Color.GREEN);
 
-        stockLabel.getStyleClass().add("bold");
-        priceLabel.getStyleClass().add("small");
-        ownedLabel.getStyleClass().add("small");
-        shortedLabel.getStyleClass().add("small");
-        shortPnLLabel.getStyleClass().addAll("small", "bold");
-        moneyLabel.getStyleClass().add("small");
-        totalLabel.getStyleClass().addAll("medium", "bold");
+        KeyValueLabel totalLabel = new KeyValueLabel("Total Net Worth: ", "$%.2f");
+        totalLabel.setValue(Player.get().portfolio.getTotalMoney());
+        moneyLabel.getValue().getStyleClass().add("bold");
+        totalLabel.setValueColor(Color.GREEN);
 
-        if (shortPnLText.isEmpty()) {
+        if (shortPnText.getKey().getText().isEmpty()) {
             infoBox.getChildren().addAll(stockLabel, priceLabel, ownedLabel, shortedLabel, moneyLabel, totalLabel);
         } else {
-            infoBox.getChildren().addAll(stockLabel, priceLabel, ownedLabel, shortedLabel, shortPnLLabel, moneyLabel, totalLabel);
+            infoBox.getChildren().addAll(stockLabel, priceLabel, ownedLabel, shortedLabel, shortPnText, moneyLabel, totalLabel);
         }
 
         pane.setCenter(infoBox);
 
         TextField sharesField = new TextField();
-        sharesField.setPromptText("Enter number of shares");
+        sharesField.setPromptText("Enter # of shares");
         sharesField.setMaxWidth(200.0);
 
         VBox inputBox = new VBox(10.0);
