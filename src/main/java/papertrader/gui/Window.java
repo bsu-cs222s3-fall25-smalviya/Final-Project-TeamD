@@ -13,6 +13,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import papertrader.core.MarketSystem;
 import papertrader.core.Player;
+import papertrader.core.Time;
 
 import java.util.*;
 
@@ -33,6 +34,7 @@ public class Window extends Application implements IRefreshable {
             Map.entry("History", (event) -> setPanel(this.historyMenu, event)),
             Map.entry("Simulate", (event) -> {
                 MarketSystem.get().incrementStocks();
+                Time.incrementDate();
                 refresh(event);
             })
     );

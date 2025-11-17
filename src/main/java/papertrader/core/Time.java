@@ -37,6 +37,21 @@ public class Time {
         };
     }
 
+    public static final Date initialDate = new Date((byte)11, (byte)10, (short)2025);
+    public static final Date currentDate = new Date((byte)11, (byte)10, (short)2025);
+
+    public static void incrementDate() {
+        currentDate.day++;
+        if (currentDate.day > getDaysInMonth(currentDate.month, currentDate.day)) {
+            currentDate.day = 1;
+            currentDate.month++;
+        }
+        if (currentDate.month > 12) {
+            currentDate.month = 1;
+            currentDate.year++;
+        }
+    }
+
     public static boolean isLeapYear(int year) {
         return year % 400 == 0 || (year % 4 == 0 && year % 100 != 0);
     }
@@ -65,5 +80,31 @@ public class Time {
             return 0;
         }
         return MONTHS_TO_DAYS.get(month);
+    }
+
+    public static class Date {
+        public byte month;
+        public byte day;
+        public short year;
+
+        public Date() {
+            this((byte) 0,(byte) 0,(short) 0);
+        }
+
+        public Date(byte month, byte day, short year) {
+            this.month = month;
+            this.day = day;
+            this.year = year;
+        }
+
+        public long getDaysSince(short year) {
+            long inDays = ((this.year - year) * 365L) + this.day;
+
+            for (int m = 1; m < this.month; ++m) {
+                inDays += Time.getDaysInMonth(m, this.year);
+            }
+
+            return inDays - 1;
+        }
     }
 }

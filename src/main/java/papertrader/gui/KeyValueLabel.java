@@ -54,8 +54,8 @@ public class KeyValueLabel extends TextFlow {
         return this.text0;
     }
 
-    public Text getValue() {
-        return this.text1;
+    public double getValue() {
+        return this.value;
     }
 
     public void setKey(String str) {

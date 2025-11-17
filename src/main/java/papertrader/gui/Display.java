@@ -2,9 +2,11 @@ package papertrader.gui;
 
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import papertrader.core.Player;
+import papertrader.core.Time;
 
 public class Display extends HBox implements IRefreshable {
 
@@ -30,6 +32,10 @@ public class Display extends HBox implements IRefreshable {
         totalLabel.setValue(Player.get().portfolio.getTotalMoney());
         totalLabel.setValueColor(Color.GREEN);
 
-        this.getChildren().addAll(moneyLabel, totalLabel);
+        String date = String.format("Date: %d/%d/%d", Time.currentDate.month, Time.currentDate.day, Time.currentDate.year);
+        Label label = new Label(date);
+        label.getStyleClass().add("small");
+
+        this.getChildren().addAll(moneyLabel, totalLabel, label);
     }
 }

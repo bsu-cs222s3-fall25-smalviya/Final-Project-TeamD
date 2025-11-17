@@ -130,13 +130,17 @@ public class Stocks extends BorderPane implements IRefreshable {
         priceLabel.setValue(stock.shareValue);
         priceLabel.setValueColor(Color.GREEN);
 
+        KeyValueLabel changedLabel = new KeyValueLabel("Change: ", "$%.2f");
+        changedLabel.setValue(MarketSystem.get().stockHistory.get(this.currentStock).getLast().shareValue - stock.shareValue);
+        changedLabel.setValueColor(changedLabel.getValue() <= 0 ? Color.RED : Color.GREEN);
+
         KeyValueLabel ownedLabel = new KeyValueLabel("Shares Owned: ", "%.2f");
         ownedLabel.setValue(Player.get().portfolio.getNumberOfShares(this.currentStock));
-        ownedLabel.setValueColor(Player.get().portfolio.getNumberOfShares(this.currentStock) <= 0 ? Color.RED : Color.GREEN);
+        ownedLabel.setValueColor(ownedLabel.getValue() <= 0 ? Color.RED : Color.GREEN);
 
         KeyValueLabel shortedLabel = new KeyValueLabel("Shares Shorted: ", "%.2f");
         shortedLabel.setValue(Player.get().portfolio.getShortedShares(this.currentStock));
-        shortedLabel.setValueColor(Player.get().portfolio.getShortedShares(this.currentStock) <= 0 ? Color.RED : Color.GREEN);
+        shortedLabel.setValueColor(shortedLabel.getValue() <= 0 ? Color.RED : Color.GREEN);
 
         KeyValueLabel shortPnText = new KeyValueLabel("$%.2f");
 
@@ -153,9 +157,9 @@ public class Stocks extends BorderPane implements IRefreshable {
         }
 
         if (shortPnText.getKey().getText().isEmpty()) {
-            infoBox.getChildren().addAll(stockLabel, priceLabel, ownedLabel, shortedLabel);
+            infoBox.getChildren().addAll(stockLabel, priceLabel, changedLabel, ownedLabel, shortedLabel);
         } else {
-            infoBox.getChildren().addAll(stockLabel, priceLabel, ownedLabel, shortedLabel, shortPnText);
+            infoBox.getChildren().addAll(stockLabel, priceLabel, changedLabel, ownedLabel, shortedLabel, shortPnText);
         }
 
         pane.setCenter(infoBox);
@@ -296,12 +300,12 @@ public class Stocks extends BorderPane implements IRefreshable {
         xAxis.setTickLabelFormatter(formatter);
 
         xAxis.setLowerBound(0.0);
-        xAxis.setUpperBound(MarketSystem.get().stockHistory.get(this.currentStock).getFirst().getDaysSince((short) 2024) + 1);
+        xAxis.setUpperBound(MarketSystem.get().stockHistory.get(this.currentStock).getFirst().date.getDaysSince((short) 2024) + 1);
         xAxis.setTickUnit(365.0/12.0);
         xAxis.setAutoRanging(false);
 
         for (MarketSystem.StockDate stockDate : MarketSystem.get().stockHistory.get(this.currentStock)) {
-            series.getData().add(new XYChart.Data<>(stockDate.getDaysSince((short) 2024), stockDate.shareValue));
+            series.getData().add(new XYChart.Data<>(stockDate.date.getDaysSince((short) 2024), stockDate.shareValue));
         }
 
         chart.getData().add(series);

@@ -36,6 +36,8 @@ public class MarketSystem {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        saveStockHistory(getHistoryFile());
     }
 
     public void loadDefaultData() {
@@ -77,6 +79,25 @@ public class MarketSystem {
         }
     }
 
+    public void saveStockHistory(File file) {
+        try (DataOutputStream output = new DataOutputStream(new FileOutputStream(file))){
+            for (var stockDates : this.stockHistory.entrySet()) {
+                output.writeUTF(stockDates.getKey());
+
+                output.writeInt(stockDates.getValue().size());
+                for (var stock : stockDates.getValue()) {
+                    output.writeByte(stock.date.month);
+                    output.writeByte(stock.date.day);
+                    output.writeShort(stock.date.year);
+                    output.writeDouble(stock.shareValue);
+                    output.writeInt(stock.shares);
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void loadStockHistory(File file) {
         try (DataInputStream input = new DataInputStream(new FileInputStream(file))){
             while (input.available() != 0) {
@@ -86,9 +107,9 @@ public class MarketSystem {
                 ArrayList<StockDate> stockDates = new ArrayList<>();
                 for (int i = 0; i < arrLength; ++i) {
                     StockDate stock = new StockDate();
-                    stock.month = input.readByte();
-                    stock.day = input.readByte();
-                    stock.year = input.readShort();
+                    stock.date.month = input.readByte();
+                    stock.date.day = input.readByte();
+                    stock.date.year = input.readShort();
                     stock.shareValue = input.readDouble();
                     stock.shares = input.readInt();
                     stockDates.add(stock);
@@ -104,6 +125,16 @@ public class MarketSystem {
         Random random = new Random();
 
         MarketSystem.get().stockList.forEach((string, stock) -> {
+
+            // Add previous date and value before creating new values
+            StockDate stockDate = new StockDate();
+            stockDate.date.month = Time.currentDate.month;
+            stockDate.date.day = Time.currentDate.day;
+            stockDate.date.year = Time.currentDate.year;
+            stockDate.shareValue = stock.shareValue;
+            stockDate.shares = stock.shares;
+            this.stockHistory.get(string).add(stockDate);
+
             double value = stock.averageGrowth + random.nextGaussian() * stock.deviation;
             stock.shareValue += value;
 
@@ -137,7 +168,7 @@ public class MarketSystem {
         public double averageGrowth;
         public double deviation;
         public double shareValue;
-        public double shares;
+        public int shares;
 
         @Override
         public String toString() {
@@ -149,21 +180,9 @@ public class MarketSystem {
     }
 
     public static class StockDate {
-        public byte month = 0;
-        public byte day = 0;
-        public short year = 0;
+        public Time.Date date = new Time.Date();
         public double shareValue = 0d;
         public int shares = 0;
-
-        public long getDaysSince(short year) {
-            long inDays = ((this.year - year) * 365L) + this.day;
-
-            for (int m = 1; m < this.month; ++m) {
-                inDays += Time.getDaysInMonth(m, this.year);
-            }
-
-            return inDays - 1;
-        }
     }
 
     public enum TradeType {
