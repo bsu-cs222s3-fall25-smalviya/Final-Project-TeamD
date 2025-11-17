@@ -4,17 +4,22 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Region;
 import papertrader.core.MarketSystem;
 import papertrader.core.Player;
 
-public class History extends Window.SubPane {
+public class History extends BorderPane implements IRefreshable {
+
+    private final Window window;
 
     private final VBox tradeList = new VBox(5);
 
-    public History() {
+    public History(Window window) {
+        this.window = window;
+
         VBox vbox = new VBox(10);
         this.setPadding(new Insets(20));
 
@@ -26,8 +31,6 @@ public class History extends Window.SubPane {
 
         vbox.getChildren().addAll(titleLabel, scrollPane);
         this.setCenter(vbox);
-
-        refresh(null);
     }
 
     @Override

@@ -5,12 +5,9 @@ import javafx.geometry.Pos;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -22,14 +19,17 @@ import papertrader.core.Time;
 
 import java.util.function.*;
 
-public class Stocks extends Window.SubPane {
+public class Stocks extends BorderPane implements IRefreshable {
+
+    private final Window window;
 
     private final BorderPane contentPane = new BorderPane();
     private String currentStock;
     private Consumer<ActionEvent> currentMenu;
     private final VBox scrollBox = new VBox();
 
-    Stocks() {
+    public Stocks(Window window) {
+        this.window = window;
         TextField field = new TextField();
         field.setPromptText("Enter stock Ticker");
 
@@ -53,20 +53,23 @@ public class Stocks extends Window.SubPane {
             button.setPrefWidth(100.0);
             button.setOnAction((event) -> {
                 this.currentMenu = func;
-                refresh(event);
+                this.window.refresh(event);
             });
             return button;
         };
 
-        this.contentPane.setTop(buttonBox);
-
         buttonBox.getChildren().add(buttonTemplate.apply("Trading", this::tradingMenu));
-        //buttonBox.getChildren().add(buttonTemplate.apply("Hello2", (_) -> this.contentPane.setCenter(null)));
         buttonBox.getChildren().add(buttonTemplate.apply("Visualize", this::valueOverTimeChart));
+
+        VBox vbox = new VBox(10);
+
+        vbox.getChildren().add(buttonBox);
+        vbox.getChildren().add(new Separator());
+
+        this.contentPane.setTop(vbox);
 
         this.currentStock = MarketSystem.get().stockList.firstKey();
         this.currentMenu = this::tradingMenu;
-        refresh(null);
 
         pane.setCenter(this.contentPane);
 
@@ -116,7 +119,7 @@ public class Stocks extends Window.SubPane {
 
         VBox infoBox = new VBox(10.0);
         infoBox.setPadding(new Insets(20.0));
-        infoBox.setAlignment(Pos.CENTER);
+        infoBox.setAlignment(Pos.TOP_CENTER);
 
         MarketSystem.Stock stock = MarketSystem.get().stockList.get(this.currentStock);
 
@@ -125,17 +128,14 @@ public class Stocks extends Window.SubPane {
 
         KeyValueLabel priceLabel = new KeyValueLabel("Current Price: ", "$%.2f");
         priceLabel.setValue(stock.shareValue);
-        priceLabel.addChildrenStyle("small");
         priceLabel.setValueColor(Color.GREEN);
 
         KeyValueLabel ownedLabel = new KeyValueLabel("Shares Owned: ", "%.2f");
         ownedLabel.setValue(Player.get().portfolio.getNumberOfShares(this.currentStock));
-        ownedLabel.addChildrenStyle("small");
         ownedLabel.setValueColor(Player.get().portfolio.getNumberOfShares(this.currentStock) <= 0 ? Color.RED : Color.GREEN);
 
         KeyValueLabel shortedLabel = new KeyValueLabel("Shares Shorted: ", "%.2f");
         shortedLabel.setValue(Player.get().portfolio.getShortedShares(this.currentStock));
-        shortedLabel.addChildrenStyle("small");
         shortedLabel.setValueColor(Player.get().portfolio.getShortedShares(this.currentStock) <= 0 ? Color.RED : Color.GREEN);
 
         KeyValueLabel shortPnText = new KeyValueLabel("$%.2f");
@@ -149,25 +149,13 @@ public class Stocks extends Window.SubPane {
             Text text3 = new Text(String.format(" (Entry: $%.2f)", pos.initialPrice));
             shortPnText.setKey("Short P&L: ");
             shortPnText.setValue(pnl);
-            shortPnText.addAllChildrenStyle("small");
             shortPnText.setValueColor(pnl >= 0 ? Color.GREEN : Color.RED);
         }
 
-        KeyValueLabel moneyLabel = new KeyValueLabel("Cash Available: ", "$%.2f");
-        moneyLabel.setValue(Player.get().portfolio.getMoney());
-        moneyLabel.addChildrenStyle("small");
-        moneyLabel.getValue().getStyleClass().add("bold");
-        moneyLabel.setValueColor(Color.GREEN);
-
-        KeyValueLabel totalLabel = new KeyValueLabel("Total Net Worth: ", "$%.2f");
-        totalLabel.setValue(Player.get().portfolio.getTotalMoney());
-        moneyLabel.getValue().getStyleClass().add("bold");
-        totalLabel.setValueColor(Color.GREEN);
-
         if (shortPnText.getKey().getText().isEmpty()) {
-            infoBox.getChildren().addAll(stockLabel, priceLabel, ownedLabel, shortedLabel, moneyLabel, totalLabel);
+            infoBox.getChildren().addAll(stockLabel, priceLabel, ownedLabel, shortedLabel);
         } else {
-            infoBox.getChildren().addAll(stockLabel, priceLabel, ownedLabel, shortedLabel, shortPnText, moneyLabel, totalLabel);
+            infoBox.getChildren().addAll(stockLabel, priceLabel, ownedLabel, shortedLabel, shortPnText);
         }
 
         pane.setCenter(infoBox);
@@ -196,7 +184,7 @@ public class Stocks extends Window.SubPane {
                 }
                 Player.get().portfolio.buyStock(this.currentStock, shares);
                 sharesField.clear();
-                refresh(null);
+                this.window.refresh(null);
             } catch (NumberFormatException e) {
                 Window.errorMessage("Please enter a valid number!");
             }
@@ -217,7 +205,7 @@ public class Stocks extends Window.SubPane {
                 }
                 Player.get().portfolio.sellStock(this.currentStock, shares);
                 sharesField.clear();
-                refresh(null);
+                this.window.refresh(null);
             } catch (NumberFormatException e) {
                 Window.errorMessage("Please enter a valid number!");
             }
@@ -234,7 +222,7 @@ public class Stocks extends Window.SubPane {
                 }
                 Player.get().portfolio.shortStock(this.currentStock, shares);
                 sharesField.clear();
-                refresh(null);
+                this.window.refresh(null);
             } catch (NumberFormatException e) {
                 Window.errorMessage("Please enter a valid number!");
             }
@@ -255,7 +243,7 @@ public class Stocks extends Window.SubPane {
                 }
                 Player.get().portfolio.coverShort(this.currentStock, shares);
                 sharesField.clear();
-                refresh(null);
+                this.window.refresh(null);
             } catch (NumberFormatException e) {
                 Window.errorMessage("Please enter a valid number!");
             }
@@ -327,6 +315,6 @@ public class Stocks extends Window.SubPane {
             return;
         }
         this.currentStock = string;
-        refresh(null);
+        this.window.refresh(null);
     }
 }

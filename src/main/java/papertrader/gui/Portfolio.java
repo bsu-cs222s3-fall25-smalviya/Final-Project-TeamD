@@ -2,17 +2,22 @@ package papertrader.gui;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
 
-public class Portfolio extends Window.SubPane {
+public class Portfolio extends BorderPane implements IRefreshable {
+
+    private final Window window;
 
     private String filterSetting = "Start";
 
     private final List<String> filterButtons = List.of("Start of Game", "This Year", "Past Month", "Last Week");
 
-    Portfolio() {
+    public Portfolio(Window window) {
+        this.window = window;
+
         VBox vbox = new VBox(10);
 
         MakeButtons(vbox);

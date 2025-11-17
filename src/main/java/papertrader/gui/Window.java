@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -16,15 +17,15 @@ import papertrader.core.Player;
 import java.util.*;
 
 import java.util.List;
-import java.util.function.Consumer;
 
-public class Window extends Application {
+public class Window extends Application implements IRefreshable {
 
     private final BorderPane root = new BorderPane();
 
-    private final Stocks stockMenu = new Stocks();
-    private final Portfolio portfolioMenu = new Portfolio();
-    private final History historyMenu = new History();
+    private final Stocks stockMenu = new Stocks(this);
+    private final Portfolio portfolioMenu = new Portfolio(this);
+    private final History historyMenu = new History(this);
+    private final Display display = new Display(this);
 
     private final List<Map.Entry<String, EventHandler<ActionEvent>>> panelList = List.of(
             Map.entry("Stocks", (event) -> setPanel(this.stockMenu, event)),
@@ -32,7 +33,7 @@ public class Window extends Application {
             Map.entry("History", (event) -> setPanel(this.historyMenu, event)),
             Map.entry("Simulate", (event) -> {
                 MarketSystem.get().incrementStocks();
-                ((SubPane)this.root.getCenter()).refresh(event);
+                refresh(event);
             })
     );
 
@@ -62,18 +63,29 @@ public class Window extends Application {
             sideButtons.getChildren().add(button);
         }
 
-        this.root.setTop(sideButtons);
+        VBox topDisplay = new VBox();
+        topDisplay.getChildren().add(sideButtons);
+
+        topDisplay.getChildren().add(display);
+
+        this.root.setTop(topDisplay);
 
         panelList.getFirst().getValue().handle(null);
+        refresh(null);
 
         stage.setScene(scene);
         stage.setTitle("Paper Trader");
         stage.show();
     }
 
-    private void setPanel(SubPane panel, ActionEvent event) {
-        this.root.setCenter(panel);
-        panel.refresh(event);
+    public void refresh(ActionEvent event) {
+        display.refresh(event);
+        ((IRefreshable)this.root.getCenter()).refresh(event);
+    }
+
+    private void setPanel(IRefreshable panel, ActionEvent event) {
+        this.root.setCenter((Node)panel);
+        refresh(event);
     }
 
     @Override
@@ -89,9 +101,5 @@ public class Window extends Application {
         alert.setTitle("Error");
         alert.setContentText(error);
         alert.showAndWait();
-    }
-
-    public abstract static class SubPane extends BorderPane {
-        public abstract void refresh(ActionEvent event);
     }
 }
