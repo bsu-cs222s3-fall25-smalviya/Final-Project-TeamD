@@ -37,8 +37,16 @@ public class Time {
         };
     }
 
-    public static final Date initialDate = new Date((byte)11, (byte)10, (short)2025);
-    public static final Date currentDate = new Date((byte)11, (byte)10, (short)2025);
+    private static final Date initialDate = new Date((byte)11, (byte)10, (short)2025);
+    private static final Date currentDate = new Date((byte)11, (byte)10, (short)2025);
+
+    public static Date getCurrentDate() {
+       Date date = new Date();
+       date.day = currentDate.day;
+       date.month = currentDate.month;
+       date.year = currentDate.year;
+       return date;
+    }
 
     public static void incrementDate() {
         currentDate.day++;
@@ -105,6 +113,11 @@ public class Time {
             }
 
             return inDays - 1;
+        }
+
+        @Override
+        public String toString() {
+            return this.month + "/" + this.day + "/" + this.year;
         }
     }
 }

@@ -90,7 +90,7 @@ public class MarketSystem {
                     output.writeByte(stock.date.day);
                     output.writeShort(stock.date.year);
                     output.writeDouble(stock.shareValue);
-                    output.writeInt(stock.shares);
+                    output.writeInt((int)stock.shares);
                 }
             }
         } catch (IOException e) {
@@ -128,9 +128,9 @@ public class MarketSystem {
 
             // Add previous date and value before creating new values
             StockDate stockDate = new StockDate();
-            stockDate.date.month = Time.currentDate.month;
-            stockDate.date.day = Time.currentDate.day;
-            stockDate.date.year = Time.currentDate.year;
+            stockDate.date.month = Time.getCurrentDate().month;
+            stockDate.date.day = Time.getCurrentDate().day;
+            stockDate.date.year = Time.getCurrentDate().year;
             stockDate.shareValue = stock.shareValue;
             stockDate.shares = stock.shares;
             this.stockHistory.get(string).add(stockDate);
@@ -182,7 +182,7 @@ public class MarketSystem {
     public static class StockDate {
         public Time.Date date = new Time.Date();
         public double shareValue = 0d;
-        public int shares = 0;
+        public double shares = 0d;
     }
 
     public enum TradeType {
@@ -194,15 +194,15 @@ public class MarketSystem {
 
     public static class Trade {
         public String name;
-        public double shares;
-        public double shareValue;
+        public StockDate stockDate = new StockDate();
         public TradeType type;
 
         @Override
         public String toString() {
             return "Stock Name: " + name + "\n" +
-                    "Amount of Shares: " + shares + "\n" +
-                    "Share Value: " + shareValue + "\n" +
+                    "Time: " + stockDate.date.toString() + "\n" +
+                    "Amount of Shares: " + stockDate.shares + "\n" +
+                    "Share Value: " + stockDate.shareValue + "\n" +
                     "Type: " + type;
         }
     }

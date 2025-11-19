@@ -32,7 +32,7 @@ public class Display extends HBox implements IRefreshable {
         totalLabel.setValue(Player.get().portfolio.getTotalMoney());
         totalLabel.setValueColor(Color.GREEN);
 
-        String date = String.format("Date: %d/%d/%d", Time.currentDate.month, Time.currentDate.day, Time.currentDate.year);
+        String date = String.format("Date: %d/%d/%d", Time.getCurrentDate().month, Time.getCurrentDate().day, Time.getCurrentDate().year);
         Label label = new Label(date);
         label.getStyleClass().add("small");
 

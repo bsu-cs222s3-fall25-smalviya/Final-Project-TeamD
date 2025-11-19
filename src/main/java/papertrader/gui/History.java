@@ -91,16 +91,19 @@ public class History extends BorderPane implements IRefreshable {
         Label stockLabel = new Label(trade.name);
         stockLabel.getStyleClass().addAll("medium", "bold");
 
-        Label sharesLabel = new Label(String.format("Shares: %.2f", trade.shares));
+        Label timeLabel = new Label("Time: " + trade.stockDate.date.toString());
+        timeLabel.getStyleClass().addAll("medium", "bold");
+
+        Label sharesLabel = new Label(String.format("Shares: %.2f", trade.stockDate.shares));
         sharesLabel.getStyleClass().add("small");
 
-        Label priceLabel = new Label(String.format("Price: $%.2f", trade.shareValue));
+        Label priceLabel = new Label(String.format("Price: $%.2f", trade.stockDate.shareValue));
         priceLabel.getStyleClass().add("small");
 
-        Label totalLabel = new Label(String.format("Total: $%.2f", trade.shares * trade.shareValue));
+        Label totalLabel = new Label(String.format("Total: $%.2f", trade.stockDate.shares * trade.stockDate.shareValue));
         totalLabel.getStyleClass().addAll("small", "bold");
 
-        card.getChildren().addAll(headerBox, stockLabel, sharesLabel, priceLabel, totalLabel);
+        card.getChildren().addAll(headerBox, stockLabel, timeLabel, sharesLabel, priceLabel, totalLabel);
 
         return card;
     }

@@ -157,8 +157,9 @@ public class Player {
             {
                 MarketSystem.Trade trade = new MarketSystem.Trade();
                 trade.name = stockName;
-                trade.shares = amountOfShares;
-                trade.shareValue = stock.shareValue;
+                trade.stockDate.date = Time.getCurrentDate();
+                trade.stockDate.shares = amountOfShares;
+                trade.stockDate.shareValue = stock.shareValue;
                 trade.type = MarketSystem.TradeType.BUY;
 
                 trades.add(trade);
@@ -195,8 +196,9 @@ public class Player {
             {
                 MarketSystem.Trade trade = new MarketSystem.Trade();
                 trade.name = stockName;
-                trade.shares = amountOfShares;
-                trade.shareValue = stock.shareValue;
+                trade.stockDate.date = Time.getCurrentDate();
+                trade.stockDate.shares = amountOfShares;
+                trade.stockDate.shareValue = stock.shareValue;
                 trade.type = MarketSystem.TradeType.SELL;
 
                 trades.add(trade);
@@ -244,8 +246,9 @@ public class Player {
             {
                 MarketSystem.Trade trade = new MarketSystem.Trade();
                 trade.name = stockName;
-                trade.shares = amountOfShares;
-                trade.shareValue = stock.shareValue;
+                trade.stockDate.date = Time.getCurrentDate();
+                trade.stockDate.shares = amountOfShares;
+                trade.stockDate.shareValue = stock.shareValue;
                 trade.type = MarketSystem.TradeType.SHORT;
 
                 trades.add(trade);
@@ -292,8 +295,9 @@ public class Player {
             {
                 MarketSystem.Trade trade = new MarketSystem.Trade();
                 trade.name = stockName;
-                trade.shares = amountOfShares;
-                trade.shareValue = stock.shareValue;
+                trade.stockDate.date = Time.getCurrentDate();
+                trade.stockDate.shares = amountOfShares;
+                trade.stockDate.shareValue = stock.shareValue;
                 trade.type = MarketSystem.TradeType.COVER;
 
                 trades.add(trade);
