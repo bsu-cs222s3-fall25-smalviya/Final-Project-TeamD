@@ -9,13 +9,13 @@ import java.util.List;
 
 public class Portfolio extends BorderPane implements IRefreshable {
 
-    private final Window window;
+    private final WindowGUI window;
 
     private String filterSetting = "Start";
 
     private final List<String> filterButtons = List.of("Start of Game", "This Year", "Past Month", "Last Week");
 
-    public Portfolio(Window window) {
+    public Portfolio(WindowGUI window) {
         this.window = window;
 
         VBox vbox = new VBox(10);

@@ -6,29 +6,18 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 
+import java.util.Arrays;
+
 public class KeyValueLabel extends TextFlow {
 
-    private final Text text0, text1;
+    private final Text text0 = new Text();
+    private final Text text1 = new Text();
     private final String string;
     private double value;
 
     public KeyValueLabel(String key, String value) {
-        setTextAlignment(TextAlignment.CENTER);
-
-        this.string = value;
-
-        this.text0 = new Text(key);
-        this.text0.getStyleClass().clear();
-        this.text0.getStyleClass().setAll("label");
-        this.text0.setFill(Color.WHITE);
-        this.text1 = new Text();
-        this.text1.getStyleClass().clear();
-        this.text1.getStyleClass().setAll("label");
-        this.text1.setFill(Color.WHITE);
-
-        this.getChildren().addAll(this.text0, this.text1);
-
-        refreshValue();
+        this(value);
+        this.text0.setText(key);
     }
 
     public KeyValueLabel(String value) {
@@ -36,14 +25,9 @@ public class KeyValueLabel extends TextFlow {
 
         this.string = value;
 
-        this.text0 = new Text();
-        this.text0.getStyleClass().clear();
-        this.text0.getStyleClass().setAll("label");
-        this.text0.setFill(Color.WHITE);
-        this.text1 = new Text();
-        this.text1.getStyleClass().clear();
-        this.text1.getStyleClass().setAll("label");
-        this.text1.setFill(Color.WHITE);
+        this.text0.getStyleClass().add("text");
+        this.text0.getStyleClass().add("fill");
+        this.text1.getStyleClass().add("text");
 
         this.getChildren().addAll(this.text0, this.text1);
 

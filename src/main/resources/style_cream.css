@@ -1,0 +1,4 @@
+.root {
+    -fx-base: rgb(240, 214, 139);/*246, 239, 185);*/
+    -fx-general-text-color: rgb(104, 41, 8);
+}

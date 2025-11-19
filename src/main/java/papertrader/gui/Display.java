@@ -10,9 +10,9 @@ import papertrader.core.Time;
 
 public class Display extends HBox implements IRefreshable {
 
-    private final Window window;
+    private final WindowGUI window;
 
-    public Display(Window window) {
+    public Display(WindowGUI window) {
         super(30);
         this.window = window;
         this.setAlignment(Pos.CENTER);

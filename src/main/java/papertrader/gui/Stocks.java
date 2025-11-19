@@ -6,12 +6,9 @@ import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.scene.text.TextFlow;
 import javafx.util.StringConverter;
 import papertrader.core.MarketSystem;
 import papertrader.core.Player;
@@ -21,14 +18,14 @@ import java.util.function.*;
 
 public class Stocks extends BorderPane implements IRefreshable {
 
-    private final Window window;
+    private final WindowGUI window;
 
     private final BorderPane contentPane = new BorderPane();
     private String currentStock;
     private Consumer<ActionEvent> currentMenu;
     private final VBox scrollBox = new VBox();
 
-    public Stocks(Window window) {
+    public Stocks(WindowGUI window) {
         this.window = window;
         TextField field = new TextField();
         field.setPromptText("Enter stock Ticker");
@@ -183,14 +180,14 @@ public class Stocks extends BorderPane implements IRefreshable {
             try {
                 double shares = Double.parseDouble(sharesField.getText());
                 if (shares <= 0) {
-                    Window.errorMessage("Please enter a positive number of shares!");
+                    WindowGUI.errorMessage("Please enter a positive number of shares!");
                     return;
                 }
                 Player.get().portfolio.buyStock(this.currentStock, shares);
                 sharesField.clear();
                 this.window.refresh(null);
             } catch (NumberFormatException e) {
-                Window.errorMessage("Please enter a valid number!");
+                WindowGUI.errorMessage("Please enter a valid number!");
             }
         });
 
@@ -200,18 +197,18 @@ public class Stocks extends BorderPane implements IRefreshable {
             try {
                 double shares = Double.parseDouble(sharesField.getText());
                 if (shares <= 0) {
-                    Window.errorMessage("Please enter a positive number of shares!");
+                    WindowGUI.errorMessage("Please enter a positive number of shares!");
                     return;
                 }
                 if (!Player.get().portfolio.ownsStock(this.currentStock)) {
-                    Window.errorMessage("You don't own any shares of " + this.currentStock + "!");
+                    WindowGUI.errorMessage("You don't own any shares of " + this.currentStock + "!");
                     return;
                 }
                 Player.get().portfolio.sellStock(this.currentStock, shares);
                 sharesField.clear();
                 this.window.refresh(null);
             } catch (NumberFormatException e) {
-                Window.errorMessage("Please enter a valid number!");
+                WindowGUI.errorMessage("Please enter a valid number!");
             }
         });
 
@@ -221,14 +218,14 @@ public class Stocks extends BorderPane implements IRefreshable {
             try {
                 double shares = Double.parseDouble(sharesField.getText());
                 if (shares <= 0) {
-                    Window.errorMessage("Please enter a positive number of shares!");
+                    WindowGUI.errorMessage("Please enter a positive number of shares!");
                     return;
                 }
                 Player.get().portfolio.shortStock(this.currentStock, shares);
                 sharesField.clear();
                 this.window.refresh(null);
             } catch (NumberFormatException e) {
-                Window.errorMessage("Please enter a valid number!");
+                WindowGUI.errorMessage("Please enter a valid number!");
             }
         });
 
@@ -238,18 +235,18 @@ public class Stocks extends BorderPane implements IRefreshable {
             try {
                 double shares = Double.parseDouble(sharesField.getText());
                 if (shares <= 0) {
-                    Window.errorMessage("Please enter a positive number of shares!");
+                    WindowGUI.errorMessage("Please enter a positive number of shares!");
                     return;
                 }
                 if (!Player.get().portfolio.hasShortPosition(this.currentStock)) {
-                    Window.errorMessage("You don't have a short position in " + this.currentStock + "!");
+                    WindowGUI.errorMessage("You don't have a short position in " + this.currentStock + "!");
                     return;
                 }
                 Player.get().portfolio.coverShort(this.currentStock, shares);
                 sharesField.clear();
                 this.window.refresh(null);
             } catch (NumberFormatException e) {
-                Window.errorMessage("Please enter a valid number!");
+                WindowGUI.errorMessage("Please enter a valid number!");
             }
         });
 
@@ -315,7 +312,7 @@ public class Stocks extends BorderPane implements IRefreshable {
 
     private void onSelectStock(String string) {
         if (!MarketSystem.get().stockList.containsKey(string)) {
-            Window.errorMessage("Stock does not exist!");
+            WindowGUI.errorMessage("Stock does not exist!");
             return;
         }
         this.currentStock = string;

@@ -13,11 +13,11 @@ import papertrader.core.Player;
 
 public class History extends BorderPane implements IRefreshable {
 
-    private final Window window;
+    private final WindowGUI window;
 
     private final VBox tradeList = new VBox(5);
 
-    public History(Window window) {
+    public History(WindowGUI window) {
         this.window = window;
 
         VBox vbox = new VBox(10);
