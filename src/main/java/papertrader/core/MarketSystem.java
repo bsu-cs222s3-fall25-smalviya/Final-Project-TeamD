@@ -128,12 +128,10 @@ public class MarketSystem {
 
             // Add previous date and value before creating new values
             StockDate stockDate = new StockDate();
-            stockDate.date.month = Time.getCurrentDate().month;
-            stockDate.date.day = Time.getCurrentDate().day;
-            stockDate.date.year = Time.getCurrentDate().year;
+            stockDate.date = Time.getCurrentDate();
             stockDate.shareValue = stock.shareValue;
             stockDate.shares = stock.shares;
-            this.stockHistory.get(string).add(stockDate);
+            this.stockHistory.get(string).addFirst(stockDate);
 
             double value = stock.averageGrowth + random.nextGaussian() * stock.deviation;
             stock.shareValue += value;
