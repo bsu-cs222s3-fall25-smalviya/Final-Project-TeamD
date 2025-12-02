@@ -14,6 +14,7 @@ import papertrader.core.MarketSystem;
 import papertrader.core.Player;
 import papertrader.core.Time;
 
+import java.util.ArrayList;
 import java.util.function.*;
 
 public class Stocks extends BorderPane implements IRefreshable {
@@ -120,7 +121,9 @@ public class Stocks extends BorderPane implements IRefreshable {
 
         MarketSystem.Stock stock = MarketSystem.get().stockList.get(this.currentStock);
 
-        Label stockLabel = new Label("Stock: " + this.currentStock);
+        KeyValueLabel stockLabel = new KeyValueLabel(this.currentStock + " ", (val) -> val > 0 ? "$%.2f ↑" : "$%.2f ↓");
+        stockLabel.setValue(MarketSystem.get().stockHistory.get(this.currentStock).getLast().shareValue - stock.shareValue);
+        stockLabel.setValueColor(stockLabel.getValue() <= 0 ? Color.RED : Color.GREEN);
         stockLabel.getStyleClass().add("bold");
 
         KeyValueLabel priceLabel = new KeyValueLabel("Current Price: ", "$%.2f");
@@ -296,12 +299,19 @@ public class Stocks extends BorderPane implements IRefreshable {
 
         xAxis.setTickLabelFormatter(formatter);
 
-        xAxis.setLowerBound(0.0);
-        xAxis.setUpperBound(MarketSystem.get().stockHistory.get(this.currentStock).getFirst().date.getDaysSince((short) 2024) + 1);
+        ArrayList<MarketSystem.StockDate> stockDates = new ArrayList<>(
+                MarketSystem.get().stockHistory.get(this.currentStock)
+        );
+
+        // Set hard limit at 2 years
+        stockDates.removeIf(stockDate -> stockDate.date.getDaysFrom(Time.getCurrentDate()) > (2 * 365));
+
+        xAxis.setLowerBound(stockDates.getLast().date.getDaysSince((short) 2024) + 1);
+        xAxis.setUpperBound(stockDates.getFirst().date.getDaysSince((short) 2024) + 1);
         xAxis.setTickUnit(365.0/12.0);
         xAxis.setAutoRanging(false);
 
-        for (MarketSystem.StockDate stockDate : MarketSystem.get().stockHistory.get(this.currentStock)) {
+        for (MarketSystem.StockDate stockDate : stockDates) {
             series.getData().add(new XYChart.Data<>(stockDate.date.getDaysSince((short) 2024), stockDate.shareValue));
         }
 

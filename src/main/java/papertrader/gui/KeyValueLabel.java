@@ -7,20 +7,31 @@ import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 
 import java.util.Arrays;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class KeyValueLabel extends TextFlow {
 
     private final Text text0 = new Text();
     private final Text text1 = new Text();
-    private final String string;
+    private final Function<Double, String> string;
     private double value;
 
     public KeyValueLabel(String key, String value) {
+        this(_ -> value);
+        this.text0.setText(key);
+    }
+
+    public KeyValueLabel(String key, Function<Double, String> value) {
         this(value);
         this.text0.setText(key);
     }
 
     public KeyValueLabel(String value) {
+        this(_ -> value);
+    }
+
+    public KeyValueLabel(Function<Double, String> value) {
         setTextAlignment(TextAlignment.CENTER);
 
         this.string = value;
@@ -56,7 +67,7 @@ public class KeyValueLabel extends TextFlow {
     }
 
     private void refreshValue() {
-        this.text1.setText(String.format(this.string, this.value));
+        this.text1.setText(String.format(this.string.apply(this.value), this.value));
     }
 
     public void addChildrenStyle(String str) {

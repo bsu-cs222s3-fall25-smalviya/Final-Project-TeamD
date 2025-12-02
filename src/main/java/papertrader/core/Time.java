@@ -115,6 +115,13 @@ public class Time {
             return inDays - 1;
         }
 
+        public long getDaysFrom(Date date) {
+            long days0 = getDaysSince((short)1970);
+            long days1 = date.getDaysSince((short)1970);
+
+            return Math.abs(days1 - days0);
+        }
+
         @Override
         public String toString() {
             return this.month + "/" + this.day + "/" + this.year;
