@@ -37,26 +37,27 @@ public class Time {
         };
     }
 
-    private static final Date initialDate = new Date((byte)11, (byte)10, (short)2025);
-    private static final Date currentDate = new Date((byte)11, (byte)10, (short)2025);
+    public static final Date initialDate = new Date((byte)11, (byte)10, (short)2025);
 
     public static Date getCurrentDate() {
+        Player player = Player.get();
        Date date = new Date();
-       date.day = currentDate.day;
-       date.month = currentDate.month;
-       date.year = currentDate.year;
+       date.day = player.portfolio.currentDate.day;
+       date.month = player.portfolio.currentDate.month;
+       date.year = player.portfolio.currentDate.year;
        return date;
     }
 
     public static void incrementDate() {
-        currentDate.day++;
-        if (currentDate.day > getDaysInMonth(currentDate.month, currentDate.day)) {
-            currentDate.day = 1;
-            currentDate.month++;
+        Player player = Player.get();
+        player.portfolio.currentDate.day++;
+        if (player.portfolio.currentDate.day > getDaysInMonth(player.portfolio.currentDate.month, player.portfolio.currentDate.day)) {
+            player.portfolio.currentDate.day = 1;
+            player.portfolio.currentDate.month++;
         }
-        if (currentDate.month > 12) {
-            currentDate.month = 1;
-            currentDate.year++;
+        if (player.portfolio.currentDate.month > 12) {
+            player.portfolio.currentDate.month = 1;
+            player.portfolio.currentDate.year++;
         }
     }
 

@@ -64,12 +64,18 @@ public class MarketSystem {
     }
 
     public void loadData() {
+        File file = getStockData();
+        if (!file.exists()) {
+            loadDefaultData();
+            return;
+        }
+
         Gson gson = new Gson();
 
         Type mapType = new TypeToken<TreeMap<String, Stock>>(){}.getType();
 
         try {
-            Reader reader = new FileReader(getStockData());
+            Reader reader = new FileReader(file);
             JsonElement element = JsonParser.parseReader(reader);
             this.stockList = gson.fromJson(element, mapType);
         } catch (FileNotFoundException e) {
@@ -77,6 +83,8 @@ public class MarketSystem {
             System.out.println("No Stock data found!");
             throw new RuntimeException();
         }
+
+        loadStockHistory(getHistoryFile());
     }
 
     public void saveStockHistory(File file) {

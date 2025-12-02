@@ -43,8 +43,14 @@ public class Player {
     }
 
     public void loadData() {
+        File file = getSaveFile();
+        if (!file.exists()) {
+            loadDefaultData();
+            return;
+        }
+
         Gson gson = new Gson();
-        try (FileReader reader = new FileReader(getSaveFile())) {
+        try (FileReader reader = new FileReader(file)) {
             this.portfolio = gson.fromJson(reader, Portfolio.class);
         } catch (IOException e) {
             System.out.println("Error loading portfolio!");
@@ -53,6 +59,9 @@ public class Player {
 
     public void loadDefaultData() {
         this.portfolio.money = 100000;
+        this.portfolio.currentDate.month = Time.initialDate.month;
+        this.portfolio.currentDate.day = Time.initialDate.day;
+        this.portfolio.currentDate.year = Time.initialDate.year;
         this.portfolio.trades.clear();
         this.portfolio.ownedStocks.clear();
         this.portfolio.shortedStocks.clear();
@@ -62,6 +71,7 @@ public class Player {
 
     public static class Portfolio {
         private double money;
+        public final Time.Date currentDate = new Time.Date();
         private final ArrayList<MarketSystem.Trade> trades = new ArrayList<>();
         private final HashMap<String, Double> ownedStocks = new HashMap<>();
         public final HashMap<String, ShortPosition> shortedStocks = new HashMap<>();

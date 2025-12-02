@@ -26,14 +26,12 @@ public class WindowGUI extends Application implements IRefreshable {
     private Theme theme;
 
     private final Stocks stockMenu = new Stocks(this);
-    private final Portfolio portfolioMenu = new Portfolio(this);
     private final History historyMenu = new History(this);
     private final Display display = new Display(this);
     private final Settings settings = new Settings(this);
 
     private final List<Map.Entry<String, EventHandler<ActionEvent>>> panelList = List.of(
             Map.entry("Stocks", (event) -> setPanel(this.stockMenu, event)),
-            Map.entry("Portfolio", (event) -> setPanel(this.portfolioMenu, event)),
             Map.entry("History", (event) -> setPanel(this.historyMenu, event)),
             Map.entry("Simulate", (event) -> {
                 MarketSystem.get().incrementStocks();
@@ -44,8 +42,8 @@ public class WindowGUI extends Application implements IRefreshable {
     );
 
     public static void main(String[] args) {
-        MarketSystem.get().loadDefaultData();
-        Player.get().loadDefaultData();
+        MarketSystem.get().loadData();
+        Player.get().loadData();
 
         Application.launch(WindowGUI.class, args);
     }

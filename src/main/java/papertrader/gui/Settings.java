@@ -19,6 +19,8 @@ public class Settings extends BorderPane implements IRefreshable {
         VBox settingsBox = new VBox();
 
         Slider themeSlider = new Slider();
+        //themeSlider.setMaxWidth(25.0);
+        themeSlider.prefWidth(25.0);
         themeSlider.setBlockIncrement(1.0);
         themeSlider.setSnapToTicks(true);
         themeSlider.setMajorTickUnit(1.0);
