@@ -84,7 +84,7 @@ public class WindowGUI extends Application implements IRefreshable {
         ((IRefreshable)this.root.getCenter()).refresh(event);
     }
 
-    private void setPanel(IRefreshable panel, ActionEvent event) {
+    public void setPanel(IRefreshable panel, ActionEvent event) {
         this.root.setCenter((Node)panel);
         refresh(event);
     }

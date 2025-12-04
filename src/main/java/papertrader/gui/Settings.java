@@ -1,6 +1,8 @@
 package papertrader.gui;
 
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -10,13 +12,17 @@ import papertrader.core.Player;
 public class Settings extends BorderPane implements IRefreshable {
 
     private WindowGUI.Theme currentTheme = WindowGUI.Theme.DARK;
+    private final Instructions instructionMenu;
     private final WindowGUI window;
 
     public Settings(WindowGUI window) {
         this.window = window;
+        this.instructionMenu = new Instructions(window);
         refresh(null);
 
-        VBox settingsBox = new VBox();
+        VBox settingsBox = new VBox(25.0);
+        settingsBox.setAlignment(Pos.TOP_CENTER);
+        settingsBox.setPadding(new Insets(25.0, 25.0, 25.0, 25.0));
 
         Button themeButton = new Button("Change Theme: Dark");
 
@@ -35,9 +41,13 @@ public class Settings extends BorderPane implements IRefreshable {
             this.window.refresh(event);
         });
 
-        settingsBox.getChildren().addAll(themeButton, newGame);
+        Button instructions = new Button("View Instructions");
 
-        this.setLeft(settingsBox);
+        instructions.setOnAction(event -> window.setPanel(this.instructionMenu, event));
+
+        settingsBox.getChildren().addAll(themeButton, newGame, instructions);
+
+        this.setCenter(settingsBox);
     }
 
     @Override
