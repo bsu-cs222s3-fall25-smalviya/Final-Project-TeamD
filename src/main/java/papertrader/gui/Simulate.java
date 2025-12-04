@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
@@ -35,15 +36,12 @@ public class Simulate extends BorderPane implements IRefreshable {
     }
 
     public void increment() {
-        // Get value of all stocks before incrementing
         double previousValue = Player.get().portfolio.getTotalMoney();
 
         MarketSystem.get().incrementStocks();
 
-        // Get value of all stocks after incrementing
         double nextValue = Player.get().portfolio.getTotalMoney();
 
-        // Calculate how money changed and give a message depending on it.
         this.moneyChanged = nextValue - previousValue;
 
         refresh(null);
@@ -74,6 +72,26 @@ public class Simulate extends BorderPane implements IRefreshable {
         KeyValueLabel networthlabel = new KeyValueLabel("Your net worth is now ", "$%.2f!");
         networthlabel.setValueColor(Color.GREEN);
         networthlabel.setValue(Player.get().portfolio.getTotalMoney());
+
+        HBox buttonBox = new HBox(15.0);
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setPadding(new Insets(10.0, 0.0, 10.0, 0.0));
+
+        Button sellAllButton = new Button("Sell All Stocks");
+        sellAllButton.getStyleClass().add("action-button");
+        sellAllButton.setOnAction(e -> {
+            sellAllStocks();
+            this.window.refresh(e);
+        });
+
+        Button coverAllButton = new Button("Cover All Shorts");
+        coverAllButton.getStyleClass().add("action-button");
+        coverAllButton.setOnAction(e -> {
+            coverAllShorts();
+            this.window.refresh(e);
+        });
+
+        buttonBox.getChildren().addAll(sellAllButton, coverAllButton);
 
         TableView<TableStock> tableView = new TableView<>();
 
@@ -175,7 +193,10 @@ public class Simulate extends BorderPane implements IRefreshable {
             ObservableList<TableStock> stocks = FXCollections.observableArrayList();
 
             for (var stock : MarketSystem.get().stockList.entrySet()) {
-                if (Player.get().portfolio.ownsStock(stock.getKey())) {
+                double sharesOwned = Player.get().portfolio.getNumberOfShares(stock.getKey());
+                double sharesShorted = Player.get().portfolio.getShortedShares(stock.getKey());
+
+                if (sharesOwned > 0 || sharesShorted > 0) {
                     TableStock tableStock = new TableStock();
                     tableStock.tickerProperty().set(stock.getKey());
                     tableStock.shareValueProperty().set(String.format("$%.2f", stock.getValue().shareValue));
@@ -185,11 +206,10 @@ public class Simulate extends BorderPane implements IRefreshable {
                         tableStock.changeProperty().set(String.format("$%.2f ↑", changeValue));
                     } else {
                         tableStock.changeProperty().set(String.format("$%.2f ↓", changeValue));
-
                     }
 
-                    tableStock.ownedProperty().set(String.format("%.2f", Player.get().portfolio.getNumberOfShares(stock.getKey())));
-                    tableStock.shortedProperty().set(String.format("%.2f", Player.get().portfolio.getShortedShares(stock.getKey())));
+                    tableStock.ownedProperty().set(String.format("%.2f", sharesOwned));
+                    tableStock.shortedProperty().set(String.format("%.2f", sharesShorted));
                     stocks.add(tableStock);
                 }
             }
@@ -197,9 +217,62 @@ public class Simulate extends BorderPane implements IRefreshable {
             tableView.setItems(stocks);
         }
 
-        vbox.getChildren().addAll(label, moneyMade, networthlabel, tableView);
+        vbox.getChildren().addAll(label, moneyMade, networthlabel, buttonBox, tableView);
 
         this.setCenter(vbox);
+    }
+
+    private void sellAllStocks() {
+        List<String> stocksToSell = new ArrayList<>();
+
+        for (var entry : MarketSystem.get().stockList.entrySet()) {
+            double sharesOwned = Player.get().portfolio.getNumberOfShares(entry.getKey());
+            if (sharesOwned > 0) {
+                stocksToSell.add(entry.getKey());
+            }
+        }
+
+        for (String stockName : stocksToSell) {
+            double sharesOwned = Player.get().portfolio.getNumberOfShares(stockName);
+
+            if (sharesOwned > 0) {
+                MarketSystem.Stock stock = MarketSystem.get().stockList.get(stockName);
+                double transactionAmount = sharesOwned * stock.shareValue;
+                double fee = MarketSystem.get().calculateTradingFee(transactionAmount);
+
+                Player.get().portfolio.sellStock(stockName, sharesOwned);
+
+                Player.get().portfolio.removeMoney((int)fee);
+            }
+        }
+    }
+
+    private void coverAllShorts() {
+        List<String> shortsToCover = new ArrayList<>();
+
+        for (var entry : MarketSystem.get().stockList.entrySet()) {
+            double shortedShares = Player.get().portfolio.getShortedShares(entry.getKey());
+            if (shortedShares > 0) {
+                shortsToCover.add(entry.getKey());
+            }
+        }
+
+        for (String stockName : shortsToCover) {
+            double shortedShares = Player.get().portfolio.getShortedShares(stockName);
+            MarketSystem.Stock stock = MarketSystem.get().stockList.get(stockName);
+
+            if (stock != null && shortedShares > 0) {
+                double transactionAmount = shortedShares * stock.shareValue;
+                double fee = MarketSystem.get().calculateTradingFee(transactionAmount);
+
+                if (Player.get().portfolio.getMoney() >= fee) {
+                    Player.get().portfolio.coverShort(stockName, shortedShares);
+                    Player.get().portfolio.removeMoney((int)fee);
+                } else {
+                    System.out.println("Insufficient funds to cover short position in " + stockName);
+                }
+            }
+        }
     }
 
     public static class TableStock {
