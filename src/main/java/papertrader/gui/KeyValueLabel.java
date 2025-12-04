@@ -1,14 +1,11 @@
 package papertrader.gui;
 
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 
-import java.util.Arrays;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class KeyValueLabel extends TextFlow {
 

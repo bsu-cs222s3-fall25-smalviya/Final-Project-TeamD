@@ -122,17 +122,13 @@ public class Stocks extends BorderPane implements IRefreshable {
         MarketSystem.Stock stock = MarketSystem.get().stockList.get(this.currentStock);
 
         KeyValueLabel stockLabel = new KeyValueLabel(this.currentStock + " ", (val) -> val > 0 ? "$%.2f ↑" : "$%.2f ↓");
-        stockLabel.setValue(MarketSystem.get().stockHistory.get(this.currentStock).getLast().shareValue - stock.shareValue);
+        stockLabel.setValue(stock.shareValue - MarketSystem.get().stockHistory.get(this.currentStock).getFirst().shareValue);
         stockLabel.setValueColor(stockLabel.getValue() <= 0 ? Color.RED : Color.GREEN);
         stockLabel.getStyleClass().add("bold");
 
         KeyValueLabel priceLabel = new KeyValueLabel("Current Price: ", "$%.2f");
         priceLabel.setValue(stock.shareValue);
         priceLabel.setValueColor(Color.GREEN);
-
-        KeyValueLabel changedLabel = new KeyValueLabel("Change: ", "$%.2f");
-        changedLabel.setValue(MarketSystem.get().stockHistory.get(this.currentStock).getLast().shareValue - stock.shareValue);
-        changedLabel.setValueColor(changedLabel.getValue() <= 0 ? Color.RED : Color.GREEN);
 
         KeyValueLabel ownedLabel = new KeyValueLabel("Shares Owned: ", "%.2f");
         ownedLabel.setValue(Player.get().portfolio.getNumberOfShares(this.currentStock));
@@ -157,9 +153,9 @@ public class Stocks extends BorderPane implements IRefreshable {
         }
 
         if (shortPnText.getKey().getText().isEmpty()) {
-            infoBox.getChildren().addAll(stockLabel, priceLabel, changedLabel, ownedLabel, shortedLabel);
+            infoBox.getChildren().addAll(stockLabel, priceLabel, ownedLabel, shortedLabel);
         } else {
-            infoBox.getChildren().addAll(stockLabel, priceLabel, changedLabel, ownedLabel, shortedLabel, shortPnText);
+            infoBox.getChildren().addAll(stockLabel, priceLabel, ownedLabel, shortedLabel, shortPnText);
         }
 
         pane.setCenter(infoBox);
