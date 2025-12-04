@@ -141,7 +141,7 @@ public class MarketSystem {
             stockDate.date.year = Time.getCurrentDate().year;
             stockDate.shareValue = stock.shareValue;
             stockDate.shares = stock.shares;
-            this.stockHistory.get(string).add(stockDate);
+            this.stockHistory.get(string).addFirst(stockDate);
 
             double value = stock.averageGrowth + random.nextGaussian() * stock.deviation;
             stock.shareValue += value;
