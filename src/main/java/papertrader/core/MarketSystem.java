@@ -16,8 +16,78 @@ public class MarketSystem {
     public TreeMap<String, Stock> stockList = new TreeMap<>();
     public final TreeMap<String, ArrayList<StockDate>> stockHistory = new TreeMap<>();
 
+    private double volatilityMultiplier = 1.0;
+    private int simulationSpeed = 1;
+    private boolean tradingFeesEnabled = true;
+    private boolean realTimeMode = false;
+    private double tradingFeePercentage = 0.01;
+
     public static MarketSystem get() {
         return marketSystem;
+    }
+
+    public void setVolatility(double multiplier) {
+        this.volatilityMultiplier = Math.max(0.1, Math.min(3.0, multiplier));
+    }
+
+    public double getVolatility() {
+        return this.volatilityMultiplier;
+    }
+
+    public void setSimulationSpeed(int speed) {
+        this.simulationSpeed = Math.max(1, Math.min(10, speed));
+    }
+
+    public int getSimulationSpeed() {
+        return this.simulationSpeed;
+    }
+
+    public void setTradingFeesEnabled(boolean enabled) {
+        this.tradingFeesEnabled = enabled;
+    }
+
+    public boolean areTradingFeesEnabled() {
+        return this.tradingFeesEnabled;
+    }
+
+    public void setTradingFeePercentage(double percentage) {
+        this.tradingFeePercentage = Math.max(0.0, Math.min(0.1, percentage));
+    }
+
+    public double calculateTradingFee(double transactionAmount) {
+        if (!tradingFeesEnabled) {
+            return 0.0;
+        }
+        return transactionAmount * tradingFeePercentage;
+    }
+
+    public void setRealTimeMode(boolean enabled) {
+        this.realTimeMode = enabled;
+    }
+
+    public boolean isRealTimeMode() {
+        return this.realTimeMode;
+    }
+
+    public boolean isMarketOpen() {
+        if (!realTimeMode) {
+            return true;
+        }
+
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("America/New_York"));
+        int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        int minute = cal.get(Calendar.MINUTE);
+
+        if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) {
+            return false;
+        }
+
+        int currentMinutes = hour * 60 + minute;
+        int marketOpen = 9 * 60 + 30;
+        int marketClose = 16 * 60;
+
+        return currentMinutes >= marketOpen && currentMinutes < marketClose;
     }
 
     public void saveData() {
@@ -38,6 +108,7 @@ public class MarketSystem {
         }
 
         saveStockHistory(getHistoryFile());
+        saveSettings();
     }
 
     public void loadDefaultData() {
@@ -61,6 +132,7 @@ public class MarketSystem {
         }
 
         loadStockHistory(getDefaultHistoryFile());
+        resetSettings();
     }
 
     public void loadData() {
@@ -85,6 +157,47 @@ public class MarketSystem {
         }
 
         loadStockHistory(getHistoryFile());
+        loadSettings();
+    }
+
+    private void saveSettings() {
+        File settingsFile = getSettingsFile();
+        try (DataOutputStream output = new DataOutputStream(new FileOutputStream(settingsFile))) {
+            output.writeDouble(volatilityMultiplier);
+            output.writeInt(simulationSpeed);
+            output.writeBoolean(tradingFeesEnabled);
+            output.writeBoolean(realTimeMode);
+            output.writeDouble(tradingFeePercentage);
+        } catch (IOException e) {
+            System.err.println("Failed to save settings: " + e.getMessage());
+        }
+    }
+
+    private void loadSettings() {
+        File settingsFile = getSettingsFile();
+        if (!settingsFile.exists()) {
+            resetSettings();
+            return;
+        }
+
+        try (DataInputStream input = new DataInputStream(new FileInputStream(settingsFile))) {
+            volatilityMultiplier = input.readDouble();
+            simulationSpeed = input.readInt();
+            tradingFeesEnabled = input.readBoolean();
+            realTimeMode = input.readBoolean();
+            tradingFeePercentage = input.readDouble();
+        } catch (IOException e) {
+            System.err.println("Failed to load settings: " + e.getMessage());
+            resetSettings();
+        }
+    }
+
+    private void resetSettings() {
+        volatilityMultiplier = 1.0;
+        simulationSpeed = 1;
+        tradingFeesEnabled = true;
+        realTimeMode = false;
+        tradingFeePercentage = 0.01;
     }
 
     public void saveStockHistory(File file) {
@@ -134,7 +247,6 @@ public class MarketSystem {
 
         MarketSystem.get().stockList.forEach((string, stock) -> {
 
-            // Add previous date and value before creating new values
             StockDate stockDate = new StockDate();
             stockDate.date.month = Time.getCurrentDate().month;
             stockDate.date.day = Time.getCurrentDate().day;
@@ -143,11 +255,13 @@ public class MarketSystem {
             stockDate.shares = stock.shares;
             this.stockHistory.get(string).addFirst(stockDate);
 
-            double value = stock.averageGrowth + random.nextGaussian() * stock.deviation;
+            double baseValue = stock.averageGrowth + random.nextGaussian() * stock.deviation;
+            double value = baseValue * volatilityMultiplier;
             stock.shareValue += value;
 
-            if (random.nextFloat() < 0.025) { // Small chance to grow or shrink stock
-                stock.averageGrowth += (random.nextDouble() * 2.0 - 1.0) * 0.01;
+            double changeChance = 0.025 * volatilityMultiplier;
+            if (random.nextFloat() < changeChance) {
+                stock.averageGrowth += (random.nextDouble() * 2.0 - 1.0) * 0.01 * volatilityMultiplier;
             }
         });
     }
@@ -170,6 +284,11 @@ public class MarketSystem {
     private File getDefaultHistoryFile() {
         String defaultDataLocation = Objects.requireNonNull(getClass().getResource("/DefaultStockHistory.bin")).getFile();
         return new File(defaultDataLocation);
+    }
+
+    private File getSettingsFile() {
+        String workingDirectory = System.getProperty("user.dir");
+        return new File(workingDirectory + "/data/Settings.bin");
     }
 
     public static class Stock {
