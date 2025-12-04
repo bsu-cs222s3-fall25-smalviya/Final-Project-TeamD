@@ -124,8 +124,18 @@ public class WindowGUI extends Application implements IRefreshable {
     }
 
     public enum Theme {
-        DARK,
-        LIGHT,
-        CREAM
+        DARK("Dark"),
+        LIGHT("Light"),
+        CREAM("Cream");
+
+        private final String name;
+
+        Theme(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
     }
 }
