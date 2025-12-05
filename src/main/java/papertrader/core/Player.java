@@ -1,6 +1,7 @@
 package papertrader.core;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import papertrader.gui.WindowGUI;
 
 import java.io.*;
 
@@ -72,6 +73,8 @@ public class Player {
     public static class Portfolio {
         private double money;
         public final Time.Date currentDate = new Time.Date();
+        public WindowGUI.Theme currentTheme = WindowGUI.Theme.DARK;
+        public boolean useTradingFees = false;
         private final ArrayList<MarketSystem.Trade> trades = new ArrayList<>();
         private final HashMap<String, Double> ownedStocks = new HashMap<>();
         public final HashMap<String, ShortPosition> shortedStocks = new HashMap<>();

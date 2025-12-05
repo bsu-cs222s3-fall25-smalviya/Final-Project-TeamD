@@ -72,7 +72,7 @@ public class WindowGUI extends Application implements IRefreshable {
         this.root.setTop(topDisplay);
 
         panelList.getFirst().getValue().handle(null);
-        setTheme(Theme.DARK);
+        this.setTheme(Player.get().portfolio.currentTheme);
 
         stage.setScene(this.scene);
         stage.setTitle("Paper Trader");
